@@ -111,7 +111,8 @@ while True:
     while (time.time() - startTime) < 2.5:
         data = sock.recv(1024)
         arr = ':'.join("{0:02x}".format(x) for x in data[12:6:-1])
-        devName = binascii.unhexlify(''.join("{0:02x}".format(x) for x in data[16:23:1]))
+        #devName = binascii.unhexlify(''.join("{0:02x}".format(x) for x in data[16:23:1]))
+        devName = str(''.join("{0:02x}".format(x) for x in data[16:23:1]))
         print(devName)
     #     if isRecDev(str(arr)):
     #         devID = str("".join("{0:02x}".format(x) for x in data[31:29:-1]))
