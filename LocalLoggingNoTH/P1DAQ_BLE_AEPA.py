@@ -19,21 +19,21 @@ folderName = "/home/pi/ClaritySensorData/"
 tnow = datetime.datetime.now().isoformat()
 fixedTime = tnow[0:10] + "--" + tnow[11:13] + "-" + tnow[14:16] + "-" + tnow[17:19]
 fileName = folderName + fixedTime + "ClarityData.csv"
-recDevIDs = ["c101", "c102", "c103", "c104", "c105"]
+recDevIDs = ["ae01", "ae02"]
 
 #fieldnames = ['time(sec)','time_stamp','be7a_nc',
               #'be7a_mc','se01_nc', 'se01_mc']
-# fieldnames = ['time(sec)', 'time_stamp',
-#               recDevIDs[0] + "_nc", recDevIDs[0] + "_mc",
-#               recDevIDs[1] + "_nc", recDevIDs[1] + "_mc",
-#               recDevIDs[2] + "_nc", recDevIDs[2] + "_mc",
-#               recDevIDs[3] + "_nc", recDevIDs[3] + "_mc",
-#               recDevIDs[4] + "_nc", recDevIDs[4] + "_mc"]
+fieldnames = ['time(sec)', 'time_stamp',
+              recDevIDs[0] + "_nc", recDevIDs[0] + "_mc",
+              recDevIDs[1] + "_nc", recDevIDs[1] + "_mc"]
               
 #recDevAddr = ["f9:b1:23:8d:60:b1", "f1:59:2f:10:71:26"]
 recDevAddr = ["d1:8d:3e:65:b1:4e", "e6:17:84:42:8a:d0",
               "db:70:86:13:64:02", "c9:a7:e6:4c:2a:02",
               "d0:4f:18:a1:b8:5c"]
+
+nameToMatch = "CLARITY"
+
 addrToDev = dict.fromkeys(recDevAddr, recDevIDs)
 devReadings = dict.fromkeys(fieldnames)
 
