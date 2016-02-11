@@ -116,7 +116,7 @@ while True:
         #print(devName)
         if devName == nameToMatch:
             devID = str("".join("{0:02x}".format(x) for x in data[31:29:-1]))
-            print(devID)
+            #print(devID)
             reading = str("".join("{0:02x}".format(x) for x in data[39:30:-1]))
             num_conc = str(int("".join("{0:02x}".format(x) for x in data[33:31:-1]),16))
             mass_conc = str(int("".join("{0:02x}".format(x) for x in data[35:33:-1]),16))
@@ -130,6 +130,6 @@ while True:
     with open(fileName, "a") as fileToUpdate:
         updater = csv.DictWriter(fileToUpdate, fieldnames = fieldnames)
         updater.writerow(toSave)
-    print(str(devReadings))
+    #print(str(devReadings))
 
               
