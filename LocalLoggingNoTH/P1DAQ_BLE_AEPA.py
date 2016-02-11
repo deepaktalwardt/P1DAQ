@@ -38,10 +38,10 @@ addrToDev = dict.fromkeys(recDevAddr, recDevIDs)
 devReadings = dict.fromkeys(fieldnames)
 
 # Open a new file to write to
-with open(fileName, "a") as csvfile:
-    #fieldnames = ['be7a', 'de01']
-    writer = csv.DictWriter(csvfile, fieldnames = fieldnames)
-    writer.writeheader()
+# with open(fileName, "a") as csvfile:
+#     #fieldnames = ['be7a', 'de01']
+#     writer = csv.DictWriter(csvfile, fieldnames = fieldnames)
+#     writer.writeheader()
     
 # Check data and return corrected dictionary
 def checkData(data):
