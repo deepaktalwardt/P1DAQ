@@ -20,7 +20,7 @@ folderName = "/home/pi/ClarityData/"
 tnow = datetime.datetime.now().isoformat()
 fixedTime = tnow[0:10] + "--" + tnow[11:13] + "-" + tnow[14:16] + "-" + tnow[17:19]
 fileName = folderName + fixedTime + "ClarityData.csv"
-recDevIDs = ["c101", "c107"]
+recDevIDs = ["c1ba", "c1b5"]
 
 #fieldnames = ['time(sec)','time_stamp','be7a_nc',
               #'be7a_mc','se01_nc', 'se01_mc']
@@ -115,7 +115,7 @@ while True:
         devName = str(''.join("{0:02x}".format(x) for x in data[16:23:1]))
         #print(devName)
         if devName == nameToMatch:
-            devID = str("".join("{0:02x}".format(x) for x in data[30:32:1]))
+            devID = str("".join("{0:02x}".format(x) for x in data[31:29:-1]))
             print(devID)
             reading = str("".join("{0:02x}".format(x) for x in data[39:30:-1]))
             num_conc = str(int("".join("{0:02x}".format(x) for x in data[33:31:-1]),16))
