@@ -115,7 +115,7 @@ while True:
         devName = str(''.join("{0:02x}".format(x) for x in data[16:23:1]))
         #print(devName)
         if devName == nameToMatch:
-            devID = str("".join("{0:02x}".format(x) for x in data[32:30:-1]))
+            devID = str("".join("{0:02x}".format(x) for x in data[30:32:1]))
             print(devID)
             reading = str("".join("{0:02x}".format(x) for x in data[39:30:-1]))
             num_conc = str(int("".join("{0:02x}".format(x) for x in data[33:31:-1]),16))
