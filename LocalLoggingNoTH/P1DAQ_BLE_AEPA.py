@@ -120,7 +120,7 @@ while True:
         arr = ':'.join("{0:02x}".format(x) for x in data[12:6:-1])
         devName = str(''.join("{0:02x}".format(x) for x in data[16:23:1]))
         for k in devReadings.keys():
-            devReadings[key] = -1
+            devReadings[k] = -1
         #print(devName)
         if devName == nameToMatch:
             devID = str("".join("{0:02x}".format(x) for x in data[31:29:-1]))
