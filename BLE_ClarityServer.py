@@ -27,6 +27,7 @@ tnow = datetime.datetime.now().isoformat()
 fixedTime = tnow[0:10] + "--" + tnow[11:13] + "-" + tnow[14:16] + "-" + tnow[17:19]
 fileName = folderName + fixedTime + "ClarityData.csv"
 recDevIDs = ["c101", "c102", "c103", "c104", "c105"]
+print(fileName)
 
 #fieldnames = ['time(sec)','time_stamp','be7a_nc',
               #'be7a_mc','se01_nc', 'se01_mc']
@@ -183,7 +184,7 @@ if err < 0:
 
 # Connection Timer
 connTimer = time.time()
-
+failCounter = 0
 while True:
     avgTime = time.time()
     while (time.time() - avgTime) < 10:
@@ -225,12 +226,17 @@ while True:
     #print('-------------------------------')
     #print(avgdReadings)
     #saveOnUbidots(recDevIDs)
-    toClarityCloud(avgdReadings)
+    try:
+        toClarityCloud(avgdReadings)
+    except:
+        print("--------------Upload Failed: Trying again--------------")
+        failCounter += 1
     devReadings = {}
     for key in fieldnames:
         devReadings.setdefault(key, [])
-    if (time.time() - connTimer) > 750:
-        reconnectUbidots()
+##    if (time.time() - connTimer) > 750:
+##        reconnectUbidots()
+    print("fails: " + str(failCounter) + "--------------")
     #print(str(devReadings))
 
               
