@@ -37,13 +37,14 @@ recDevAddr = ["d1:8d:3e:65:b1:4e", "e6:17:84:42:8a:d0",
 nameToMatch = "434c4152495459" #CLARITY in hex
 
 addrToDev = dict.fromkeys(recDevAddr, recDevIDs)
-devReadings = dict.fromkeys(fieldnames)
+#devReadings = dict.fromkeys(fieldnames)
+devReadings = {}
 
 # Open a new file to write to
-with open(fileName, "a") as csvfile:
-    #fieldnames = ['be7a', 'de01']
-    writer = csv.DictWriter(csvfile, fieldnames = fieldnames)
-    writer.writeheader()
+# with open(fileName, "a") as csvfile:
+#     #fieldnames = ['be7a', 'de01']
+#     writer = csv.DictWriter(csvfile, fieldnames = fieldnames)
+#     writer.writeheader()
     
 # Check data and return corrected dictionary
 def checkData(data):
@@ -106,31 +107,37 @@ if err < 0:
 
 # Open the file to update
 
-    
+counter = 1;
+dataTime = time.time()
 while True:
     startTime = time.time()
     while (time.time() - startTime) < 2.5:
         data = sock.recv(1024)
         arr = ':'.join("{0:02x}".format(x) for x in data[12:6:-1])
-        #devName = binascii.unhexlify(''.join("{0:02x}".format(x) for x in data[16:23:1]))
         devName = str(''.join("{0:02x}".format(x) for x in data[16:23:1]))
         #print(devName)
         if devName == nameToMatch:
             devID = str("".join("{0:02x}".format(x) for x in data[31:29:-1]))
-            #print(devID)
-            reading = str("".join("{0:02x}".format(x) for x in data[39:30:-1]))
-            num_conc = str(int("".join("{0:02x}".format(x) for x in data[33:31:-1]),16))
-            mass_conc = str(int("".join("{0:02x}".format(x) for x in data[35:33:-1]),16))
-            batt_val = str(int("".join("{0:02x}".format(x) for x in data[36:35:-1]),16))
-            err_code = str(int("".join("{0:02x}".format(x) for x in data[37:36:-1]),16))
-            devReadings[devID + "_nc"] = num_conc
-            devReadings[devID + "_mc"] = mass_conc
-    devReadings['time(sec)'] = time.time()
-    devReadings['time_stamp'] = time.strftime("%c")
+            if (counter == 1 or (devReadings.has_key(devID + "_nc"))):
+                #print(devID)
+                #reading = str("".join("{0:02x}".format(x) for x in data[39:30:-1]))
+                num_conc = str(int("".join("{0:02x}".format(x) for x in data[33:31:-1]),16))
+                mass_conc = str(int("".join("{0:02x}".format(x) for x in data[35:33:-1]),16))
+                #batt_val = str(int("".join("{0:02x}".format(x) for x in data[36:35:-1]),16))
+                #err_code = str(int("".join("{0:02x}".format(x) for x in data[37:36:-1]),16))
+                devReadings[devID + "_nc"] = num_conc
+                devReadings[devID + "_mc"] = mass_conc
+    devReadings['time(sec)'] = time.time() - dataTime
+    #devReadings['time_stamp'] = time.strftime("%c")
     toSave = checkData(devReadings)
+    if counter == 1:
+        with open(fileName, "a") as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames = devReadings.keys())
+        writer.writeheader()
     with open(fileName, "a") as fileToUpdate:
-        updater = csv.DictWriter(fileToUpdate, fieldnames = fieldnames)
+        updater = csv.DictWriter(fileToUpdate, fieldnames = devReadings.keys())
         updater.writerow(toSave)
+    counter += 1
     #print(str(devReadings))
 
               
