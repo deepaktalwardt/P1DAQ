@@ -16,7 +16,8 @@ from socket import (
     HCI_FILTER,
 )
 ###############################################################
-folderName = "/home/pi/ClarityData/"
+# folderName = "/home/pi/ClarityData/"
+folderName = "/media/pi/ClarityDataStorageDrive1/"
 tnow = datetime.datetime.now().isoformat()
 fixedTime = tnow[0:10] + "--" + tnow[11:13] + "-" + tnow[14:16] + "-" + tnow[17:19]
 fileName = folderName + fixedTime + "ClarityData.csv"
