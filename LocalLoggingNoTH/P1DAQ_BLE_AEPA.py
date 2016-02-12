@@ -132,8 +132,8 @@ while True:
     toSave = checkData(devReadings)
     if counter == 1:
         with open(fileName, "a") as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames = devReadings.keys())
-        writer.writeheader()
+            writer = csv.DictWriter(csvfile, fieldnames = devReadings.keys())
+            writer.writeheader()
     with open(fileName, "a") as fileToUpdate:
         updater = csv.DictWriter(fileToUpdate, fieldnames = devReadings.keys())
         updater.writerow(toSave)
