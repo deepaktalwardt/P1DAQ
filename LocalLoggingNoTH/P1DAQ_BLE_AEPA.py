@@ -50,12 +50,12 @@ devReadings = {}
 #     writer.writeheader()
     
 # Check data and return corrected dictionary
-def checkData(data):
-    dataCopy = data
-    for key in dataCopy.keys():
-        if dataCopy.get(key) == None:
-            dataCopy[key] = -1
-    return dataCopy
+# def checkData(data):
+#     dataCopy = data
+#     for key in dataCopy.keys():
+#         if dataCopy.get(key) == None:
+#             dataCopy[key] = -1
+#     return dataCopy
 
 # Check if the scanned device is recognized
 # def isRecDev(address):
