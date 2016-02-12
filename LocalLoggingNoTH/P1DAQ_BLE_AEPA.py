@@ -115,12 +115,12 @@ dataTime = time.time()
 while True:
     startTime = time.time()
     noOfDevs = 0
+    for k in devReadings.keys():
+        devReadings[k] = -1
     while (time.time() - startTime) < 2.5:
         data = sock.recv(1024)
         arr = ':'.join("{0:02x}".format(x) for x in data[12:6:-1])
         devName = str(''.join("{0:02x}".format(x) for x in data[16:23:1]))
-        for k in devReadings.keys():
-            devReadings[k] = -1
         #print(devName)
         if devName == nameToMatch:
             devID = str("".join("{0:02x}".format(x) for x in data[31:29:-1]))
