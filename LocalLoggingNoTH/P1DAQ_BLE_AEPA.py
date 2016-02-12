@@ -137,7 +137,8 @@ while True:
     if noOfDevs >= 1:
         devReadings['time(sec)'] = int(time.time() - dataTime)
         #devReadings['time_stamp'] = time.strftime("%c")
-        toSave = checkData(devReadings)
+        #toSave = checkData(devReadings)
+        toSave = devReadings
         if counter == 1:
             with open(fileName, "a") as csvfile:
                 writer = csv.DictWriter(csvfile, fieldnames = devReadings.keys())
