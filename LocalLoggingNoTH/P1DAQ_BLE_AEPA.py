@@ -1,5 +1,6 @@
 import sys
 import os
+import os.path
 import time
 import struct
 import csv
@@ -17,10 +18,12 @@ from socket import (
 )
 ###############################################################
 # folderName = "/home/pi/ClarityData/"
-folderName = "/media/pi/ClarityDataStorageDrive1/"
-tnow = datetime.datetime.now().isoformat()
-fixedTime = tnow[0:10] + "--" + tnow[11:13] + "-" + tnow[14:16] + "-" + tnow[17:19]
-fileName = folderName + fixedTime + "ClarityData.csv"
+folderName = "/media/pi/ClarityDataStorageDrive1/ClarityData/"
+numFile = len([f for f in os.listdir(folderName)]) + 1
+#tnow = datetime.datetime.now().isoformat()
+#fixedTime = tnow[0:10] + "--" + tnow[11:13] + "-" + tnow[14:16] + "-" + tnow[17:19]
+fileName = folderName + str(numFile) + "ClarityData.csv"
+print(fileName)
 recDevIDs = ["c1ba", "c1b5"]
 
 #fieldnames = ['time(sec)','time_stamp','be7a_nc',
