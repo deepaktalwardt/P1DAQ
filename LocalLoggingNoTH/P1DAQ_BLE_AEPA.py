@@ -24,22 +24,22 @@ numFile = len([f for f in os.listdir(folderName)]) + 1
 #fixedTime = tnow[0:10] + "--" + tnow[11:13] + "-" + tnow[14:16] + "-" + tnow[17:19]
 fileName = folderName + "ClarityData" + str(numFile) + ".csv"
 print(fileName)
-recDevIDs = ["c1ba", "c1b5"]
+#recDevIDs = ["c1ba", "c1b5"]
 
 #fieldnames = ['time(sec)','time_stamp','be7a_nc',
               #'be7a_mc','se01_nc', 'se01_mc']
-fieldnames = ['time(sec)', 'time_stamp',
-              recDevIDs[0] + "_nc", recDevIDs[0] + "_mc",
-              recDevIDs[1] + "_nc", recDevIDs[1] + "_mc"]
+#fieldnames = ['time(sec)', 'time_stamp',
+#             recDevIDs[0] + "_nc", recDevIDs[0] + "_mc",
+#              recDevIDs[1] + "_nc", recDevIDs[1] + "_mc"]
               
 #recDevAddr = ["f9:b1:23:8d:60:b1", "f1:59:2f:10:71:26"]
-recDevAddr = ["d1:8d:3e:65:b1:4e", "e6:17:84:42:8a:d0",
-              "db:70:86:13:64:02", "c9:a7:e6:4c:2a:02",
-              "d0:4f:18:a1:b8:5c"]
+#recDevAddr = ["d1:8d:3e:65:b1:4e", "e6:17:84:42:8a:d0",
+#              "db:70:86:13:64:02", "c9:a7:e6:4c:2a:02",
+#              "d0:4f:18:a1:b8:5c"]
 
 nameToMatch = "434c4152495459" #CLARITY in hex
 
-addrToDev = dict.fromkeys(recDevAddr, recDevIDs)
+#addrToDev = dict.fromkeys(recDevAddr, recDevIDs)
 #devReadings = dict.fromkeys(fieldnames)
 devReadings = {}
 
@@ -58,11 +58,11 @@ def checkData(data):
     return dataCopy
 
 # Check if the scanned device is recognized
-def isRecDev(address):
-    for devAdd in recDevAddr:
-        if devAdd == address:
-            return True
-    return False
+# def isRecDev(address):
+#     for devAdd in recDevAddr:
+#         if devAdd == address:
+#             return True
+#     return False
 ################################################################
 
 if not os.geteuid() == 0:
@@ -119,6 +119,8 @@ while True:
         data = sock.recv(1024)
         arr = ':'.join("{0:02x}".format(x) for x in data[12:6:-1])
         devName = str(''.join("{0:02x}".format(x) for x in data[16:23:1]))
+        for k in devReadings.keys():
+            devReadings[key] = -1
         #print(devName)
         if devName == nameToMatch:
             devID = str("".join("{0:02x}".format(x) for x in data[31:29:-1]))
