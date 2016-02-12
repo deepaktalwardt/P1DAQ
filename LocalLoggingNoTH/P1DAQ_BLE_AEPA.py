@@ -118,7 +118,7 @@ while True:
         #print(devName)
         if devName == nameToMatch:
             devID = str("".join("{0:02x}".format(x) for x in data[31:29:-1]))
-            if (counter == 1 or (devReadings.has_key(devID + "_nc"))):
+            if (counter == 1 or ((devID + "_nc") in devReadings)):
                 #print(devID)
                 #reading = str("".join("{0:02x}".format(x) for x in data[39:30:-1]))
                 num_conc = str(int("".join("{0:02x}".format(x) for x in data[33:31:-1]),16))
