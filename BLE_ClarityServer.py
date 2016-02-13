@@ -5,6 +5,7 @@ import time
 import struct
 import csv
 os.environ['http_proxy'] = ''
+from random import randint
 import requests
 import datetime
 from collections import defaultdict
@@ -26,7 +27,7 @@ folderName = "/home/pi/ClarityData/"
 tnow = datetime.datetime.now().isoformat()
 fixedTime = tnow[0:10] + "--" + tnow[11:13] + "-" + tnow[14:16] + "-" + tnow[17:19]
 fileName = folderName + fixedTime + "ClarityData.csv"
-recDevIDs = ["c101", "c102", "c103", "c104", "c105"]
+recDevIDs = ["c1b6", "c1b1", "c1b7", "c1b3", "c1b5"]
 print(fileName)
 
 #fieldnames = ['time(sec)','time_stamp','be7a_nc',
@@ -41,9 +42,9 @@ fieldnames = ['time(sec)', 'time_stamp',
               "Relative Humidity (%)"]
               
 #recDevAddr = ["f9:b1:23:8d:60:b1", "f1:59:2f:10:71:26"]
-recDevAddr = ["d1:8d:3e:65:b1:4e", "e6:17:84:42:8a:d0",
-              "db:70:86:13:64:02", "c9:a7:e6:4c:2a:02",
-              "d0:4f:18:a1:b8:5c"]
+recDevAddr = ["f5:a5:c6:7d:63:24", "c0:1a:fc:3c:89:d5",
+              "c0:fd:8b:d9:1e:e9", "f3:14:d6:43:de:47",
+              "eb:9a:e3:35:c3:a0"]
 addrToDev = dict.fromkeys(recDevAddr, recDevIDs)
 #devReadings = dict.fromkeys(fieldnames)
 #devReadings = {k:[] for k in fieldnames}
@@ -60,9 +61,9 @@ fileReadings = dict.fromkeys(fieldnames)
 baseurl = "https://api.joinclarity.io/v2/measurements"
 
 def toClarityCloud(data):
-    for i in range(1,6):
+    for id in recDevIDs:
         dictToSend = {}
-        devID = "c10" + str(i)
+        devID = id
         dictToSend["device"] = "ffffffffffffffffffff" + devID
         dictToSend["location"] = {"type":"Point", "coordinates":[-122.2579268, 37.8749026]}
         dictToSend["time"] = datetime.datetime.now().isoformat()
@@ -127,6 +128,7 @@ def saveOnUbidots(dictToSave):
     c105.save_value({'value':devReadings.get(recDevIDs[4] + "_mc")})
     tsensor.save_value({'value':devReadings.get("Temperature (deg C)")})
     hsensor.save_value({'value':devReadings.get("Relative Humidity (%)")})
+    print(":::::::Uploaded on Ubidots::::::::::")
 
 # Reconnect to Ubidots if needed
 def reconnectUbidots():
@@ -185,9 +187,10 @@ if err < 0:
 # Connection Timer
 connTimer = time.time()
 failCounter = 0
+ubiFailCounter = 0
 while True:
     avgTime = time.time()
-    while (time.time() - avgTime) < 10:
+    while (time.time() - avgTime) < 5.05:
         startTime = time.time()
         while (time.time() - startTime) < 2.5:
             data = sock.recv(1024)
@@ -225,7 +228,11 @@ while True:
     avgdReadings = averageDict(devChecked)
     #print('-------------------------------')
     #print(avgdReadings)
-    #saveOnUbidots(recDevIDs)
+    try:
+        saveOnUbidots(recDevIDs)
+    except:
+        print("--------------Ubidots Failed--------------")
+        ubiFailCounter += 1
     try:
         toClarityCloud(avgdReadings)
     except:
@@ -236,7 +243,8 @@ while True:
         devReadings.setdefault(key, [])
 ##    if (time.time() - connTimer) > 750:
 ##        reconnectUbidots()
-    print("fails: " + str(failCounter) + "--------------")
+    print("-------------fails: " + str(failCounter) + "--------------")
+    print("-------------Ubidots fails: " + str(ubiFailCounter) + "--------------")
     #print(str(devReadings))
 
               
