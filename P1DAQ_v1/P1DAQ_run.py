@@ -49,7 +49,7 @@ def get_sensor_reading():
     to_return = dict.fromkeys(fieldnames)
     start_time = time.time()
     while (time.time() - start_time) < 2.5:
-        data = get_BLE_raw():
+        data = get_BLE_raw()
         ble_path = ':'.join("{0:02x}".format(x) for x in data[12:6:-1])
         if known_sensor(str(ble_path)):
             dev_id = str("".join("{0:02x}".format(x) for x in data[31:29:-1]))
