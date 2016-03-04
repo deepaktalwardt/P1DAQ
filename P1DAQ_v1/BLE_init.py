@@ -57,6 +57,6 @@ if err < 0:
     ))
 
 # Functions
-def get_data():
+def get_BLE_data():
     data = sock.recv(1024)
     return data
