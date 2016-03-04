@@ -1,10 +1,10 @@
 #import urllib3
 import json
 import datetime
-import requests
+from requests import requests
 import time
 
-baseurl = "https://api.joinclarity.io/v2/measurements"
+baseurl = "https://api.clarity.io/v2/measurements"
 devID = "be83"
 
 tic = time.clock()
@@ -18,11 +18,15 @@ dataStorage["pm2_5"] = {"value":500,"raw":34,"estimatedAccuracy":10}
 json_data = json.dumps(dataStorage)
 #json_data = json.JSONEncoder().encode(data)
 #print(json_data)
-for i in range(0,5):
+for i in range(0,6):
     dataStorage["recId"] = devID + "_" + datetime.datetime.now().isoformat()
+    #print(dataStorage)
     f = requests.post(baseurl, json=dataStorage)
-    #time.sleep(0.01)
-    print(f.text)
-    print(f.status_code)
+    content = f.json()
+    print(content)
+    time.sleep(0.01)
+    #print(f.content)
+    #f.headers
+    #print(f.status_code)
 toc = time.clock()
-print(toc-tic)
+#print(toc-tic)

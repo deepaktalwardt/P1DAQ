@@ -50,4 +50,3 @@ def read_humidity():
 	temperature = read_temperature()
 	humidity = int(((25-temperature)*-0.15)+uncomp_humidity)
 	return humidity
-

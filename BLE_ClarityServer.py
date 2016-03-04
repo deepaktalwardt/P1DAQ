@@ -247,4 +247,4 @@ while True:
     print("-------------Ubidots fails: " + str(ubiFailCounter) + "--------------")
     #print(str(devReadings))
 
-              
+            
