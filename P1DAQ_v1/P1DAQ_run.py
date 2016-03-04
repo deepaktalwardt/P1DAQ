@@ -32,6 +32,14 @@ fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc",
 
 readings_list = []
 
+folder_name = "/media/pi/Clarity/ClarityData/"
+num_file = len([f for f in os.listdir(folder_name)]) + 1
+file_name = folder_name + "DataFile" + str(num_file) + ".csv"
+
+with open(fileName, "a") as csvfile:
+    writer = csv.DictWriter(csvfile, fieldnames = fieldnames)
+    writer.writeheader()
+
 # Functions
 def known_sensor(ble_path):
     for dev_addr in dev_addrs:
@@ -44,6 +52,11 @@ def check_reading(reading):
         if reading.get(key) == None:
             reading[key] = -1
     return reading
+
+def save_to_file(reading):
+    with open(filename, "a") as file_to_update:
+        updater = csv.DictWriter(file_to_update, fieldnames = fieldnames)
+        updater.writerow(reading)
 
 def get_sensor_reading():
     to_return = dict.fromkeys(fieldnames)
@@ -67,5 +80,6 @@ def get_sensor_reading():
 # Loop to run
 while True:
     readings = get_sensor_reading()
-    print(readings)
+    save_to_file(readings)
+    print("Saved: " + readings)
     
