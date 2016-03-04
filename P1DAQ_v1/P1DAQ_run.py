@@ -60,7 +60,7 @@ def get_sensor_reading():
     to_return["In Temperature (deg C)"] = 23 # Change this later to a function call
     to_return["Out Temperature (deg C)"] = 27 # Change this later to a function call
     to_return["Relative Humidity (%)"] = 40 # Change this later to a function call
-    to_return["Time (UT)"] = datetime.datetime.isotime()
+    to_return["Time (UT)"] = datetime.datetime.now().isoformat()
     to_return = check_reading(to_return)
     return to_return
 
