@@ -246,5 +246,3 @@ while True:
     print("-------------fails: " + str(failCounter) + "--------------")
     print("-------------Ubidots fails: " + str(ubiFailCounter) + "--------------")
     #print(str(devReadings))
-
-            

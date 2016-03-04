@@ -1,6 +1,7 @@
 # Imports
 import sys
 import os
+import struct
 from ctypes import (CDLL, get_errno)
 from ctypes.util import find_library
 from socket import (
@@ -57,6 +58,6 @@ if err < 0:
     ))
 
 # Functions
-def get_BLE_data():
+def get_BLE_raw():
     data = sock.recv(1024)
     return data
