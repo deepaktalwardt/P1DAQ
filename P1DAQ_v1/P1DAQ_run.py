@@ -36,7 +36,7 @@ folder_name = "/media/pi/Clarity/ClarityData/"
 num_file = len([f for f in os.listdir(folder_name)]) + 1
 file_name = folder_name + "DataFile" + str(num_file) + ".csv"
 
-with open(filename, "a") as csvfile:
+with open(file_name, "a") as csvfile:
     writer = csv.DictWriter(csvfile, fieldnames = fieldnames)
     writer.writeheader()
 
@@ -54,7 +54,7 @@ def check_reading(reading):
     return reading
 
 def save_to_file(reading):
-    with open(filename, "a") as file_to_update:
+    with open(file_name, "a") as file_to_update:
         updater = csv.DictWriter(file_to_update, fieldnames = fieldnames)
         updater.writerow(reading)
 
