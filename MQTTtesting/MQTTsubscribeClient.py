@@ -52,11 +52,12 @@ def on_message(client, userdata, msg):
 	dict_to_write['Relative Humidity (%)'] = out_humi
 	COUNTER += 1
 	if COUNTER % 5 == 0:
+		print("Saving now")
 		with open(file_name, "a") as file_to_update:
 			updater = csv.DictWriter(file_to_update, fieldnames = fieldnames)
 			updater.writerow(dict_to_write)
 
-client = paho.Client(client_id = "p1", clean_session = True)
+client = paho.Client(client_id = "p1", clean_session = False)
 client.on_subscribe = on_subscribe
 client.on_message = on_message
 client.connect("broker.hivemq.com", 1883)
