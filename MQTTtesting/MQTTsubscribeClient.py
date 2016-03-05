@@ -4,6 +4,7 @@ import json
 DEVICE_TYPE     =   "P1"
 TOPIC           =   "iot/SSRIOT/" + DEVICE_TYPE + "/#"
 COUNTER = 1
+dev_ids = ["c1c3", "c1c8", "c1c9", "c1b2", "c1b4"]
 fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc", 
 			  dev_ids[1] + "_mc", dev_ids[1] + "_nc",
 			  dev_ids[2] + "_mc", dev_ids[2] + "_nc",
