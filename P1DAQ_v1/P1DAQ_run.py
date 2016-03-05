@@ -26,7 +26,7 @@ fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc",
               dev_ids[2] + "_mc", dev_ids[2] + "_nc",
               dev_ids[3] + "_mc", dev_ids[3] + "_nc",
               dev_ids[4] + "_mc", dev_ids[4] + "_nc",
-              "In Temp (deg C)", "Out Temp (deg C)"
+              "In Temp (deg C)", "Out Temp (deg C)",
               "Relative Humidity (%)",
               "Time (UT)"]
 
@@ -70,8 +70,8 @@ def get_sensor_reading():
             mass_conc = int("".join("{0:02x}".format(x) for x in data[35:33:-1]),16)
             to_return[dev_id + "_nc"] = num_conc
             to_return[dev_id + "_mc"] = mass_conc
-    to_return["In Temperature (deg C)"] = 23 # Change this later to a function call
-    to_return["Out Temperature (deg C)"] = 27 # Change this later to a function call
+    to_return["In Temp (deg C)"] = 23 # Change this later to a function call
+    to_return["Out Temp (deg C)"] = 27 # Change this later to a function call
     to_return["Relative Humidity (%)"] = 40 # Change this later to a function call
     to_return["Time (UT)"] = datetime.datetime.now().isoformat()
     to_return = check_reading(to_return)
