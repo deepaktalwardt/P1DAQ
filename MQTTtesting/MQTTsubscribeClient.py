@@ -1,4 +1,5 @@
 import paho.mqtt.client as paho
+import os
 import json
 
 DEVICE_TYPE     =   "P1"
