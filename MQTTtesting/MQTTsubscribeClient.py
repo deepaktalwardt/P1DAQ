@@ -48,8 +48,8 @@ def on_message(client, userdata, msg):
 	COUNTER += 1
 	if COUNTER % 5 == 0:
 		with open(file_name, "a") as file_to_update:
-		updater = csv.DictWriter(file_to_update, fieldnames = fieldnames)
-		updater.writerow(dict_to_write)
+			updater = csv.DictWriter(file_to_update, fieldnames = fieldnames)
+			updater.writerow(dict_to_write)
 
 client = paho.Client(client_id = "p1", clean_session = True)
 client.on_subscribe = on_subscribe
