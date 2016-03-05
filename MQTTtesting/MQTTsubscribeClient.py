@@ -34,7 +34,8 @@ def on_subscribe(client, userdata, mid, granted_qos):
 def on_message(client, userdata, msg):
 	global COUNTER
 	global dict_to_write
-	print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
+	#print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
+	print(str(msg.payload)[1:-1])
 	jmsg = json.loads(str(msg.payload)[1:])
 	tn = jmsg['tn']
 	dev_id = tn[-4:]
