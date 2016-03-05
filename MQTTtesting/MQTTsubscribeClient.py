@@ -35,7 +35,7 @@ def on_message(client, userdata, msg):
 	global COUNTER
 	global dict_to_write
 	print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
-	jmsg = json.loads(msg.payload)
+	jmsg = json.loads(str(msg.payload))
 	tn = jmsg['tn']
 	dev_id = tn[-4:]
 	num_conc = jmsg['d']['psd']['pm25num']
