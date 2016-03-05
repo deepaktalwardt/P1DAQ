@@ -33,7 +33,7 @@ def read_temperature():
 	t2 = byteArray[1]
 	temp_reading = (t1*256)+t2
 	temp_reading = round(temp_reading,2)
-	temperature = int(((temp_reading/65536)*175.72)-46.85)
+	temperature = ((temp_reading/65536)*175.72)-46.85
 	return temperature
 
 def read_humidity():
@@ -48,5 +48,5 @@ def read_humidity():
 	humi_reading = round(humi_reading,2)
 	uncomp_humidity = ((humi_reading/65536)*125)-6
 	temperature = read_temperature()
-	humidity = int(((25-temperature)*-0.15)+uncomp_humidity)
+	humidity = ((25-temperature)*-0.15)+uncomp_humidity
 	return humidity
