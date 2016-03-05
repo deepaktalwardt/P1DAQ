@@ -81,5 +81,6 @@ def get_sensor_reading():
 while True:
     readings = get_sensor_reading()
     save_to_file(readings)
-    print("Saved: " + readings)
+    print("Saved: ")
+    print(readings)
     
