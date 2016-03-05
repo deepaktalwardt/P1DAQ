@@ -27,7 +27,7 @@ client.on_connect = on_connect
 client.connect("broker.hivemq.com", 1883)
 client.loop_start()
 
-def gen_MQTT_JSON(data):
+def pub_MQTT_JSON(data):
 	global SAMPLE_NUMBERS
 	for DEVICE_ID in DEVICE_IDS:
 		SAMPLE_NUMBERS[DEVICE_ID] = SAMPLE_NUMBERS.get(DEVICE_ID) + 1
@@ -68,8 +68,6 @@ def gen_MQTT_JSON(data):
 		# Generate to_send JSON
 		to_send["d"] = d
 		to_send["ts"] = time_now
-		return(to_send)
 
-def pub_MQTT_JSON(payload):
-	json_payload = gen_MQTT_JSON(payload)
-	(rc, mid) = client.publish(TOPIC + "/" + DEVICE_ID, json.dumps(json_payload), qos=1)
+		# Publish JSON to MQTT
+		(rc, mid) = client.publish(TOPIC + "/" + DEVICE_ID, json.dumps(to_send), qos=1)
