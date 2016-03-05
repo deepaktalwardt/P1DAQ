@@ -55,7 +55,7 @@ def check_reading(reading):
             reading[key] = -1
     return reading
 
-def avg_readings(reading):
+#def avg_readings(reading):
 
 def save_to_file(reading):
     with open(file_name, "a") as file_to_update:
