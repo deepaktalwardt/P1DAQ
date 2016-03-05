@@ -37,7 +37,7 @@ def on_message(client, userdata, msg):
 	#print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
 	print(str(msg.payload)[2:-1])
 	jmsg = json.loads(str(msg.payload)[2:-1])
-	tn = jmsg.get('tn')
+	tn = jmsg.get('d').get('tn')
 	dev_id = tn[-4:]
 	num_conc = jmsg.get('d').get('psd').get('pm25num')
 	mass_conc = jmsg.get('d').get('mc').get('pm25conc')
