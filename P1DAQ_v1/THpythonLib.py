@@ -39,7 +39,7 @@ def read_temperature():
 def read_humidity():
 	handle = pi.i2c_open(bus, addr)
 	pi.i2c_write_byte(handle, rdhumi)
-	time.sleep(0.5)
+	time.sleep(0.055)
 	(count, byteArray) = pi.i2c_read_device(handle, 3)
 	pi.i2c_close(handle)
 	h1 = byteArray[0]

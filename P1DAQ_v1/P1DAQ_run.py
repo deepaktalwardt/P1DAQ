@@ -14,6 +14,8 @@ from ubidots import ApiClient
 from MQTTize import *
 
 # Variables
+counter = 0
+
 dev_ids = ["c1c3", "c1c8", "c1c9", "c1b2", "c1b4"]
 
 dev_addrs = ["fa:c8:d9:40:4e:81",
@@ -55,7 +57,25 @@ def check_reading(reading):
             reading[key] = -1
     return reading
 
-#def avg_readings(reading):
+def avg_readings(reading):
+    global counter
+    global readings_list
+    if counter < 1:
+        readings_list.append(reading)
+        return reading
+    else:
+        to_return = dict.fromkeys(fieldnames)
+        for k in readings_list[0].keys():
+            if not k == "Time (UT)":
+                v = 0
+                for r in readings_list:
+                    v += r.get(k)
+                v = v/5
+                to_return[k] = v
+            else:
+                to_return[k] = readings_list[0].get(k)
+        counter = 0
+        return to_return
 
 def save_to_file(reading):
     with open(file_name, "a") as file_to_update:
@@ -74,9 +94,9 @@ def get_sensor_reading():
             mass_conc = int("".join("{0:02x}".format(x) for x in data[35:33:-1]),16)
             to_return[dev_id + "_nc"] = num_conc
             to_return[dev_id + "_mc"] = mass_conc
-    to_return["In Temp (deg C)"] = 23 # Change this later to a function call
+    to_return["In Temp (deg C)"] = read_temperature() # Change this later to a function call
     to_return["Out Temp (deg C)"] = 27 # Change this later to a function call
-    to_return["Relative Humidity (%)"] = 40 # Change this later to a function call
+    to_return["Relative Humidity (%)"] = read_humidity() # Change this later to a function call
     to_return["Time (UT)"] = datetime.datetime.now().isoformat()
     to_return = check_reading(to_return)
     return to_return
