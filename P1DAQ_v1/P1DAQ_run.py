@@ -11,6 +11,7 @@ from collections import defaultdict
 from THpythonLib import *
 from BLE_init import *
 from ubidots import ApiClient
+from MQTTize import *
 
 # Variables
 dev_ids = ["c1c3", "c1c8", "c1c9", "c1b2", "c1b4"]
@@ -36,6 +37,7 @@ folder_name = "/media/pi/Clarity/ClarityData/"
 num_file = len([f for f in os.listdir(folder_name)]) + 1
 file_name = folder_name + "DataFile" + str(num_file) + ".csv"
 
+# Initialize File
 with open(file_name, "a") as csvfile:
     writer = csv.DictWriter(csvfile, fieldnames = fieldnames)
     writer.writeheader()
@@ -81,6 +83,7 @@ def get_sensor_reading():
 while True:
     readings = get_sensor_reading()
     save_to_file(readings)
-    print("Saved: ")
-    print(readings)
+    #avgd_readings = avg_readings(readings)
+    avgd_readings = readings
+    pub_MQTT_JSON(avgd_readings)
     
