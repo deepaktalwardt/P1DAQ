@@ -37,14 +37,14 @@ def on_message(client, userdata, msg):
 	#print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
 	print(str(msg.payload)[2:-1])
 	jmsg = json.loads(str(msg.payload)[2:-1])
-	tn = jmsg['tn']
+	tn = jmsg.get('tn')
 	dev_id = tn[-4:]
-	num_conc = jmsg['d']['psd']['pm25num']
-	mass_conc = jmsg['d']['mc']['pm25conc']
-	int_temp = jmsg['d']['it']
-	out_temp = jmsg['d']['ot']
-	out_humi = jmsg['d']['oh']
-	time = jmsg['ts']
+	num_conc = jmsg.get('d').get('psd').get('pm25num')
+	mass_conc = jmsg.get('d').get('mc').get('pm25conc')
+	int_temp = jmsg.get('d').get('it')
+	out_temp = jmsg.get('d').get('ot')
+	out_humi = jmsg.get('d').get('oh')
+	time = jmsg.get('ts')
 	dict_to_write[dev_id + '_mc'] = mass_conc
 	dict_to_write[dev_id + '_nc'] = num_conc
 	dict_to_write['Time (UT)'] = time
