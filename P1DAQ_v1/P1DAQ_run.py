@@ -12,6 +12,7 @@ from THpythonLib import *
 from BLE_init import *
 from ubidots import ApiClient
 from MQTTize import *
+import Adafruit_MCP9809.MCP9809 as int_temp
 
 # Variables
 counter = 0
@@ -43,6 +44,10 @@ file_name = folder_name + "DataFile" + str(num_file) + ".csv"
 with open(file_name, "a") as csvfile:
     writer = csv.DictWriter(csvfile, fieldnames = fieldnames)
     writer.writeheader()
+
+# Initialize Internal Temperature Sensor
+int_temp_sensor = int_temp.MCP9808()
+int_temp_sensor.begin()
 
 # Functions
 def known_sensor(ble_path):
@@ -94,8 +99,8 @@ def get_sensor_reading():
             mass_conc = int("".join("{0:02x}".format(x) for x in data[35:33:-1]),16)
             to_return[dev_id + "_nc"] = num_conc
             to_return[dev_id + "_mc"] = mass_conc
-    to_return["In Temp (deg C)"] = read_temperature() # Change this later to a function call
-    to_return["Out Temp (deg C)"] = 27 # Change this later to a function call
+    to_return["In Temp (deg C)"] = int_temp_sensor.readTempC() # Change this later to a function call
+    to_return["Out Temp (deg C)"] = read_temperature() # Change this later to a function call
     to_return["Relative Humidity (%)"] = read_humidity() # Change this later to a function call
     to_return["Time (UT)"] = datetime.datetime.now().isoformat()
     to_return = check_reading(to_return)
