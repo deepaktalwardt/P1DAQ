@@ -12,7 +12,7 @@ from THpythonLib import *
 from BLE_init import *
 from ubidots import ApiClient
 from MQTTize import *
-import Adafruit_MCP9809.MCP9809 as int_temp
+import Adafruit_MCP9808.MCP9808 as int_temp
 
 # Variables
 counter = 0
