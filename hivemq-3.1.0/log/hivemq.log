@@ -1,0 +1,11 @@
+2016-03-09 18:01:57,298 INFO  - Starting HiveMQ Server
+2016-03-09 18:01:57,337 INFO  - HiveMQ version: 3.1.0
+2016-03-09 18:01:57,345 INFO  - HiveMQ home directory: /home/pi/P1DAQ/hivemq-3.1.0
+2016-03-09 18:01:59,104 INFO  - This node's cluster-ID is mHutF
+2016-03-09 18:02:00,747 INFO  - Created user preferences directory.
+2016-03-09 18:02:14,557 INFO  - Loaded Plugin HiveMQ Sys Topic Plugin - v3.0.0
+2016-03-09 18:02:14,560 INFO  - Loaded Plugin HiveMQ JMX Metrics Reporting Plugin - v3.0.0
+2016-03-09 18:02:14,674 INFO  - JMX Metrics Reporting started.
+2016-03-09 18:02:14,685 INFO  - Starting TCP listener on address 0.0.0.0 and port 1883
+2016-03-09 18:02:14,771 INFO  - Started TCP Listener on address 0.0.0.0 and on port 1883
+2016-03-09 18:02:14,775 INFO  - Started HiveMQ in 17449ms
