@@ -11,7 +11,7 @@ def on_publish(client, userdata, mid):
 
 client = paho.Client()
 client.on_publish = on_publish
-client.connect("broker.hivemq.com", 1883)
+client.connect("0.0.0.0", port=1883)
 client.loop_start()
 
 while True:

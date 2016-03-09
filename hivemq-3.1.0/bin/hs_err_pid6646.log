@@ -1,0 +1,771 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x76897410, pid=6646, tid=1600271456
+#
+# JRE version: Java(TM) SE Runtime Environment (7.0_60-b19) (build 1.7.0_60-b19)
+# Java VM: Java HotSpot(TM) Client VM (24.60-b09 mixed mode linux-arm )
+# Problematic frame:
+# V  [libjvm.so+0x43b410]  fork1+0xd7df8
+#
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x5f832c00):  JavaThread "hivemq-eventloop-child-6" [_thread_in_vm, id=6735, stack(0x5f5d4000,0x5f624000)]
+
+siginfo:si_signo=SIGSEGV: si_errno=0, si_code=1 (SEGV_MAPERR), si_addr=0x00000002
+
+Registers:
+  r0  = 0x0005f621
+  r1  = 0x00000006
+  r2  = 0x00000510
+  r3  = 0x5f832c00
+  r4  = 0x5f832c00
+  r5  = 0x76938eec
+  r6  = 0x00000001
+  r7  = 0x00000000
+  r8  = 0x00000002
+  r9  = 0x7009c110
+  r10 = 0x5f832c00
+  fp  = 0x5f622004
+  r12 = 0x00000004
+  sp  = 0x5f621f58
+  lr  = 0x768973f4
+  pc  = 0x76897410
+  cpsr = 0x40000010
+
+Top of Stack: (sp=0x5f621f58)
+0x5f621f58:   5f833994 7686437c 741adf78 768973a0
+0x5f621f68:   00000000 00000000 5f622018 7417d2f4
+0x5f621f78:   5f833994 5f832c00 764d0670 76827bc8
+0x5f621f88:   5f621fbc 768287e8 00000000 6059c979
+0x5f621f98:   5f833994 7678ab84 711be058 6059c979
+0x5f621fa8:   6059c979 00000000 6059c979 5f832c00
+0x5f621fb8:   5f832608 769262c0 6059c978 5f832c00
+0x5f621fc8:   74182868 76950668 74182868 00000000 
+
+Instructions: (pc=0x76897410)
+0x768973f0:   ebfcbbaa e59f30c0 e1a00620 e7953003
+0x76897400:   e3a06001 e7933100 e3a07000 e5c3617c
+0x76897410:   e5d88000 e5c3717c e5940028 ebf85d56
+0x76897420:   e3a02007 e59f3094 e5842164 e7953003 
+
+Register to memory mapping:
+
+  r0  = 0x0005f621
+0x0005f621 is an unknown value
+
+  r1  = 0x00000006
+0x00000006 is an unknown value
+
+  r2  = 0x00000510
+0x00000510 is an unknown value
+
+  r3  = 0x5f832c00
+0x5f832c00 is a thread
+
+  r4  = 0x5f832c00
+0x5f832c00 is a thread
+
+  r5  = 0x76938eec
+0x76938eec: <offset 0x4dceec> in /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/client/libjvm.so at 0x7645c000
+
+  r6  = 0x00000001
+0x00000001 is an unknown value
+
+  r7  = 0x00000000
+0x00000000 is an unknown value
+
+  r8  = 0x00000002
+0x00000002 is an unknown value
+
+  r9  = 0x7009c110
+0x7009c110 is an oop
+{method} 
+ - klass: {other class}
+
+  r10 = 0x5f832c00
+0x5f832c00 is a thread
+
+  fp  = 0x5f622004
+0x5f622004 is pointing into the stack for thread: 0x5f832c00
+
+  r12 = 0x00000004
+0x00000004 is an unknown value
+
+  sp  = 0x5f621f58
+0x5f621f58 is pointing into the stack for thread: 0x5f832c00
+
+  lr  = 0x768973f4
+0x768973f4: <offset 0x43b3f4> in /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/client/libjvm.so at 0x7645c000
+
+  pc  = 0x76897410
+0x76897410: <offset 0x43b410> in /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/client/libjvm.so at 0x7645c000
+
+
+
+Stack: [0x5f5d4000,0x5f624000],  sp=0x5f621f58,  free space=311k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [libjvm.so+0x43b410]  fork1+0xd7df8
+
+[error occurred during error reporting (printing native stack), id 0xb]
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  sun.misc.Unsafe.getByte(J)B+0
+j  io.netty.util.internal.PlatformDependent0.getByte(J)B+4
+j  io.netty.util.internal.PlatformDependent.getByte(J)B+1
+j  io.netty.buffer.UnsafeByteBufUtil.getShort([BI)S+29
+j  io.netty.buffer.UnpooledUnsafeHeapByteBuf._getShort(I)S+5
+j  io.netty.buffer.SlicedAbstractByteBuf._getShort(I)S+9
+j  io.netty.buffer.AbstractByteBuf.readShort()S+10
+j  io.netty.buffer.AbstractByteBuf.readUnsignedShort()I+1
+j  cB.q.a(Lio/netty/buffer/ByteBuf;)Ljava/lang/String;+16
+j  al.e.a(Lio/netty/buffer/ByteBuf;)Z+3
+j  al.e.a(Lio/netty/channel/Channel;Lio/netty/buffer/ByteBuf;B)Lcom/hivemq/spi/message/CONNECT;+64
+j  al.f.a(Lio/netty/channel/Channel;Lio/netty/buffer/ByteBuf;B)Lcom/hivemq/spi/message/CONNECT;+214
+j  al.c.decode(Lio/netty/channel/ChannelHandlerContext;Lio/netty/buffer/ByteBuf;Ljava/util/List;)V+366
+j  io.netty.handler.codec.ByteToMessageDecoder.callDecode(Lio/netty/channel/ChannelHandlerContext;Lio/netty/buffer/ByteBuf;Ljava/util/List;)V+58
+j  io.netty.handler.codec.ByteToMessageDecoder.channelRead(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Object;)V+81
+j  io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(Ljava/lang/Object;)V+9
+j  io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(Ljava/lang/Object;)Lio/netty/channel/ChannelHandlerContext;+42
+j  io.netty.handler.traffic.AbstractTrafficShapingHandler.channelRead(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Object;)V+321
+j  io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(Ljava/lang/Object;)V+9
+j  io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(Ljava/lang/Object;)Lio/netty/channel/ChannelHandlerContext;+42
+j  io.netty.handler.traffic.AbstractTrafficShapingHandler.channelRead(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Object;)V+321
+j  io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(Ljava/lang/Object;)V+9
+j  io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(Ljava/lang/Object;)Lio/netty/channel/ChannelHandlerContext;+42
+j  io.netty.channel.ChannelInboundHandlerAdapter.channelRead(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Object;)V+2
+j  io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(Ljava/lang/Object;)V+9
+j  io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(Ljava/lang/Object;)Lio/netty/channel/ChannelHandlerContext;+42
+j  io.netty.handler.codec.ByteToMessageDecoder.handlerRemoved(Lio/netty/channel/ChannelHandlerContext;)V+29
+j  io.netty.channel.DefaultChannelPipeline.callHandlerRemoved0(Lio/netty/channel/AbstractChannelHandlerContext;)V+5
+j  io.netty.channel.DefaultChannelPipeline.callHandlerRemoved(Lio/netty/channel/AbstractChannelHandlerContext;)V+28
+j  io.netty.channel.DefaultChannelPipeline.remove0(Lio/netty/channel/AbstractChannelHandlerContext;)V+22
+j  io.netty.channel.DefaultChannelPipeline.remove(Lio/netty/channel/AbstractChannelHandlerContext;)Lio/netty/channel/AbstractChannelHandlerContext;+44
+j  io.netty.channel.DefaultChannelPipeline.remove(Lio/netty/channel/ChannelHandler;)Lio/netty/channel/ChannelPipeline;+6
+j  ct.a.decode(Lio/netty/channel/ChannelHandlerContext;Lio/netty/buffer/ByteBuf;Ljava/util/List;)V+45
+j  io.netty.handler.codec.ByteToMessageDecoder.callDecode(Lio/netty/channel/ChannelHandlerContext;Lio/netty/buffer/ByteBuf;Ljava/util/List;)V+58
+j  io.netty.handler.codec.ByteToMessageDecoder.channelRead(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Object;)V+81
+j  io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(Ljava/lang/Object;)V+9
+j  io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(Ljava/lang/Object;)Lio/netty/channel/ChannelHandlerContext;+42
+j  io.netty.channel.ChannelInboundHandlerAdapter.channelRead(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Object;)V+2
+j  io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(Ljava/lang/Object;)V+9
+j  io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(Ljava/lang/Object;)Lio/netty/channel/ChannelHandlerContext;+42
+j  io.netty.handler.timeout.IdleStateHandler.channelRead(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Object;)V+35
+j  io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(Ljava/lang/Object;)V+9
+j  io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(Ljava/lang/Object;)Lio/netty/channel/ChannelHandlerContext;+42
+j  io.netty.channel.DefaultChannelPipeline.fireChannelRead(Ljava/lang/Object;)Lio/netty/channel/ChannelPipeline;+5
+j  io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read()V+175
+j  io.netty.channel.nio.NioEventLoop.processSelectedKey(Ljava/nio/channels/SelectionKey;Lio/netty/channel/nio/AbstractNioChannel;)V+42
+j  io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized([Ljava/nio/channels/SelectionKey;)V+37
+j  io.netty.channel.nio.NioEventLoop.processSelectedKeys()V+15
+j  io.netty.channel.nio.NioEventLoop.run()V+84
+j  io.netty.util.concurrent.SingleThreadEventExecutor$2.run()V+13
+j  java.lang.Thread.run()V+11
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x61110c00 JavaThread "threadDeathWatcher-2-1" daemon [_thread_blocked, id=6738, stack(0x5f4e4000,0x5f534000)]
+  0x6110b800 JavaThread "hivemq-event-executor-0" [_thread_blocked, id=6737, stack(0x5f534000,0x5f584000)]
+  0x6120dc00 JavaThread "hivemq-eventloop-child-7" [_thread_in_native, id=6736, stack(0x5f584000,0x5f5d4000)]
+=>0x5f832c00 JavaThread "hivemq-eventloop-child-6" [_thread_in_vm, id=6735, stack(0x5f5d4000,0x5f624000)]
+  0x60e01400 JavaThread "hivemq-eventloop-child-5" [_thread_in_native, id=6723, stack(0x5f624000,0x5f674000)]
+  0x6132b800 JavaThread "hivemq-eventloop-child-4" [_thread_in_native, id=6722, stack(0x5f674000,0x5f6c4000)]
+  0x6120c400 JavaThread "Timer-3,<CLUSTER>,<ADDR>" daemon [_thread_blocked, id=6721, stack(0x5f710000,0x5f760000)]
+  0x76207800 JavaThread "DestroyJavaVM" [_thread_blocked, id=6647, stack(0x76391000,0x763e1000)]
+  0x5f831400 JavaThread "hivemq-update-check-0" [_thread_in_native, id=6720, stack(0x5f760000,0x5f7b0000)]
+  0x5f827c00 JavaThread "plugin-executor-0" [_thread_blocked, id=6719, stack(0x5f7b0000,0x5f800000)]
+  0x5f824800 JavaThread "hivemq-eventloop-parent-0" [_thread_in_native, id=6718, stack(0x5f910000,0x5f960000)]
+  0x60e00c00 JavaThread "hivemq-eventloop-child-3" [_thread_in_native, id=6717, stack(0x5f960000,0x5f9b0000)]
+  0x6120c000 JavaThread "Timer-2,<CLUSTER>,<ADDR>" daemon [_thread_blocked, id=6715, stack(0x5f9b0000,0x5fa00000)]
+  0x5fff3000 JavaThread "Timer runner-1,<CLUSTER>,<ADDR>" daemon [_thread_blocked, id=6713, stack(0x5fa00000,0x5fa50000)]
+  0x60257c00 JavaThread "hivemq-eventloop-child-2" [_thread_in_native, id=6712, stack(0x5fa50000,0x5faa0000)]
+  0x61108400 JavaThread "hivemq-eventloop-child-1" [_thread_in_native, id=6711, stack(0x5faa0000,0x5faf0000)]
+  0x0199f800 JavaThread "Thread-10" daemon [_thread_in_native, id=6710, stack(0x5faf0000,0x5fb40000)]
+  0x601fa800 JavaThread "hivemq-directory-monitor-0" [_thread_blocked, id=6709, stack(0x5fb40000,0x5fb90000)]
+  0x5ff1c400 JavaThread "cluster-scheduler-0,9JDJH" [_thread_blocked, id=6708, stack(0x5fb90000,0x5fbe0000)]
+  0x5ff19800 JavaThread "cluster-executor-0,9JDJH" [_thread_blocked, id=6707, stack(0x5fbe0000,0x5fc30000)]
+  0x5ff12400 JavaThread "client-session-writer-1" [_thread_blocked, id=6706, stack(0x5fc30000,0x5fc80000)]
+  0x5ff10c00 JavaThread "client-session-writer-0" [_thread_blocked, id=6705, stack(0x5fc80000,0x5fcd0000)]
+  0x5ff0fc00 JavaThread "client-session-subscription-writer" [_thread_blocked, id=6704, stack(0x5fcd0000,0x5fd20000)]
+  0x5ff0b800 JavaThread "message-queue-writer" [_thread_blocked, id=6703, stack(0x5fd20000,0x5fd70000)]
+  0x5ff0a000 JavaThread "outgoing-message-flow-writer" [_thread_blocked, id=6702, stack(0x5fd70000,0x5fdc0000)]
+  0x5ff08000 JavaThread "global-traffic-shaper-executor-0" [_thread_blocked, id=6701, stack(0x5fdc0000,0x5fe10000)]
+  0x5ff06400 JavaThread "retained-message-writer-1" [_thread_blocked, id=6700, stack(0x5fe10000,0x5fe60000)]
+  0x60baa400 JavaThread "retained-message-writer-0" [_thread_blocked, id=6699, stack(0x5fe60000,0x5feb0000)]
+  0x60ba9800 JavaThread "hivemq-eventloop-child-0" [_thread_in_native, id=6698, stack(0x5feb0000,0x5ff00000)]
+  0x6019b400 JavaThread "Exodus shared background cleaner" daemon [_thread_blocked, id=6697, stack(0x60001000,0x60051000)]
+  0x601e1800 JavaThread "Exodus shared deferred I/O job processor" daemon [_thread_blocked, id=6696, stack(0x60051000,0x600a1000)]
+  0x601da800 JavaThread "threadJobProcessorPoolSpawner" daemon [_thread_blocked, id=6695, stack(0x600a1000,0x600f1000)]
+  0x60446000 JavaThread "Timer-0" daemon [_thread_blocked, id=6655, stack(0x60649000,0x60699000)]
+  0x7626f000 JavaThread "Service Thread" daemon [_thread_blocked, id=6653, stack(0x60f27000,0x60f77000)]
+  0x7626d000 JavaThread "C1 CompilerThread0" daemon [_thread_blocked, id=6652, stack(0x60d80000,0x60e00000)]
+  0x7626b400 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=6651, stack(0x61406000,0x61456000)]
+  0x7625bc00 JavaThread "Finalizer" daemon [_thread_blocked, id=6650, stack(0x61456000,0x614a6000)]
+  0x7625a000 JavaThread "Reference Handler" daemon [_thread_blocked, id=6649, stack(0x614a6000,0x614f6000)]
+
+Other Threads:
+  0x76257800 VMThread [stack: 0x614f6000,0x61576000] [id=6648]
+  0x76279400 WatcherThread [stack: 0x60d00000,0x60d80000] [id=6654]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ def new generation   total 25472K, used 2156K [0x61800000, 0x633a0000, 0x66540000)
+  eden space 22656K,   9% used [0x61800000, 0x61a1b2c8, 0x62e20000)
+  from space 2816K,   0% used [0x62e20000, 0x62e20000, 0x630e0000)
+  to   space 2816K,   0% used [0x630e0000, 0x630e0000, 0x633a0000)
+ tenured generation   total 56244K, used 33746K [0x66540000, 0x69c2d000, 0x70000000)
+   the space 56244K,  59% used [0x66540000, 0x686348d8, 0x68634a00, 0x69c2d000)
+ compacting perm gen  total 18432K, used 18220K [0x70000000, 0x71200000, 0x74000000)
+   the space 18432K,  98% used [0x70000000, 0x711cb130, 0x711cb200, 0x71200000)
+No shared spaces configured.
+
+Card table byte_map: [0x7405c000,0x740f1000] byte_map_base: 0x73d50000
+
+Polling page: 0x76f4f000
+
+Code Cache  [0x74171000, 0x74389000, 0x76171000)
+ total_blobs=1336 nmethods=1150 adapters=121 free_code_cache=30646Kb largest_free_block=31381696
+
+Compilation events (10 events):
+Event: 17.970 Thread 0x7626d000 1165             javax.management.ObjectName::parseValue (512 bytes)
+Event: 17.979 Thread 0x7626d000 nmethod 1165 0x74380c88 code [0x74380f10, 0x74381acc]
+Event: 21.419 Thread 0x7626d000 1166             java.io.DataInputStream::readFully (63 bytes)
+Event: 21.420 Thread 0x7626d000 nmethod 1166 0x74382a48 code [0x74382b50, 0x74382d6c]
+Event: 21.508 Thread 0x7626d000 1167             com.google.common.collect.Iterators$1::hasNext (2 bytes)
+Event: 21.508 Thread 0x7626d000 nmethod 1167 0x74382ec8 code [0x74382fa0, 0x74383028]
+Event: 21.517 Thread 0x7626d000 1168             io.netty.channel.DefaultChannelPipeline::context0 (39 bytes)
+Event: 21.519 Thread 0x7626d000 nmethod 1168 0x74383088 code [0x74383170, 0x743832a4]
+Event: 21.520 Thread 0x7626d000 1169             io.netty.channel.AbstractChannelHandlerContext::name (5 bytes)
+Event: 21.520 Thread 0x7626d000 nmethod 1169 0x743833c8 code [0x743834a0, 0x74383528]
+
+GC Heap History (10 events):
+Event: 11.877 GC heap before
+{Heap before GC invocations=18 (full 2):
+ def new generation   total 8448K, used 7552K [0x61800000, 0x62120000, 0x66540000)
+  eden space 7552K, 100% used [0x61800000, 0x61f60000, 0x61f60000)
+  from space 896K,   0% used [0x61f60000, 0x61f60000, 0x62040000)
+  to   space 896K,   0% used [0x62040000, 0x62040000, 0x62120000)
+ tenured generation   total 18524K, used 11112K [0x66540000, 0x67757000, 0x70000000)
+   the space 18524K,  59% used [0x66540000, 0x6701a038, 0x6701a200, 0x67757000)
+ compacting perm gen  total 13824K, used 13813K [0x70000000, 0x70d80000, 0x74000000)
+   the space 13824K,  99% used [0x70000000, 0x70d7d508, 0x70d7d600, 0x70d80000)
+No shared spaces configured.
+Event: 12.062 GC heap after
+Heap after GC invocations=19 (full 2):
+ def new generation   total 8448K, used 896K [0x61800000, 0x62120000, 0x66540000)
+  eden space 7552K,   0% used [0x61800000, 0x61800000, 0x61f60000)
+  from space 896K, 100% used [0x62040000, 0x62120000, 0x62120000)
+  to   space 896K,   0% used [0x61f60000, 0x61f60000, 0x62040000)
+ tenured generation   total 18524K, used 16348K [0x66540000, 0x67757000, 0x70000000)
+   the space 18524K,  88% used [0x66540000, 0x675372f0, 0x67537400, 0x67757000)
+ compacting perm gen  total 13824K, used 13813K [0x70000000, 0x70d80000, 0x74000000)
+   the space 13824K,  99% used [0x70000000, 0x70d7d508, 0x70d7d600, 0x70d80000)
+No shared spaces configured.
+}
+Event: 12.250 GC heap before
+{Heap before GC invocations=19 (full 2):
+ def new generation   total 8448K, used 8448K [0x61800000, 0x62120000, 0x66540000)
+  eden space 7552K, 100% used [0x61800000, 0x61f60000, 0x61f60000)
+  from space 896K, 100% used [0x62040000, 0x62120000, 0x62120000)
+  to   space 896K,   0% used [0x61f60000, 0x61f60000, 0x62040000)
+ tenured generation   total 18524K, used 16348K [0x66540000, 0x67757000, 0x70000000)
+   the space 18524K,  88% used [0x66540000, 0x675372f0, 0x67537400, 0x67757000)
+ compacting perm gen  total 13824K, used 13813K [0x70000000, 0x70d80000, 0x74000000)
+   the space 13824K,  99% used [0x70000000, 0x70d7d508, 0x70d7d600, 0x70d80000)
+No shared spaces configured.
+Event: 13.246 GC heap after
+Heap after GC invocations=20 (full 3):
+ def new generation   total 17280K, used 0K [0x61800000, 0x62aa0000, 0x66540000)
+  eden space 15488K,   0% used [0x61800000, 0x61800000, 0x62720000)
+  from space 1792K,   0% used [0x62720000, 0x62720000, 0x628e0000)
+  to   space 1792K,   0% used [0x628e0000, 0x628e0000, 0x62aa0000)
+ tenured generation   total 37976K, used 22784K [0x66540000, 0x68a56000, 0x70000000)
+   the space 37976K,  59% used [0x66540000, 0x67b80050, 0x67b80200, 0x68a56000)
+ compacting perm gen  total 13824K, used 13813K [0x70000000, 0x70d80000, 0x74000000)
+   the space 13824K,  99% used [0x70000000, 0x70d7d508, 0x70d7d600, 0x70d80000)
+No shared spaces configured.
+}
+Event: 15.085 GC heap before
+{Heap before GC invocations=20 (full 3):
+ def new generation   total 17280K, used 15488K [0x61800000, 0x62aa0000, 0x66540000)
+  eden space 15488K, 100% used [0x61800000, 0x62720000, 0x62720000)
+  from space 1792K,   0% used [0x62720000, 0x62720000, 0x628e0000)
+  to   space 1792K,   0% used [0x628e0000, 0x628e0000, 0x62aa0000)
+ tenured generation   total 37976K, used 22784K [0x66540000, 0x68a56000, 0x70000000)
+   the space 37976K,  59% used [0x66540000, 0x67b80050, 0x67b80200, 0x68a56000)
+ compacting perm gen  total 14336K, used 14186K [0x70000000, 0x70e00000, 0x74000000)
+   the space 14336K,  98% used [0x70000000, 0x70dda9f8, 0x70ddaa00, 0x70e00000)
+No shared spaces configured.
+Event: 15.282 GC heap after
+Heap after GC invocations=21 (full 3):
+ def new generation   total 17280K, used 1792K [0x61800000, 0x62aa0000, 0x66540000)
+  eden space 15488K,   0% used [0x61800000, 0x61800000, 0x62720000)
+  from space 1792K, 100% used [0x628e0000, 0x62aa0000, 0x62aa0000)
+  to   space 1792K,   0% used [0x62720000, 0x62720000, 0x628e0000)
+ tenured generation   total 37976K, used 31817K [0x66540000, 0x68a56000, 0x70000000)
+   the space 37976K,  83% used [0x66540000, 0x68452678, 0x68452800, 0x68a56000)
+ compacting perm gen  total 14336K, used 14186K [0x70000000, 0x70e00000, 0x74000000)
+   the space 14336K,  98% used [0x70000000, 0x70dda9f8, 0x70ddaa00, 0x70e00000)
+No shared spaces configured.
+}
+Event: 16.912 GC heap before
+{Heap before GC invocations=21 (full 3):
+ def new generation   total 17280K, used 17280K [0x61800000, 0x62aa0000, 0x66540000)
+  eden space 15488K, 100% used [0x61800000, 0x62720000, 0x62720000)
+  from space 1792K, 100% used [0x628e0000, 0x62aa0000, 0x62aa0000)
+  to   space 1792K,   0% used [0x62720000, 0x62720000, 0x628e0000)
+ tenured generation   total 37976K, used 31817K [0x66540000, 0x68a56000, 0x70000000)
+   the space 37976K,  83% used [0x66540000, 0x68452678, 0x68452800, 0x68a56000)
+ compacting perm gen  total 16896K, used 16652K [0x70000000, 0x71080000, 0x74000000)
+   the space 16896K,  98% used [0x70000000, 0x710431f8, 0x71043200, 0x71080000)
+No shared spaces configured.
+Event: 17.003 GC heap after
+Heap after GC invocations=22 (full 3):
+ def new generation   total 17280K, used 1792K [0x61800000, 0x62aa0000, 0x66540000)
+  eden space 15488K,   0% used [0x61800000, 0x61800000, 0x62720000)
+  from space 1792K, 100% used [0x62720000, 0x628e0000, 0x628e0000)
+  to   space 1792K,   0% used [0x628e0000, 0x628e0000, 0x62aa0000)
+ tenured generation   total 37976K, used 35030K [0x66540000, 0x68a56000, 0x70000000)
+   the space 37976K,  92% used [0x66540000, 0x68775a60, 0x68775c00, 0x68a56000)
+ compacting perm gen  total 16896K, used 16652K [0x70000000, 0x71080000, 0x74000000)
+   the space 16896K,  98% used [0x70000000, 0x710431f8, 0x71043200, 0x71080000)
+No shared spaces configured.
+}
+Event: 20.289 GC heap before
+{Heap before GC invocations=22 (full 3):
+ def new generation   total 17280K, used 14620K [0x61800000, 0x62aa0000, 0x66540000)
+  eden space 15488K,  82% used [0x61800000, 0x62487168, 0x62720000)
+  from space 1792K, 100% used [0x62720000, 0x628e0000, 0x628e0000)
+  to   space 1792K,   0% used [0x628e0000, 0x628e0000, 0x62aa0000)
+ tenured generation   total 37976K, used 35030K [0x66540000, 0x68a56000, 0x70000000)
+   the space 37976K,  92% used [0x66540000, 0x68775a60, 0x68775c00, 0x68a56000)
+ compacting perm gen  total 17920K, used 17919K [0x70000000, 0x71180000, 0x74000000)
+   the space 17920K,  99% used [0x70000000, 0x7117ff70, 0x71180000, 0x71180000)
+No shared spaces configured.
+Event: 21.396 GC heap after
+Heap after GC invocations=23 (full 4):
+ def new generation   total 25472K, used 0K [0x61800000, 0x633a0000, 0x66540000)
+  eden space 22656K,   0% used [0x61800000, 0x61800000, 0x62e20000)
+  from space 2816K,   0% used [0x62e20000, 0x62e20000, 0x630e0000)
+  to   space 2816K,   0% used [0x630e0000, 0x630e0000, 0x633a0000)
+ tenured generation   total 56244K, used 33746K [0x66540000, 0x69c2d000, 0x70000000)
+   the space 56244K,  59% used [0x66540000, 0x686348d8, 0x68634a00, 0x69c2d000)
+ compacting perm gen  total 17920K, used 17903K [0x70000000, 0x71180000, 0x74000000)
+   the space 17920K,  99% used [0x70000000, 0x7117bf20, 0x7117c000, 0x71180000)
+No shared spaces configured.
+}
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (10 events):
+Event: 21.711 Thread 0x5f832c00 Threw 0x619fbbb8 at /HUDSON/workspace/7u-2-build-linux-arm-vfp-hflt/jdk7u60/1081/hotspot/src/share/vm/prims/jvm.cpp:1244
+Event: 21.714 Thread 0x5f832c00 Threw 0x619fe060 at /HUDSON/workspace/7u-2-build-linux-arm-vfp-hflt/jdk7u60/1081/hotspot/src/share/vm/prims/jvm.cpp:1244
+Event: 21.715 Thread 0x5f832c00 Threw 0x61a00528 at /HUDSON/workspace/7u-2-build-linux-arm-vfp-hflt/jdk7u60/1081/hotspot/src/share/vm/prims/jvm.cpp:1244
+Event: 21.716 Thread 0x5f832c00 Threw 0x61a050b0 at /HUDSON/workspace/7u-2-build-linux-arm-vfp-hflt/jdk7u60/1081/hotspot/src/share/vm/prims/jvm.cpp:1244
+Event: 21.719 Thread 0x5f832c00 Threw 0x61a07260 at /HUDSON/workspace/7u-2-build-linux-arm-vfp-hflt/jdk7u60/1081/hotspot/src/share/vm/prims/jvm.cpp:1244
+Event: 21.721 Thread 0x5f832c00 Threw 0x61a0b6f8 at /HUDSON/workspace/7u-2-build-linux-arm-vfp-hflt/jdk7u60/1081/hotspot/src/share/vm/prims/jvm.cpp:1244
+Event: 21.723 Thread 0x5f832c00 Threw 0x61a0d820 at /HUDSON/workspace/7u-2-build-linux-arm-vfp-hflt/jdk7u60/1081/hotspot/src/share/vm/prims/jvm.cpp:1244
+Event: 21.726 Thread 0x5f832c00 Threw 0x61a10cc8 at /HUDSON/workspace/7u-2-build-linux-arm-vfp-hflt/jdk7u60/1081/hotspot/src/share/vm/prims/jvm.cpp:1244
+Event: 21.727 Thread 0x5f832c00 Threw 0x61a12cc8 at /HUDSON/workspace/7u-2-build-linux-arm-vfp-hflt/jdk7u60/1081/hotspot/src/share/vm/prims/jvm.cpp:1244
+Event: 21.730 Thread 0x5f832c00 Threw 0x61a15700 at /HUDSON/workspace/7u-2-build-linux-arm-vfp-hflt/jdk7u60/1081/hotspot/src/share/vm/prims/jvm.cpp:1244
+
+Events (10 events):
+Event: 21.721 loading class 0x61109fa8
+Event: 21.721 loading class 0x61109fa8 done
+Event: 21.723 loading class 0x6110a208
+Event: 21.723 loading class 0x6110a208 done
+Event: 21.726 loading class 0x5f801dd0
+Event: 21.726 loading class 0x5f801dd0 done
+Event: 21.727 loading class 0x604850b0
+Event: 21.727 loading class 0x604850b0 done
+Event: 21.730 loading class 0x5f8021e8
+Event: 21.730 loading class 0x5f8021e8 done
+
+
+Dynamic libraries:
+00008000-00009000 r-xp 00000000 b3:07 171258     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/bin/java
+00010000-00011000 rw-p 00000000 b3:07 171258     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/bin/java
+0199b000-019bc000 rw-p 00000000 00:00 0          [heap]
+5e4e3000-5f4e4000 rw-p 00000000 00:00 0 
+5f4e4000-5f4e7000 ---p 00000000 00:00 0 
+5f4e7000-5f534000 rwxp 00000000 00:00 0          [stack:6738]
+5f534000-5f537000 ---p 00000000 00:00 0 
+5f537000-5f584000 rwxp 00000000 00:00 0          [stack:6737]
+5f584000-5f587000 ---p 00000000 00:00 0 
+5f587000-5f5d4000 rwxp 00000000 00:00 0          [stack:6736]
+5f5d4000-5f5d7000 ---p 00000000 00:00 0 
+5f5d7000-5f624000 rwxp 00000000 00:00 0          [stack:6735]
+5f624000-5f627000 ---p 00000000 00:00 0 
+5f627000-5f674000 rwxp 00000000 00:00 0          [stack:6723]
+5f674000-5f677000 ---p 00000000 00:00 0 
+5f677000-5f6c4000 rwxp 00000000 00:00 0          [stack:6722]
+5f6c4000-5f6d6000 r-xp 00000000 b3:07 270086     /lib/arm-linux-gnueabihf/libresolv-2.19.so
+5f6d6000-5f6e5000 ---p 00012000 b3:07 270086     /lib/arm-linux-gnueabihf/libresolv-2.19.so
+5f6e5000-5f6e6000 r--p 00011000 b3:07 270086     /lib/arm-linux-gnueabihf/libresolv-2.19.so
+5f6e6000-5f6e7000 rw-p 00012000 b3:07 270086     /lib/arm-linux-gnueabihf/libresolv-2.19.so
+5f6e7000-5f6e9000 rw-p 00000000 00:00 0 
+5f6e9000-5f6ed000 r-xp 00000000 b3:07 270080     /lib/arm-linux-gnueabihf/libnss_dns-2.19.so
+5f6ed000-5f6fc000 ---p 00004000 b3:07 270080     /lib/arm-linux-gnueabihf/libnss_dns-2.19.so
+5f6fc000-5f6fd000 r--p 00003000 b3:07 270080     /lib/arm-linux-gnueabihf/libnss_dns-2.19.so
+5f6fd000-5f6fe000 rw-p 00004000 b3:07 270080     /lib/arm-linux-gnueabihf/libnss_dns-2.19.so
+5f710000-5f713000 ---p 00000000 00:00 0 
+5f713000-5f760000 rwxp 00000000 00:00 0          [stack:6721]
+5f760000-5f763000 ---p 00000000 00:00 0 
+5f763000-5f7b0000 rwxp 00000000 00:00 0          [stack:6720]
+5f7b0000-5f7b3000 ---p 00000000 00:00 0 
+5f7b3000-5f800000 rwxp 00000000 00:00 0          [stack:6719]
+5f800000-5f835000 rw-p 00000000 00:00 0 
+5f835000-5f900000 ---p 00000000 00:00 0 
+5f910000-5f913000 ---p 00000000 00:00 0 
+5f913000-5f960000 rwxp 00000000 00:00 0          [stack:6718]
+5f960000-5f963000 ---p 00000000 00:00 0 
+5f963000-5f9b0000 rwxp 00000000 00:00 0          [stack:6717]
+5f9b0000-5f9b3000 ---p 00000000 00:00 0 
+5f9b3000-5fa00000 rwxp 00000000 00:00 0          [stack:6715]
+5fa00000-5fa03000 ---p 00000000 00:00 0 
+5fa03000-5fa50000 rwxp 00000000 00:00 0          [stack:6713]
+5fa50000-5fa53000 ---p 00000000 00:00 0 
+5fa53000-5faa0000 rwxp 00000000 00:00 0          [stack:6712]
+5faa0000-5faa3000 ---p 00000000 00:00 0 
+5faa3000-5faf0000 rwxp 00000000 00:00 0          [stack:6711]
+5faf0000-5faf3000 ---p 00000000 00:00 0 
+5faf3000-5fb40000 rwxp 00000000 00:00 0          [stack:6710]
+5fb40000-5fb43000 ---p 00000000 00:00 0 
+5fb43000-5fb90000 rwxp 00000000 00:00 0          [stack:6709]
+5fb90000-5fb93000 ---p 00000000 00:00 0 
+5fb93000-5fbe0000 rwxp 00000000 00:00 0          [stack:6708]
+5fbe0000-5fbe3000 ---p 00000000 00:00 0 
+5fbe3000-5fc30000 rwxp 00000000 00:00 0          [stack:6707]
+5fc30000-5fc33000 ---p 00000000 00:00 0 
+5fc33000-5fc80000 rwxp 00000000 00:00 0          [stack:6706]
+5fc80000-5fc83000 ---p 00000000 00:00 0 
+5fc83000-5fcd0000 rwxp 00000000 00:00 0          [stack:6705]
+5fcd0000-5fcd3000 ---p 00000000 00:00 0 
+5fcd3000-5fd20000 rwxp 00000000 00:00 0          [stack:6704]
+5fd20000-5fd23000 ---p 00000000 00:00 0 
+5fd23000-5fd70000 rwxp 00000000 00:00 0          [stack:6703]
+5fd70000-5fd73000 ---p 00000000 00:00 0 
+5fd73000-5fdc0000 rwxp 00000000 00:00 0          [stack:6702]
+5fdc0000-5fdc3000 ---p 00000000 00:00 0 
+5fdc3000-5fe10000 rwxp 00000000 00:00 0          [stack:6701]
+5fe10000-5fe13000 ---p 00000000 00:00 0 
+5fe13000-5fe60000 rwxp 00000000 00:00 0          [stack:6700]
+5fe60000-5fe63000 ---p 00000000 00:00 0 
+5fe63000-5feb0000 rwxp 00000000 00:00 0          [stack:6699]
+5feb0000-5feb3000 ---p 00000000 00:00 0 
+5feb3000-5ff00000 rwxp 00000000 00:00 0          [stack:6698]
+5ff00000-60000000 rw-p 00000000 00:00 0 
+60001000-60004000 ---p 00000000 00:00 0 
+60004000-60051000 rwxp 00000000 00:00 0          [stack:6697]
+60051000-60054000 ---p 00000000 00:00 0 
+60054000-600a1000 rwxp 00000000 00:00 0          [stack:6696]
+600a1000-600a4000 ---p 00000000 00:00 0 
+600a4000-600f1000 rwxp 00000000 00:00 0          [stack:6695]
+600f1000-600f8000 r-xp 00000000 b3:07 171204     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libmanagement.so
+600f8000-600ff000 ---p 00007000 b3:07 171204     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libmanagement.so
+600ff000-60100000 rw-p 00006000 b3:07 171204     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libmanagement.so
+60100000-60200000 rw-p 00000000 00:00 0 
+60200000-6027f000 rw-p 00000000 00:00 0 
+6027f000-60300000 ---p 00000000 00:00 0 
+60300000-603e8000 rw-p 00000000 00:00 0 
+603e8000-60400000 ---p 00000000 00:00 0 
+60400000-604fe000 rw-p 00000000 00:00 0 
+604fe000-60500000 ---p 00000000 00:00 0 
+60500000-605ea000 rw-p 00000000 00:00 0 
+605ea000-60600000 ---p 00000000 00:00 0 
+6060a000-60639000 r-xp 00000000 b3:07 171182     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libsunec.so
+60639000-60641000 ---p 0002f000 b3:07 171182     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libsunec.so
+60641000-60644000 rw-p 0002f000 b3:07 171182     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libsunec.so
+60644000-60649000 rw-p 00000000 00:00 0 
+60649000-6064c000 ---p 00000000 00:00 0 
+6064c000-60699000 rwxp 00000000 00:00 0          [stack:6655]
+60699000-606aa000 r--s 000b6000 b3:07 170251     /home/pi/P1DAQ/hivemq-3.1.0/plugins/hivemq-sys-topic-plugin-3.0.0.jar
+606aa000-606b7000 r-xp 00000000 b3:07 171201     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libnio.so
+606b7000-606be000 ---p 0000d000 b3:07 171201     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libnio.so
+606be000-606bf000 rw-p 0000c000 b3:07 171201     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libnio.so
+606bf000-60880000 rw-p 00000000 00:00 0 
+60880000-60a00000 r--s 00f78000 b3:07 170222     /home/pi/P1DAQ/hivemq-3.1.0/bin/hivemq.jar
+60a00000-60a21000 rw-p 00000000 00:00 0 
+60a21000-60b00000 ---p 00000000 00:00 0 
+60b00000-60bfe000 rw-p 00000000 00:00 0 
+60bfe000-60c00000 ---p 00000000 00:00 0 
+60c00000-60d00000 rw-p 00000000 00:00 0 
+60d00000-60d01000 ---p 00000000 00:00 0 
+60d01000-60d80000 rwxp 00000000 00:00 0          [stack:6654]
+60d80000-60d83000 ---p 00000000 00:00 0 
+60d83000-60e00000 rwxp 00000000 00:00 0          [stack:6652]
+60e00000-60e21000 rw-p 00000000 00:00 0 
+60e21000-60f00000 ---p 00000000 00:00 0 
+60f01000-60f03000 r-xp 00000000 b3:07 266059     /lib/arm-linux-gnueabihf/libnss_mdns4_minimal.so.2
+60f03000-60f0a000 ---p 00002000 b3:07 266059     /lib/arm-linux-gnueabihf/libnss_mdns4_minimal.so.2
+60f0a000-60f0b000 r--p 00001000 b3:07 266059     /lib/arm-linux-gnueabihf/libnss_mdns4_minimal.so.2
+60f0b000-60f0c000 rw-p 00002000 b3:07 266059     /lib/arm-linux-gnueabihf/libnss_mdns4_minimal.so.2
+60f0c000-60f1f000 r-xp 00000000 b3:07 171194     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libnet.so
+60f1f000-60f26000 ---p 00013000 b3:07 171194     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libnet.so
+60f26000-60f27000 rw-p 00012000 b3:07 171194     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libnet.so
+60f27000-60f2a000 ---p 00000000 00:00 0 
+60f2a000-60f77000 rwxp 00000000 00:00 0          [stack:6653]
+60f77000-61100000 r--p 00000000 b3:07 145477     /usr/lib/locale/locale-archive
+61100000-61121000 rw-p 00000000 00:00 0 
+61121000-61200000 ---p 00000000 00:00 0 
+61200000-61221000 rw-p 00000000 00:00 0 
+61221000-61300000 ---p 00000000 00:00 0 
+61300000-61360000 rw-p 00000000 00:00 0 
+61360000-61400000 ---p 00000000 00:00 0 
+61406000-61409000 ---p 00000000 00:00 0 
+61409000-61456000 rwxp 00000000 00:00 0          [stack:6651]
+61456000-61459000 ---p 00000000 00:00 0 
+61459000-614a6000 rwxp 00000000 00:00 0          [stack:6650]
+614a6000-614a9000 ---p 00000000 00:00 0 
+614a9000-614f6000 rwxp 00000000 00:00 0          [stack:6649]
+614f6000-614f7000 ---p 00000000 00:00 0 
+614f7000-61576000 rwxp 00000000 00:00 0          [stack:6648]
+61576000-615c2000 rw-p 00000000 00:00 0 
+615c2000-61784000 r--s 03a68000 b3:07 171165     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/rt.jar
+61784000-617e9000 rw-p 00000000 00:00 0 
+617e9000-61800000 rw-p 00000000 00:00 0 
+61800000-633a0000 rw-p 00000000 00:00 0 
+633a0000-66540000 rw-p 00000000 00:00 0 
+66540000-69c2d000 rw-p 00000000 00:00 0 
+69c2d000-70000000 rw-p 00000000 00:00 0 
+70000000-71200000 rw-p 00000000 00:00 0 
+71200000-74000000 rw-p 00000000 00:00 0 
+7400a000-7400e000 r--s 0002d000 b3:07 171215     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/ext/sunjce_provider.jar
+7400e000-7402a000 rw-p 00000000 00:00 0 
+7402a000-7405c000 rw-p 00000000 00:00 0 
+7405c000-7406a000 rw-p 00000000 00:00 0 
+7406a000-74082000 rw-p 00000000 00:00 0 
+74082000-7409f000 rw-p 00000000 00:00 0 
+7409f000-740d0000 rw-p 00000000 00:00 0 
+740d0000-740d9000 rw-p 00000000 00:00 0 
+740d9000-740f0000 rw-p 00000000 00:00 0 
+740f0000-740fa000 rw-p 00000000 00:00 0 
+740fa000-74171000 rw-p 00000000 00:00 0 
+74171000-74389000 rwxp 00000000 00:00 0 
+74389000-76171000 rw-p 00000000 00:00 0 
+76171000-76186000 r-xp 00000000 b3:07 171176     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libzip.so
+76186000-7618d000 ---p 00015000 b3:07 171176     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libzip.so
+7618d000-7618e000 rw-p 00014000 b3:07 171176     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libzip.so
+7618e000-76199000 r-xp 00000000 b3:07 270081     /lib/arm-linux-gnueabihf/libnss_files-2.19.so
+76199000-761a8000 ---p 0000b000 b3:07 270081     /lib/arm-linux-gnueabihf/libnss_files-2.19.so
+761a8000-761a9000 r--p 0000a000 b3:07 270081     /lib/arm-linux-gnueabihf/libnss_files-2.19.so
+761a9000-761aa000 rw-p 0000b000 b3:07 270081     /lib/arm-linux-gnueabihf/libnss_files-2.19.so
+761aa000-761b3000 r-xp 00000000 b3:07 270083     /lib/arm-linux-gnueabihf/libnss_nis-2.19.so
+761b3000-761c2000 ---p 00009000 b3:07 270083     /lib/arm-linux-gnueabihf/libnss_nis-2.19.so
+761c2000-761c3000 r--p 00008000 b3:07 270083     /lib/arm-linux-gnueabihf/libnss_nis-2.19.so
+761c3000-761c4000 rw-p 00009000 b3:07 270083     /lib/arm-linux-gnueabihf/libnss_nis-2.19.so
+761c4000-761d5000 r-xp 00000000 b3:07 270076     /lib/arm-linux-gnueabihf/libnsl-2.19.so
+761d5000-761e4000 ---p 00011000 b3:07 270076     /lib/arm-linux-gnueabihf/libnsl-2.19.so
+761e4000-761e5000 r--p 00010000 b3:07 270076     /lib/arm-linux-gnueabihf/libnsl-2.19.so
+761e5000-761e6000 rw-p 00011000 b3:07 270076     /lib/arm-linux-gnueabihf/libnsl-2.19.so
+761e6000-761e8000 rw-p 00000000 00:00 0 
+761e8000-761ef000 r-xp 00000000 b3:07 270078     /lib/arm-linux-gnueabihf/libnss_compat-2.19.so
+761ef000-761fe000 ---p 00007000 b3:07 270078     /lib/arm-linux-gnueabihf/libnss_compat-2.19.so
+761fe000-761ff000 r--p 00006000 b3:07 270078     /lib/arm-linux-gnueabihf/libnss_compat-2.19.so
+761ff000-76200000 rw-p 00007000 b3:07 270078     /lib/arm-linux-gnueabihf/libnss_compat-2.19.so
+76200000-762ff000 rw-p 00000000 00:00 0 
+762ff000-76300000 ---p 00000000 00:00 0 
+76300000-76301000 rw-p 00000000 00:00 0 
+76301000-76310000 r--s 000ac000 b3:07 170495     /home/pi/P1DAQ/hivemq-3.1.0/plugins/mqtt-message-log-3.0.0.jar
+76310000-7632d000 r-xp 00000000 b3:07 266001     /lib/arm-linux-gnueabihf/libgcc_s.so.1
+7632d000-7633c000 ---p 0001d000 b3:07 266001     /lib/arm-linux-gnueabihf/libgcc_s.so.1
+7633c000-7633d000 rw-p 0001c000 b3:07 266001     /lib/arm-linux-gnueabihf/libgcc_s.so.1
+7633d000-7633e000 r--s 00003000 b3:07 171213     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/ext/sunec.jar
+7633e000-76340000 r--s 00019000 b3:07 171221     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/jce.jar
+76340000-76345000 r--s 0008a000 b3:07 170690     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/jsse.jar
+76345000-76346000 r--s 00001000 b3:07 170250     /home/pi/P1DAQ/hivemq-3.1.0/plugins/hivemq-jmx-metrics-plugin-3.0.0.jar
+76346000-7634f000 r--s 00251000 b3:07 170705     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/resources.jar
+7634f000-76371000 r-xp 00000000 b3:07 171203     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libjava.so
+76371000-76379000 ---p 00022000 b3:07 171203     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libjava.so
+76379000-7637a000 rw-p 00022000 b3:07 171203     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libjava.so
+7637a000-76380000 r-xp 00000000 b3:07 270106     /lib/arm-linux-gnueabihf/librt-2.19.so
+76380000-7638f000 ---p 00006000 b3:07 270106     /lib/arm-linux-gnueabihf/librt-2.19.so
+7638f000-76390000 r--p 00005000 b3:07 270106     /lib/arm-linux-gnueabihf/librt-2.19.so
+76390000-76391000 rw-p 00006000 b3:07 270106     /lib/arm-linux-gnueabihf/librt-2.19.so
+76391000-76394000 ---p 00000000 00:00 0 
+76394000-763e1000 rwxp 00000000 00:00 0          [stack:6647]
+763e1000-7644a000 r-xp 00000000 b3:07 270074     /lib/arm-linux-gnueabihf/libm-2.19.so
+7644a000-7645a000 ---p 00069000 b3:07 270074     /lib/arm-linux-gnueabihf/libm-2.19.so
+7645a000-7645b000 r--p 00069000 b3:07 270074     /lib/arm-linux-gnueabihf/libm-2.19.so
+7645b000-7645c000 rw-p 0006a000 b3:07 270074     /lib/arm-linux-gnueabihf/libm-2.19.so
+7645c000-7691d000 r-xp 00000000 b3:07 171175     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/client/libjvm.so
+7691d000-76925000 ---p 004c1000 b3:07 171175     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/client/libjvm.so
+76925000-7694a000 rw-p 004c1000 b3:07 171175     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/client/libjvm.so
+7694a000-76d68000 rw-p 00000000 00:00 0 
+76d68000-76e93000 r-xp 00000000 b3:07 270070     /lib/arm-linux-gnueabihf/libc-2.19.so
+76e93000-76ea3000 ---p 0012b000 b3:07 270070     /lib/arm-linux-gnueabihf/libc-2.19.so
+76ea3000-76ea5000 r--p 0012b000 b3:07 270070     /lib/arm-linux-gnueabihf/libc-2.19.so
+76ea5000-76ea6000 rw-p 0012d000 b3:07 270070     /lib/arm-linux-gnueabihf/libc-2.19.so
+76ea6000-76ea9000 rw-p 00000000 00:00 0 
+76ea9000-76eab000 r-xp 00000000 b3:07 270073     /lib/arm-linux-gnueabihf/libdl-2.19.so
+76eab000-76eba000 ---p 00002000 b3:07 270073     /lib/arm-linux-gnueabihf/libdl-2.19.so
+76eba000-76ebb000 r--p 00001000 b3:07 270073     /lib/arm-linux-gnueabihf/libdl-2.19.so
+76ebb000-76ebc000 rw-p 00002000 b3:07 270073     /lib/arm-linux-gnueabihf/libdl-2.19.so
+76ebc000-76ecf000 r-xp 00000000 b3:07 171206     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/jli/libjli.so
+76ecf000-76ed6000 ---p 00013000 b3:07 171206     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/jli/libjli.so
+76ed6000-76ed7000 rw-p 00012000 b3:07 171206     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/jli/libjli.so
+76ed7000-76eeb000 r-xp 00000000 b3:07 270113     /lib/arm-linux-gnueabihf/libpthread-2.19.so
+76eeb000-76efb000 ---p 00014000 b3:07 270113     /lib/arm-linux-gnueabihf/libpthread-2.19.so
+76efb000-76efc000 r--p 00014000 b3:07 270113     /lib/arm-linux-gnueabihf/libpthread-2.19.so
+76efc000-76efd000 rw-p 00015000 b3:07 270113     /lib/arm-linux-gnueabihf/libpthread-2.19.so
+76efd000-76eff000 rw-p 00000000 00:00 0 
+76eff000-76f08000 r-xp 00000000 b3:07 171208     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libverify.so
+76f08000-76f10000 ---p 00009000 b3:07 171208     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libverify.so
+76f10000-76f11000 rw-p 00009000 b3:07 171208     /usr/lib/jvm/jdk-7-oracle-arm-vfp-hflt/jre/lib/arm/libverify.so
+76f11000-76f16000 r-xp 00000000 b3:07 149803     /usr/lib/arm-linux-gnueabihf/libarmmem.so
+76f16000-76f25000 ---p 00005000 b3:07 149803     /usr/lib/arm-linux-gnueabihf/libarmmem.so
+76f25000-76f26000 rw-p 00004000 b3:07 149803     /usr/lib/arm-linux-gnueabihf/libarmmem.so
+76f26000-76f46000 r-xp 00000000 b3:07 270067     /lib/arm-linux-gnueabihf/ld-2.19.so
+76f46000-76f47000 r--p 00000000 b3:07 6837       /usr/share/locale/en_GB/LC_MESSAGES/libc.mo
+76f47000-76f4f000 rw-s 00000000 b3:07 150509     /tmp/hsperfdata_pi/6646
+76f4f000-76f50000 r--p 00000000 00:00 0 
+76f50000-76f53000 rw-p 00000000 00:00 0 
+76f53000-76f55000 rw-p 00000000 00:00 0 
+76f55000-76f56000 r--p 0001f000 b3:07 270067     /lib/arm-linux-gnueabihf/ld-2.19.so
+76f56000-76f57000 rw-p 00020000 b3:07 270067     /lib/arm-linux-gnueabihf/ld-2.19.so
+7ea6a000-7ea8b000 rwxp 00000000 00:00 0          [stack]
+7ec69000-7ec6a000 r-xp 00000000 00:00 0          [sigpage]
+7ec6a000-7ec6b000 r--p 00000000 00:00 0          [vvar]
+7ec6b000-7ec6c000 r-xp 00000000 00:00 0          [vdso]
+ffff0000-ffff1000 r-xp 00000000 00:00 0          [vectors]
+
+VM Arguments:
+jvm_args: -Dhivemq.home=/home/pi/P1DAQ/hivemq-3.1.0 -Djava.net.preferIPv4Stack=true -XX:-UseSplitVerifier -Xverify:none -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/pi/P1DAQ/hivemq-3.1.0/heap-dump.hprof 
+java_command: /home/pi/P1DAQ/hivemq-3.1.0/bin/hivemq.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+SHELL=/bin/bash
+DISPLAY=:0.0
+
+Signal Handlers:
+SIGSEGV: [libjvm.so+0x45de14], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGBUS: [libjvm.so+0x45de14], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGFPE: [libjvm.so+0x35e81c], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGPIPE: [libjvm.so+0x35e81c], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGXFSZ: [libjvm.so+0x35e81c], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGILL: [libjvm.so+0x35e81c], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGUSR1: SIG_DFL, sa_mask[0]=0x00000000, sa_flags=0x00000000
+SIGUSR2: [libjvm.so+0x35ebd8], sa_mask[0]=0x00000000, sa_flags=0x10000004
+SIGHUP: [libjvm.so+0x35ed24], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGINT: [libjvm.so+0x35ed24], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGTERM: [libjvm.so+0x35ed24], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGQUIT: [libjvm.so+0x35ed24], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+
+
+---------------  S Y S T E M  ---------------
+
+OS:8.0
+
+uname:Linux 4.1.18-v7+ #846 SMP Thu Feb 25 14:22:53 GMT 2016 armv7l
+libc:glibc 2.19 NPTL 2.19 
+rlimit: STACK 8192k, CORE 0k, NPROC 7339, NOFILE 65536, AS infinity
+load average:0.55 0.46 0.30
+
+/proc/meminfo:
+MemTotal:         948060 kB
+MemFree:          199460 kB
+MemAvailable:     711024 kB
+Buffers:           33804 kB
+Cached:           496164 kB
+SwapCached:            0 kB
+Active:           483312 kB
+Inactive:         218920 kB
+Active(anon):     172652 kB
+Inactive(anon):     7228 kB
+Active(file):     310660 kB
+Inactive(file):   211692 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+SwapTotal:        102396 kB
+SwapFree:         102396 kB
+Dirty:               144 kB
+Writeback:             0 kB
+AnonPages:        172300 kB
+Mapped:            61028 kB
+Shmem:              7620 kB
+Slab:              30440 kB
+SReclaimable:      19380 kB
+SUnreclaim:        11060 kB
+KernelStack:        1656 kB
+PageTables:         2672 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:      576424 kB
+Committed_AS:     804500 kB
+VmallocTotal:    1105920 kB
+VmallocUsed:        4028 kB
+VmallocChunk:     877304 kB
+CmaTotal:           8192 kB
+CmaFree:            3732 kB
+
+
+CPU:total 4 (ARMv7), vfp
+
+/proc/cpuinfo:
+processor	: 0
+model name	: ARMv7 Processor rev 5 (v7l)
+BogoMIPS	: 57.60
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm 
+CPU implementer	: 0x41
+CPU architecture: 7
+CPU variant	: 0x0
+CPU part	: 0xc07
+CPU revision	: 5
+
+processor	: 1
+model name	: ARMv7 Processor rev 5 (v7l)
+BogoMIPS	: 57.60
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm 
+CPU implementer	: 0x41
+CPU architecture: 7
+CPU variant	: 0x0
+CPU part	: 0xc07
+CPU revision	: 5
+
+processor	: 2
+model name	: ARMv7 Processor rev 5 (v7l)
+BogoMIPS	: 57.60
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm 
+CPU implementer	: 0x41
+CPU architecture: 7
+CPU variant	: 0x0
+CPU part	: 0xc07
+CPU revision	: 5
+
+processor	: 3
+model name	: ARMv7 Processor rev 5 (v7l)
+BogoMIPS	: 57.60
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm 
+CPU implementer	: 0x41
+CPU architecture: 7
+CPU variant	: 0x0
+CPU part	: 0xc07
+CPU revision	: 5
+
+Hardware	: BCM2709
+Revision	: a01041
+Serial		: 00000000d13ead74
+
+
+Memory: 4k page, physical 948060k(199460k free), swap 102396k(102396k free)
+
+vm_info: Java HotSpot(TM) Client VM (24.60-b09) for linux-arm-vfp-hflt JRE (1.7.0_60-b19), built on May  7 2014 12:58:51 by "java_re" with gcc 4.7.2 20120910 (prerelease)
+
+time: Wed Mar  9 18:50:17 2016
+elapsed time: 21 seconds
+
