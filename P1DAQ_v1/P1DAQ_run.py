@@ -13,7 +13,7 @@ from collections import defaultdict
 from THpythonLib import *
 from BLE_init import *
 from ubidots import ApiClient
-from MQTTize import *
+#from MQTTize import *
 import Adafruit_MCP9808.MCP9808 as int_temp
 
 
