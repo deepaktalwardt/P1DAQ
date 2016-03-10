@@ -82,18 +82,6 @@ for dev_id in DEVICE_IDS:
 for dev_id in DEVICE_IDS:
     CURR_NUM_DATA[dev_id] = []
 
-# Setup MQTT Clients
-client_1                =   paho.Client(client_id='P1DAQ_readings')
-client_1.on_publish     =   on_publish_1
-client_1.on_connect     =   on_connect_1
-#client_1.username_pw_set(USERNAME, PASSWORD)
-
-client_2                =   paho.Client(client_id='P1DAQ_controls')
-client_2.on_message     =   on_message_2
-client_2.on_subscribe   =   on_subscribe_2
-client_2.on_connect     =   on_connect_2
-#client_2.username_pw_set(USERNAME, PASSWORD)
-
 ############ Helper Functions ###############
 ## MQTT Clients Callback functions
 # For client_1
@@ -279,3 +267,14 @@ def increment_sn(dev_id):
     global SAMPLE_NUMBERS
     SAMPLE_NUMBERS[dev_id] = SAMPLE_NUMBERS.get(dev_id) + 1
 
+# Setup MQTT Clients
+client_1                =   paho.Client(client_id='P1DAQ_readings')
+client_1.on_publish     =   on_publish_1
+client_1.on_connect     =   on_connect_1
+#client_1.username_pw_set(USERNAME, PASSWORD)
+
+client_2                =   paho.Client(client_id='P1DAQ_controls')
+client_2.on_message     =   on_message_2
+client_2.on_subscribe   =   on_subscribe_2
+client_2.on_connect     =   on_connect_2
+#client_2.username_pw_set(USERNAME, PASSWORD)
