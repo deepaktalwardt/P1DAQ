@@ -281,4 +281,6 @@ client_2.on_connect     =   on_connect_2
 #client_2.username_pw_set(USERNAME, PASSWORD)
 
 client_1.connect(PUBLIC_BROKER, port=1883)
+client_1.loop_start()
 client_2.connect(PUBLIC_BROKER, port=1883)
+client_2.loop_forever()
