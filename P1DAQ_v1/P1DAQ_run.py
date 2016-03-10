@@ -259,7 +259,7 @@ def pub_sensor_reading(data):
             client_1.publish(TOPIC_UP, sensor_json(avgd_data, DEVICE_ID), qos=1)
             CURR_NUM_DATA[DEVICE_ID + "_mc"] = []
             CURR_MASS_DATA[DEVICE_ID + "_nc"] = []
-            
+
 # Publish Command Response
 
 
@@ -286,8 +286,8 @@ client_2.on_connect     =   on_connect_2
 
 client_1.connect(PUBLIC_BROKER, port=1883)
 client_1.loop_start()
-client_2.connect(PUBLIC_BROKER, port=1883)
-client_2.loop_forever()
+#client_2.connect(PUBLIC_BROKER, port=1883)
+#client_2.loop_forever()
 
 for i in range(0,5):
     readings = get_sensor_reading()
