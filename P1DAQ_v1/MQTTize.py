@@ -4,14 +4,14 @@
 import json
 import paho.mqtt.client as paho
 import time
-import random
 import datetime
 
 ORG_ID 			= 	"CLMTCO" 					# Provided by IBM later
 DEVICE_TYPE 	= 	"P1"
 USERNAME 		= 	"sensoriot_xx"				# Provided by IBM later
 PASSWORD 		= 	"sensoriot*xx360"			# Provided by IBM later
-TOPIC 			=	"iot/SSRIOT/" + DEVICE_TYPE # Check with IBM
+TOPIC_UP		=	"iot/SSRIOT/" + DEVICE_TYPE # Check with IBM
+TOPIC_DOWN		=	"iot/SSRIOT/" + DEVICE_TYPE + "/" + DEVICE_ID
 DEVICE_IDS 		=	["c1c3", "c1c8", "c1c9", "c1b2", "c1b4"]
 SAMPLE_NUMBERS	=	dict.fromkeys(DEVICE_IDS, 0)
 

@@ -1,3 +1,0 @@
-To install HiveMQ as windows service, visit the following link for further instructions:
-
-http://www.hivemq.com/windows-service
