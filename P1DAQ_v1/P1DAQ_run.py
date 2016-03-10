@@ -142,19 +142,17 @@ def avg_readings(reading):
         return to_return
 
 def average_single_reading(data, dev_id):
-    if len(data.get(dev_id + "_mc")) == 1:
-        data[dev_id + "_mc"] = data.get(dev_id + "_mc")[0]
-        data[dev_id + "_nc"] = data.get(dev_id + "_nc")[0]
-        return data
+    if len(CURR_MASS_DATA.get(dev_id)) == 1:
+        return (CURR_MASS_DATA[dev_id], CURR_NUM_DATA[dev_id])
     tot_mc = 0
     tot_nc = 0
     cnt_mc = 0
     cnt_nc = 0
-    for mc in data.get(dev_id + "_mc"):
+    for mc in CURR_MASS_DATA.get(dev_id):
         if mc >= 0:
             tot_mc = tot_mc + mc
             cnt_mc += 1
-    for nc in data.get(dev_id + "_nc"):
+    for nc in CURR_NUM_DATA(dev_id):
         if nc >= 0:
             tot_nc = tot_nc + nc 
             cnt_nc += 1
@@ -162,7 +160,7 @@ def average_single_reading(data, dev_id):
     avg_nc = tot_nc/cnt_nc
     data[dev_id + "_mc"] = avg_mc
     data[dev_id + "_nc"] = avg_nc
-    return data
+    return (avg_mc, avg_nc)
 
 def populate_curr_data(data):
     global CURR_MASS_DATA
@@ -251,14 +249,16 @@ def pub_sensor_reading(data):
     for DEVICE_ID in DEVICE_IDS:
         to_JSON = {}
         if len(CURR_MASS_DATA.get(DEVICE_ID)) >= SAMPLING_TIMES.get(DEVICE_ID):
-            to_JSON[DEVICE_ID + "_mc"] = CURR_MASS_DATA.get(DEVICE_ID)
-            to_JSON[DEVICE_ID + "_nc"] = CURR_NUM_DATA.get(DEVICE_ID)
-            to_JSON["In Temp (deg C)"] = data.get("In Temp (deg C)")
-            to_JSON["Out Temp (deg C)"] = data.get("Out Temp (deg C)")
-            to_JSON["Relative Humidity (%)"] = data.get("Relative Humidity (%)")
-            to_JSON["Time (UT)"] = data.get("Time (UT)")
-            avgd_data = average_single_reading(to_JSON, dev_id)
-            client_1.publish(TOPIC_UP, sensor_json(avgd_data, DEVICE_ID), qos=1)
+            # to_JSON[DEVICE_ID + "_mc"] = CURR_MASS_DATA.get(DEVICE_ID)
+            # to_JSON[DEVICE_ID + "_nc"] = CURR_NUM_DATA.get(DEVICE_ID)
+            # to_JSON["In Temp (deg C)"] = data.get("In Temp (deg C)")
+            # to_JSON["Out Temp (deg C)"] = data.get("Out Temp (deg C)")
+            # to_JSON["Relative Humidity (%)"] = data.get("Relative Humidity (%)")
+            # to_JSON["Time (UT)"] = data.get("Time (UT)")
+            avgd_data = average_single_reading(data, dev_id)
+            data[DEVICE_ID + "_mc"] = avgd_data[0]
+            data[DEVICE_ID + "_nc"] = avgd_data[1]
+            client_1.publish(TOPIC_UP, sensor_json(data, DEVICE_ID), qos=1)
             CURR_NUM_DATA[DEVICE_ID + "_mc"] = []
             CURR_MASS_DATA[DEVICE_ID + "_nc"] = []
 
