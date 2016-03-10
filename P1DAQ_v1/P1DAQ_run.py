@@ -77,12 +77,12 @@ for dev_id in DEVICE_IDS:
 
 # Populate CURR_MASS_DATA
 for dev_id in DEVICE_IDS:
-    CURR_MASS_DATA.setdefault(dev_id, [])
+    CURR_MASS_DATA[dev_id] = list()
 print("Curr_Mass_init: " + str(CURR_MASS_DATA))
 
 # Populate CURR_NUM_DATA
 for dev_id in DEVICE_IDS:
-    CURR_NUM_DATA.setdefault(dev_id, [])
+    CURR_NUM_DATA[dev_id] = list()
 print("Curr_Num_init: " + str(CURR_NUM_DATA))
 ############ Helper Functions ###############
 ## MQTT Clients Callback functions
