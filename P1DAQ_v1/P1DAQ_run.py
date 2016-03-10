@@ -233,7 +233,9 @@ def sensor_json(data, dev_id):
     # Generate to_send JSON
     to_send["d"] = d
     to_send["ts"] = time_now
-    return json.dumps(to_send)
+    jsonized = json.dumps(to_send)
+    print('JSON packet sent: ' + jsonized)
+    return jsonized
 
 # Command JSON decode
 
@@ -255,7 +257,9 @@ def pub_sensor_reading(data):
             to_JSON["Time (UT)"] = data.get("Time (UT)")
             avgd_data = average_single_reading(to_JSON, dev_id)
             client_1.publish(TOPIC_UP, sensor_json(avgd_data, DEVICE_ID), qos=1)
-
+            CURR_NUM_DATA[DEVICE_ID + "_mc"] = []
+            CURR_MASS_DATA[DEVICE_ID + "_nc"] = []
+            
 # Publish Command Response
 
 
@@ -284,3 +288,9 @@ client_1.connect(PUBLIC_BROKER, port=1883)
 client_1.loop_start()
 client_2.connect(PUBLIC_BROKER, port=1883)
 client_2.loop_forever()
+
+for i in range(0,5):
+    readings = get_sensor_reading()
+    save_to_file(readings)
+    pub_sensor_reading(readings)
+    print('----------------------------------------------------')
