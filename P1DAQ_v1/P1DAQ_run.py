@@ -95,7 +95,7 @@ def on_connect_1(client, data, flags, rc):
 def on_message_2(client, userdata, mid):
     print("mid: " + str(mid))
 
-def on_subscribe(client, userdata, mid, granted_qos):
+def on_subscribe_2(client, userdata, mid, granted_qos):
     print("Subscribed: "+str(mid)+" "+str(granted_qos))
  
 def on_connect_2(client, data, flags, rc):
