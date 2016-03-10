@@ -183,8 +183,8 @@ def get_sensor_reading():
             to_return[dev_id + "_nc"] = num_conc
             to_return[dev_id + "_mc"] = mass_conc
     to_return["In Temp (deg C)"] = int_temp_sensor.readTempC() # Change this later to a function call
-    to_return["Out Temp (deg C)"] = read_temperature() # Change this later to a function call
-    to_return["Relative Humidity (%)"] = read_humidity() # Change this later to a function call
+    to_return["Out Temp (deg C)"] = float("%.*f" % (3, read_temperature())) # Change this later to a function call
+    to_return["Relative Humidity (%)"] = float("%.*f" % (3, read_humidity())) # Change this later to a function call
     to_return["Time (UT)"] = datetime.datetime.now().isoformat()
     to_return = check_reading(to_return)
     print('Sensor Reading: ' + str(to_return))
