@@ -89,7 +89,7 @@ def on_publish_1(client, userdata, mid):
     print("mid: " + str(mid))
 
 def on_connect_1(client, data, flags, rc):
-    print('Connected, rc: ' + str(rc))
+    print('Client 1 Connected, rc: ' + str(rc))
 
 # For client_2
 def on_message_2(client, userdata, mid):
@@ -99,7 +99,7 @@ def on_subscribe_2(client, userdata, mid, granted_qos):
     print("Subscribed: "+str(mid)+" "+str(granted_qos))
  
 def on_connect_2(client, data, flags, rc):
-    print('Connected, rc: ' + str(rc))
+    print('Client 2 Connected, rc: ' + str(rc))
 
 ## Sensor Data Acquisition functions
 def known_sensor(ble_path):
@@ -278,3 +278,6 @@ client_2.on_message     =   on_message_2
 client_2.on_subscribe   =   on_subscribe_2
 client_2.on_connect     =   on_connect_2
 #client_2.username_pw_set(USERNAME, PASSWORD)
+
+client_1.connect(PUBLIC_BROKER, port=1883)
+client_2.connect(PUBLIC_BROKER, port=1883)
