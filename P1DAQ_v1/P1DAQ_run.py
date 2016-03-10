@@ -168,8 +168,8 @@ def populate_curr_data(data):
     global CURR_MASS_DATA
     global CURR_NUM_DATA
     for dev_id in dev_ids:
-        CURR_MASS_DATA[dev_id] = CURR_MASS_DATA.get(dev_id).append(data.get(dev_id + "_mc"))
-        CURR_NUM_DATA[dev_id] = CURR_NUM_DATA.get(dev_id).append(data.get(dev_id + "_nc"))
+        CURR_MASS_DATA[dev_id] = CURR_MASS_DATA[dev_id].append(data.get(dev_id + "_mc"))
+        CURR_NUM_DATA[dev_id] = CURR_NUM_DATA[dev_id].append(data.get(dev_id + "_nc"))
 
 def get_sensor_reading():
     to_return = dict.fromkeys(fieldnames)
