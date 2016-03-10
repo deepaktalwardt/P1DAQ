@@ -74,9 +74,13 @@ for dev_id in DEVICE_IDS:
 for dev_id in DEVICE_IDS:
     SAMPLE_NUMBERS[dev_id] = 0 # Increments only after reading is published
 
-# Populate CURR_DATA
+# Populate CURR_MASS_DATA
 for dev_id in DEVICE_IDS:
-    CURR_DATA[dev_id] = []
+    CURR_MASS_DATA[dev_id] = []
+
+# Populate CURR_NUM_DATA
+for dev_id in DEVICE_IDS:
+    CURR_NUM_DATA[dev_id] = []
 
 # Setup MQTT Clients
 client_1                =   paho.Client(client_id='P1DAQ_readings')
