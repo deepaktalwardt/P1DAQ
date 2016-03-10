@@ -292,5 +292,7 @@ client_1.loop_start()
 for i in range(0,5):
     readings = get_sensor_reading()
     save_to_file(readings)
+    print('Curr_Mass: ' + CURR_MASS_DATA)
+    print('Curr_Num: ' + CURR_NUM_DATA)
     pub_sensor_reading(readings)
     print('----------------------------------------------------')
