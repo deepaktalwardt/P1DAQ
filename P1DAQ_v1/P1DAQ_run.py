@@ -56,6 +56,7 @@ DEVICE_IDS      =   dev_ids
 USERNAME        =   "sensoriot"              
 PASSWORD        =   "sensoriot"           
 TOPIC_UP        =   "iot/SSRIOT/" + DEVICE_TYPE 
+PUBLIC_BROKER   =   "broker.hivemq.com"
 TOPIC_DOWN      =   {} # populated later
 SAMPLING_TIMES  =   {} # populated later
 SAMPLE_NUMBERS  =   {} # populated later
