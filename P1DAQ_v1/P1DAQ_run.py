@@ -187,6 +187,7 @@ def get_sensor_reading():
     to_return["Relative Humidity (%)"] = read_humidity() # Change this later to a function call
     to_return["Time (UT)"] = datetime.datetime.now().isoformat()
     to_return = check_reading(to_return)
+    print('Sensor Reading: ' + str(to_return))
     populate_curr_data(to_return)
     return to_return
 
