@@ -148,11 +148,11 @@ def average_single_reading(data, dev_id):
     tot_nc = 0
     cnt_mc = 0
     cnt_nc = 0
-    for mc in CURR_MASS_DATA.get(dev_id):
+    for mc in CURR_MASS_DATA[dev_id]:
         if mc >= 0:
             tot_mc = tot_mc + mc
             cnt_mc += 1
-    for nc in CURR_NUM_DATA(dev_id):
+    for nc in CURR_NUM_DATA[dev_id]:
         if nc >= 0:
             tot_nc = tot_nc + nc 
             cnt_nc += 1
@@ -247,7 +247,7 @@ def pub_sensor_reading(data):
     global CURR_MASS_DATA
     global CURR_NUM_DATA
     for DEVICE_ID in DEVICE_IDS:
-        to_JSON = {}
+        #to_JSON = {}
         if len(CURR_MASS_DATA.get(DEVICE_ID)) >= SAMPLING_TIMES.get(DEVICE_ID):
             # to_JSON[DEVICE_ID + "_mc"] = CURR_MASS_DATA.get(DEVICE_ID)
             # to_JSON[DEVICE_ID + "_nc"] = CURR_NUM_DATA.get(DEVICE_ID)
