@@ -143,7 +143,7 @@ def avg_readings(reading):
 
 def average_single_reading(data, dev_id):
     if len(CURR_MASS_DATA.get(dev_id)) == 1:
-        return (CURR_MASS_DATA[dev_id], CURR_NUM_DATA[dev_id])
+        return (CURR_MASS_DATA[dev_id][0], CURR_NUM_DATA[dev_id][0])
     tot_mc = 0
     tot_nc = 0
     cnt_mc = 0
