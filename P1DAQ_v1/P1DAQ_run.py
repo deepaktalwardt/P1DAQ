@@ -259,8 +259,8 @@ def pub_sensor_reading(data):
             data[DEVICE_ID + "_mc"] = avgd_data[0]
             data[DEVICE_ID + "_nc"] = avgd_data[1]
             client_1.publish(TOPIC_UP, sensor_json(data, DEVICE_ID), qos=1)
-            CURR_NUM_DATA[DEVICE_ID + "_mc"] = []
-            CURR_MASS_DATA[DEVICE_ID + "_nc"] = []
+            CURR_NUM_DATA[DEVICE_ID] = []
+            CURR_MASS_DATA[DEVICE_ID] = []
 
 # Publish Command Response
 
