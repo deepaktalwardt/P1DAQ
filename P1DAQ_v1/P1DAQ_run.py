@@ -70,7 +70,7 @@ for dev_id in DEVICE_IDS:
 # Populate SAMPLING_TIMES
 for dev_id in DEVICE_IDS:
     SAMPLING_TIMES[dev_id] = 1 # Default set to 1, can be changed later
-    
+
 ### Remove this!!!!!
 SAMPLING_TIMES['c1c8'] = 2
 
@@ -295,7 +295,7 @@ client_1.loop_start()
 #client_2.connect(PUBLIC_BROKER, port=1883)
 #client_2.loop_forever()
 
-for i in range(0,3):
+for i in range(0,6):
     readings = get_sensor_reading()
     save_to_file(readings)
     print('Curr_Mass: ' + str(CURR_MASS_DATA))
