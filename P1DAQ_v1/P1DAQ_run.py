@@ -243,7 +243,7 @@ def sensor_json(data, dev_id):
 
 ## MQTT Publishing functions
 # Publish Sensor Reading
-def pub_sensor_reading(data):
+def pub_sensor_reading(sensor_data):
     global CURR_MASS_DATA
     global CURR_NUM_DATA
     for DEVICE_ID in DEVICE_IDS:
@@ -255,10 +255,11 @@ def pub_sensor_reading(data):
             # to_JSON["Out Temp (deg C)"] = data.get("Out Temp (deg C)")
             # to_JSON["Relative Humidity (%)"] = data.get("Relative Humidity (%)")
             # to_JSON["Time (UT)"] = data.get("Time (UT)")
-            avgd_data = average_single_reading(data, dev_id)
-            data[DEVICE_ID + "_mc"] = avgd_data[0]
-            data[DEVICE_ID + "_nc"] = avgd_data[1]
-            client_1.publish(TOPIC_UP, sensor_json(data, DEVICE_ID), qos=1)
+            avgd_data = average_single_reading(sensor_data, dev_id)
+            print(avgd_data)
+            sensor_data[DEVICE_ID + "_mc"] = avgd_data[0]
+            sensor_data[DEVICE_ID + "_nc"] = avgd_data[1]
+            client_1.publish(TOPIC_UP, sensor_json(sensor_data, DEVICE_ID), qos=1)
             CURR_NUM_DATA[DEVICE_ID] = []
             CURR_MASS_DATA[DEVICE_ID] = []
 
