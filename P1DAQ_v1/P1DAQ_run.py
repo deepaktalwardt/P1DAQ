@@ -255,7 +255,7 @@ def pub_sensor_reading(sensor_data):
             # to_JSON["Out Temp (deg C)"] = data.get("Out Temp (deg C)")
             # to_JSON["Relative Humidity (%)"] = data.get("Relative Humidity (%)")
             # to_JSON["Time (UT)"] = data.get("Time (UT)")
-            avgd_data = average_single_reading(sensor_data, dev_id)
+            avgd_data = average_single_reading(sensor_data, DEVICE_ID)
             print(avgd_data)
             sensor_data[DEVICE_ID + "_mc"] = avgd_data[0]
             sensor_data[DEVICE_ID + "_nc"] = avgd_data[1]
