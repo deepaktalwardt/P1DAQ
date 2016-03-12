@@ -73,10 +73,10 @@ folder_name_1 = "/media/pi/Clarity/ClarityData/"
 folder_name_2 = "/media/pi/Clarity/Logs/"
 
 num_file_1 = len([f for f in os.listdir(folder_name_1)]) + 1
-file_name_1 = folder_name_1 + "DataFile" + str(num_file) + ".csv"
+file_name_1 = folder_name_1 + "DataFile" + str(num_file_1) + ".csv"
 
 num_file_2 = len([f for f in os.listdir(folder_name_2)]) + 1
-file_name_2 = folder_name_2 + "LogFile" + str(num_file) + ".csv"
+file_name_2 = folder_name_2 + "LogFile" + str(num_file_2) + ".csv"
 
 # Initialize Files to save readings and logs
 with open(file_name_1, "a") as csvfile:
