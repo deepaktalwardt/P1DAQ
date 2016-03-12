@@ -310,7 +310,7 @@ def sensor_json(data, dev_id):
 #     (example: 4 samples = 10 sec, 12 samples = 30 sec), es: success/fail
 # cid: 2, cmd: get_st, arg: None, es: sampling time/fail
 # cid: 3, cmd: set_clock, arg: time in isoformat+time difference to be added/subt
-#     es: success/fail
+#     es: success/fail (Same for all sensors, cannot change individually)
 # cid: 4, cmd: set_dev_id, arg: name in the correct format, es: success/fail
 def decode_command(command):
     j_com = json.loads(str(command)[2:-1])
