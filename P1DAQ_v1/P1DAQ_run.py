@@ -65,7 +65,7 @@ tz_dict = {'-11:00' :   'US/Samoa',
            '+07:00' :   'Indian/Christmas',
            '+08:00' :   'Singapore',
            '+09:00' :   'Asia/Dili',
-           '+10:00' :   'Pacific/Yap'
+           '+10:00' :   'Pacific/Yap',
            '+11:00' :   'Pacific/Bougainville'  
             } # Add half/quarter time zones later
 
