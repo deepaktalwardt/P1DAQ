@@ -322,12 +322,12 @@ def decode_command(command):
     ts = j_com.get('ts')
     if cid == 1:
         set_st(tn, sn, cid, cmd, arg)
-    else if cid == 2:
+    elif cid == 2:
         get_st(tn, sn, cid, cmd)
-    else if cid == 3:
+    elif cid == 3:
         arg = arg[-6:]
         set_clock(tn, sn, cid, cmd, arg)
-    else if cid == 4:
+    elif cid == 4:
         set_dev_id(tn, cmd, arg)
     else:
         not_recog_cmd(cmd)
