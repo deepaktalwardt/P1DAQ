@@ -17,6 +17,7 @@ from ubidots import ApiClient
 import Adafruit_MCP9808.MCP9808 as int_temp
 
 
+
 ############ Variables and Setup #############
 ## File Saving
 dev_ids = ["c1c3", "c1c8", "c1c9", "c1b2", "c1b4"]
@@ -36,14 +37,57 @@ fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc",
               "Relative Humidity (%)",
               "Time (UT)"]
 
-folder_name = "/media/pi/Clarity/ClarityData/"
-num_file = len([f for f in os.listdir(folder_name)]) + 1
-file_name = folder_name + "DataFile" + str(num_file) + ".csv"
+log_fieldnames = ['tn',
+                  'sn',
+                  'cid',
+                  'cmd',
+                  'arg']
 
-# Initialize File to save
-with open(file_name, "a") as csvfile:
+tz_dict = {'-11:00' :   'US/Samoa',
+           '-10:00' :   'Pacific/Honolulu',
+           '-09:00' :   'US/Alaska',
+           '-08:00' :   'US/Pacific-New',
+           '-07:00' :   'US/Mountain',
+           '-06:00' :   'US/Central',
+           '-05:00' :   'US/Eastern',
+           '-04:00' :   'America/Antigua',
+           '-03:00' :   'America/Araguaina',
+           '-02:00' :   'Brazil/DeNoronha',
+           '-01:00' :   'Atlantic/Cape_Verde',
+           '+00:00' :   'Europe/London',
+           '+01:00' :   'Africa/Windhoek',
+           '+02:00' :   'Africa/Blantyre',
+           '+03:00' :   'Africa/Addis_Adaba',
+           '+04:00' :   'Asia/Baku',
+           '+05:00' :   'Asia/Ashgabat',
+           '+05:30' :   'Asia/Calcutta',
+           '+06:00' :   'Indian/Chagos',
+           '+07:00' :   'Indian/Christmas',
+           '+08:00' :   'Singapore',
+           '+09:00' :   'Asia/Dili',
+           '+10:00' :   'Pacific/Yap'
+           '+11:00' :   'Pacific/Bougainville'  
+            } # Add half/quarter time zones later
+
+folder_name_1 = "/media/pi/Clarity/ClarityData/"
+folder_name_2 = "/media/pi/Clarity/Logs/"
+
+num_file_1 = len([f for f in os.listdir(folder_name_1)]) + 1
+file_name_1 = folder_name_1 + "DataFile" + str(num_file) + ".csv"
+
+num_file_2 = len([f for f in os.listdir(folder_name_2)]) + 1
+file_name_2 = folder_name_2 + "LogFile" + str(num_file) + ".csv"
+
+# Initialize Files to save readings and logs
+with open(file_name_1, "a") as csvfile:
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
+    print('Readings at: ' + file_name_1)
+
+with open(file_name_2, "a") as csvfile:
+    writer = csv.DictWriter(csvfile, fieldnames=log_fieldnames)
+    writer.writeheader()
+    print('Logs at: ' + file_name_2)
 
 ## Internal Temperature Sensor Initialize
 int_temp_sensor = int_temp.MCP9808()
@@ -72,7 +116,7 @@ for dev_id in DEVICE_IDS:
     SAMPLING_TIMES[dev_id] = 1 # Default set to 1, can be changed later
 
 ### Remove this!!!!!
-SAMPLING_TIMES['c1c8'] = 2
+# SAMPLING_TIMES['c1c8'] = 2
 
 # Populate SAMPLE_NUMBERS
 for dev_id in DEVICE_IDS:
@@ -87,6 +131,9 @@ print("Curr_Mass_init: " + str(CURR_MASS_DATA))
 for dev_id in DEVICE_IDS:
     CURR_NUM_DATA.setdefault(dev_id, list())
 print("Curr_Num_init: " + str(CURR_NUM_DATA))
+
+
+
 ############ Helper Functions ###############
 ## MQTT Clients Callback functions
 # For client_1
@@ -97,8 +144,10 @@ def on_connect_1(client, data, flags, rc):
     print('Client 1 Connected, rc: ' + str(rc))
 
 # For client_2
-def on_message_2(client, userdata, mid):
-    print("mid: " + str(mid))
+def on_message_2(client, userdata, msg):
+    print('Command from ' + msg.topic + ' received')
+    decode_command(msg.payload)
+    command_record(msg.payload)
 
 def on_subscribe_2(client, userdata, mid, granted_qos):
     print("Subscribed: "+str(mid)+" "+str(granted_qos))
@@ -106,24 +155,31 @@ def on_subscribe_2(client, userdata, mid, granted_qos):
 def on_connect_2(client, data, flags, rc):
     print('Client 2 Connected, rc: ' + str(rc))
 
+def on_publish_2(client, data, flags, rc):
+    print('Command Published:' + str(mid))
+
 ## Sensor Data Acquisition functions
+# Check if the ble_path is recognized
 def known_sensor(ble_path):
     for dev_addr in dev_addrs:
         if dev_addr == ble_path:
             return True
     return False
 
+# Checks and fixes the readings, replaces None with -1
 def check_reading(reading):
     for key in reading.keys():
         if reading.get(key) == None:
             reading[key] = -1
     return reading
 
-def save_to_file(reading):
-    with open(file_name, "a") as file_to_update:
-        updater = csv.DictWriter(file_to_update, fieldnames = fieldnames)
+# Saves a row of readings to an already open file object
+def save_to_file(reading, filename, fields):
+    with open(filename, "a") as file_to_update:
+        updater = csv.DictWriter(file_to_update, fieldnames = fields)
         updater.writerow(reading)
 
+# Averages readings, truncated and not used anymore.
 def avg_readings(reading):
     global counter
     global readings_list
@@ -144,6 +200,7 @@ def avg_readings(reading):
         counter = 0
         return to_return
 
+# Averages readings from a single sensor over a few seconds
 def average_single_reading(data, dev_id):
     if len(CURR_MASS_DATA.get(dev_id)) == 1:
         return (CURR_MASS_DATA[dev_id][0], CURR_NUM_DATA[dev_id][0])
@@ -159,12 +216,14 @@ def average_single_reading(data, dev_id):
         if nc >= 0:
             tot_nc = tot_nc + nc 
             cnt_nc += 1
-    avg_mc = tot_mc/cnt_mc
-    avg_nc = tot_nc/cnt_nc
+    avg_mc = int(tot_mc/cnt_mc)
+    avg_nc = int(tot_nc/cnt_nc)
     data[dev_id + "_mc"] = avg_mc
     data[dev_id + "_nc"] = avg_nc
     return (avg_mc, avg_nc)
 
+# Populates the variables: CURR_MASS_DATA, CURR_NUM_DATA everytime new reading
+# is required.
 def populate_curr_data(data):
     global CURR_MASS_DATA
     global CURR_NUM_DATA
@@ -172,6 +231,12 @@ def populate_curr_data(data):
         CURR_MASS_DATA[dev_id].append(data.get(dev_id + "_mc"))
         CURR_NUM_DATA[dev_id].append(data.get(dev_id + "_nc"))
 
+# Increments sample number as it is sent to the broker
+def increment_sn(dev_id):
+    global SAMPLE_NUMBERS
+    SAMPLE_NUMBERS[dev_id] = SAMPLE_NUMBERS.get(dev_id) + 1
+
+# Gets sensor readings as a dictionary from Bluetooth stack
 def get_sensor_reading():
     to_return = dict.fromkeys(fieldnames)
     start_time = time.time()
@@ -194,8 +259,7 @@ def get_sensor_reading():
     return to_return
 
 ## MQTT JSON Packets generation
-
-# Single sensor reading JSON
+# Generates Single sensor reading JSON to be sent to the MQTT Broker by client 1
 def sensor_json(data, dev_id):
     # Increment SAMPLE_NUMBER to be sent
     increment_sn(dev_id)
@@ -240,9 +304,121 @@ def sensor_json(data, dev_id):
     print('JSON packet sent: ' + jsonized)
     return jsonized
 
-# Command JSON decode
+# Decode Command Response JSON
+# Current commands include the following:
+# cid: 1, cmd: set_st, arg: number of samples at 2.5 sec each
+#     (example: 4 samples = 10 sec, 12 samples = 30 sec), es: success/fail
+# cid: 2, cmd: get_st, arg: None, es: sampling time/fail
+# cid: 3, cmd: set_clock, arg: time in isoformat+time difference to be added/subt
+#     es: success/fail
+# cid: 4, cmd: set_dev_id, arg: name in the correct format, es: success/fail
+def decode_command(command):
+    j_com = json.loads(str(command)[2:-1])
+    tn = j_com.get('c').get('tn')
+    sn = j_com.get('c').get('sn')
+    cid = j_com.get('c').get('cid')
+    cmd = j_com.get('c').get('cmd')
+    arg = j_com.get('c').get('arg')
+    ts = j_com.get('ts')
+    if cid == 1:
+        set_st(tn, sn, cid, cmd, arg)
+    else if cid == 2:
+        get_st(tn, sn, cid, cmd)
+    else if cid == 3:
+        arg = arg[-6:]
+        set_clock(tn, sn, cid, cmd, arg)
+    else if cid == 4:
+        set_dev_id(tn, cmd, arg)
+    else:
+        not_recog_cmd(cmd)
 
-# Command Response JSON 
+# Create Command Response JSON packet to be sent to the MQTT Broker by client 2
+def cmd_resp_json(tn, sn, cid, cmd, es):
+    # Initialize all JSONs
+    to_send = {}
+    c = {}
+
+    # Populate individual JSONs
+    c['tn'] = tn
+    c['sn'] =  sn
+    c['cid'] = cid
+    c['cmd'] = cmd
+    c['es'] = es
+
+    ts = datetime.datetime.now().isoformat()
+
+    to_send['c'] = c
+    to_send['ts'] = ts
+    return json.dumps(to_send)
+
+## Command Execution functions
+# Sets a new sampling time for the given device ID
+def set_st(tn, sn, cid, cmd, arg):
+    global SAMPLING_TIMES
+    dev_id = tn[-4:]
+    if cmd == 'set_st':
+        SAMPLING_TIMES[dev_id] = arg
+        print('Command Success')
+        es = 'success'
+        pub_cmd_response(tn, sn, cid, cmd, es)
+    else:
+        print('Command cmd does not match cid')
+        es = 'fail'
+        pub_cmd_response(tn, sn, cid, cmd, es)
+
+# Gets the sampling time for the given device number
+def get_st(tn, sn, cid, cmd):
+    dev_id = tn[-4:]
+    if cmd == 'get_st':
+        es = SAMPLING_TIMES[dev_id]
+        print('Command Success')
+        pub_cmd_response(tn, sn, cid, cmd, es)
+    else:
+        print('Command cmd does not match cid')
+        es = 'fail'
+        pub_cmd_response(tn, sn, cid, cmd, es)
+
+# Sets the local clock timezone for the Raspberry Pi
+def set_clock(tn, sn, cid, cmd, arg):
+    dev_id = tn[-4:]
+    if cmd == 'set_clock':
+        new_tz = tz_dict[arg]
+        os.environ['TZ'] = new_tz
+        time.tzset()
+        es = 'success'
+        pub_cmd_response(tn, sn, cid, cmd, es)
+    else:
+        print('Command cmd does not match cid')
+        es = 'fail'
+        pub_cmd_response(tn, sn, cid, cmd, es)
+
+# Resets the device ID for the device
+#---------->def set_dev_id(tn, sn, cid, cmd, arg):
+
+# Sends a fail execution status if the cid is not recognized
+#---------->def not_recog_cmd(tn, sn, cid, cmd):
+
+# Save commands to a file for record
+def command_record(command):
+    to_save = {}
+    j_com = json.loads(str(command)[2:-1])
+    tn = j_com.get('c').get('tn')
+    sn = j_com.get('c').get('sn')
+    cid = j_com.get('c').get('cid')
+    cmd = j_com.get('c').get('cmd')
+    arg = j_com.get('c').get('arg')
+    ts = j_com.get('ts')
+
+    to_save['tn'] = tn
+    to_save['sn'] = sn
+    to_save['cid'] = cid
+    to_save['cmd'] = cmd
+    to_save['arg'] = arg
+    to_save['ts'] = ts
+    to_save['es'] = es
+
+    save_to_file(to_save, file_name_2, log_fieldnames)
+
 
 ## MQTT Publishing functions
 # Publish Sensor Reading
@@ -267,16 +443,10 @@ def pub_sensor_reading(sensor_data):
             CURR_MASS_DATA[DEVICE_ID] = []
 
 # Publish Command Response
-
-
-## Command Setting functions
-def set_st(dev_id, new_st):
-    global SAMPLING_TIMES
-    SAMPLING_TIMES[dev_id] = new_st
-
-def increment_sn(dev_id):
-    global SAMPLE_NUMBERS
-    SAMPLE_NUMBERS[dev_id] = SAMPLE_NUMBERS.get(dev_id) + 1
+def pub_cmd_response(dev_id, tn, sn, cid, cmd, es):
+    jsonized = cmd_resp_json(tn, sn, cid, cmd, es)
+    dev_id = tn[-4:]
+    client_2.publish(TOPIC_DOWN +'/'+dev_id, jsonized, qos=1)
 
 # Setup MQTT Clients
 client_1                =   paho.Client(client_id='P1DAQ_readings')
@@ -288,16 +458,17 @@ client_2                =   paho.Client(client_id='P1DAQ_controls')
 client_2.on_message     =   on_message_2
 client_2.on_subscribe   =   on_subscribe_2
 client_2.on_connect     =   on_connect_2
+client_2.on_publish     =   on_publish_2
 #client_2.username_pw_set(USERNAME, PASSWORD)
 
 client_1.connect(PUBLIC_BROKER, port=1883)
 client_1.loop_start()
-#client_2.connect(PUBLIC_BROKER, port=1883)
-#client_2.loop_forever()
+client_2.connect(PUBLIC_BROKER, port=1883)
+client_2.loop_start()
 
 for i in range(0,6):
     readings = get_sensor_reading()
-    save_to_file(readings)
+    save_to_file(readings, file_name_1, fieldnames)
     print('Curr_Mass: ' + str(CURR_MASS_DATA))
     print('Curr_Num: ' + str(CURR_NUM_DATA))
     pub_sensor_reading(readings)
