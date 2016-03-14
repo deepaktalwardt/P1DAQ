@@ -446,7 +446,7 @@ def pub_sensor_reading(sensor_data):
 def pub_cmd_response(dev_id, tn, sn, cid, cmd, es):
     jsonized = cmd_resp_json(tn, sn, cid, cmd, es)
     dev_id = tn[-4:]
-    client_2.publish(TOPIC_DOWN +'/'+dev_id, jsonized, qos=1)
+    client_2.publish(TOPIC_DOWN[dev_id], jsonized, qos=1)
 
 # Setup MQTT Clients
 client_1                =   paho.Client(client_id='P1DAQ_readings')
@@ -459,13 +459,14 @@ client_2.on_message     =   on_message_2
 client_2.on_subscribe   =   on_subscribe_2
 client_2.on_connect     =   on_connect_2
 client_2.on_publish     =   on_publish_2
-client_2.subscribe(TOPIC_UP + '/#', qos=1)
 #client_2.username_pw_set(USERNAME, PASSWORD)
 
 client_1.connect(PUBLIC_BROKER, port=1883)
 client_1.loop_start()
 client_2.connect(PUBLIC_BROKER, port=1883)
 client_2.loop_start()
+
+client_2.subscribe(TOPIC_UP + '/#', qos=1)
 
 #for i in range(0,6):
 while True:

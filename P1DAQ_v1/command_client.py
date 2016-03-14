@@ -54,7 +54,7 @@ client.on_message = on_message
 client.connect('broker.hivemq.com', port=1883)
 client.loop_start()
 
-client.subscribe(topic_sub, qos=1)
+#client.subscribe(topic_sub, qos=1)
 
 for tz in tz_test:
 	command = build_set_clock_command(tn, sn, cid, cmd, tz)
