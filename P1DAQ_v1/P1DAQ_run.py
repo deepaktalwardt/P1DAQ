@@ -473,10 +473,10 @@ for DEVICE_ID in DEVICE_IDS:
     client_1.subscribe(TOPIC_DOWN[DEVICE_ID], qos=1)
 
 #for i in range(0,6):
-for i in range(0,1000):
-    readings = get_sensor_reading()
-    save_to_file(readings, file_name_1, fieldnames)
-    print('Curr_Mass: ' + str(CURR_MASS_DATA))
-    print('Curr_Num: ' + str(CURR_NUM_DATA))
-    pub_sensor_reading(readings)
-    print('----------------------------------------------------')
+# for i in range(0,1000):
+#     readings = get_sensor_reading()
+#     save_to_file(readings, file_name_1, fieldnames)
+#     print('Curr_Mass: ' + str(CURR_MASS_DATA))
+#     print('Curr_Num: ' + str(CURR_NUM_DATA))
+#     pub_sensor_reading(readings)
+#     print('----------------------------------------------------')
