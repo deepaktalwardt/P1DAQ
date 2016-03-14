@@ -465,7 +465,7 @@ client_1.on_subscribe   =   on_subscribe_1
 #client_2.username_pw_set(USERNAME, PASSWORD)
 
 client_1.connect(PUBLIC_BROKER, port=1883)
-client_1.loop_start()
+client_1.loop_forever()
 #client_2.connect_async(PUBLIC_BROKER, port=1883)
 #client_2.loop_start()
 print('here')
