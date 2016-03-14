@@ -326,8 +326,11 @@ def decode_command(command):
     elif cid == 2:
         get_st(tn, sn, cid, cmd)
     elif cid == 3:
-        arg = arg[-6:]
-        set_clock(tn, sn, cid, cmd, arg)
+        if arg is not None:
+            arg = arg[-6:]
+            set_clock(tn, sn, cid, cmd, arg)
+        else:
+            print('Something else recieved.')
     elif cid == 4:
         set_dev_id(tn, cmd, arg)
     else:
