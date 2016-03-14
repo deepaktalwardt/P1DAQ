@@ -77,7 +77,6 @@ def build_command(tn, sn, cid, cmd, arg):
     c['cmd'] = cmd
 
     ts = datetime.datetime.now().isoformat()
-    arg = ts
 
     c['arg'] = arg
 
@@ -93,6 +92,7 @@ def build_command(tn, sn, cid, cmd, arg):
 
 for st in st_test:
 	command = build_command(tn, 100, 1, 'set_st', st)
+	(rc, mid) = client.publish(topic_pub, command, qos=1)
 	sleep_time = 2.1*st*2.5
 	print('Sleeping for: ' + str(sleep_time) + 'sec')
 	time.sleep(sleep_time)

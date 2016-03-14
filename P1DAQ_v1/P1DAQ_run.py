@@ -324,7 +324,10 @@ def decode_command(command):
     print("arg: " + str(arg))
     ts = j_com.get('ts')
     if cid == 1:
-        set_st(tn, sn, cid, cmd, arg)
+        if arg is not None:
+            set_st(tn, sn, cid, cmd, arg)
+        else:
+            print('Something else recieved. IGNORED')
     elif cid == 2:
         get_st(tn, sn, cid, cmd)
     elif cid == 3:
@@ -332,9 +335,12 @@ def decode_command(command):
             arg = arg[-6:]
             set_clock(tn, sn, cid, cmd, arg)
         else:
-            print('Something else recieved.')
+            print('Something else recieved. IGNORED')
     elif cid == 4:
-        set_dev_id(tn, cmd, arg)
+        if arg is not None:
+            set_dev_id(tn, cmd, arg)
+        else:
+            print('Something else recieved. IGNORED')
     else:
         not_recog_cmd(cmd)
 
