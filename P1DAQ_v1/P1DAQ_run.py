@@ -465,15 +465,13 @@ client_1.on_subscribe   =   on_subscribe_1
 #client_2.username_pw_set(USERNAME, PASSWORD)
 
 client_1.connect(PUBLIC_BROKER, port=1883)
-client_1.loop_start()
 #client_2.connect_async(PUBLIC_BROKER, port=1883)
 #client_2.loop_start()
-print('here')
 
 for DEVICE_ID in DEVICE_IDS:
     client_1.subscribe(TOPIC_DOWN[DEVICE_ID], qos=1)
 
-time.sleep(5)
+client_1.loop_forever()
 #for i in range(0,6):
 # for i in range(0,1000):
 #     readings = get_sensor_reading()
