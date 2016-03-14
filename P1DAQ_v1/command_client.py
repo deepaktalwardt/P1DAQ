@@ -28,6 +28,9 @@ tz_test = ['+04:00',
 def on_publish(client, userdata, mid):
 	print("Published Command: "+str(mid))
 
+def on_subscribe(client, userdata, mid, granted_qos):
+	print("Subscribed: "+str(mid)+" "+str(granted_qos))
+
 def on_message(client, userdata, msg):
 	print(str(msg.payload))
 
@@ -54,10 +57,11 @@ def build_set_clock_command(tn, sn, cid, cmd, tz):
 client = paho.Client()
 client.on_publish = on_publish
 client.on_message = on_message
+client.on_subscribe = on_subscribe
 client.connect('broker.hivemq.com', port=1883)
 client.loop_start()
 
-#client.subscribe(topic_sub, qos=1)
+client.subscribe(topic_sub, qos=1)
 
 for tz in tz_test:
 	command = build_set_clock_command(tn, sn, cid, cmd, tz)
