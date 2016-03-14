@@ -25,6 +25,8 @@ tz_test = ['+04:00',
 		   '-08:00',
 		   '-10:00']
 
+st_test = [10, 5, 6, 1, 4]
+
 def on_publish(client, userdata, mid):
 	print("Published Command: "+str(mid))
 
