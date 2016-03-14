@@ -466,7 +466,8 @@ client_1.loop_start()
 client_2.connect(PUBLIC_BROKER, port=1883)
 client_2.loop_start()
 
-for i in range(0,6):
+#for i in range(0,6):
+while True:
     readings = get_sensor_reading()
     save_to_file(readings, file_name_1, fieldnames)
     print('Curr_Mass: ' + str(CURR_MASS_DATA))
