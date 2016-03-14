@@ -360,11 +360,11 @@ def set_st(tn, sn, cid, cmd, arg):
         SAMPLING_TIMES[dev_id] = arg
         print('Command Success')
         es = 'success'
-        pub_cmd_response(tn, sn, cid, cmd, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, es)
     else:
         print('Command cmd does not match cid')
         es = 'fail'
-        pub_cmd_response(tn, sn, cid, cmd, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, es)
 
 # Gets the sampling time for the given device number
 def get_st(tn, sn, cid, cmd):
@@ -372,11 +372,11 @@ def get_st(tn, sn, cid, cmd):
     if cmd == 'get_st':
         es = SAMPLING_TIMES[dev_id]
         print('Command Success')
-        pub_cmd_response(tn, sn, cid, cmd, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, es)
     else:
         print('Command cmd does not match cid')
         es = 'fail'
-        pub_cmd_response(tn, sn, cid, cmd, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, es)
 
 # Sets the local clock timezone for the Raspberry Pi
 def set_clock(tn, sn, cid, cmd, arg):
@@ -386,11 +386,11 @@ def set_clock(tn, sn, cid, cmd, arg):
         os.environ['TZ'] = new_tz
         time.tzset()
         es = 'success'
-        pub_cmd_response(tn, sn, cid, cmd, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, es)
     else:
         print('Command cmd does not match cid')
         es = 'fail'
-        pub_cmd_response(tn, sn, cid, cmd, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, es)
 
 # Resets the device ID for the device
 #---------->def set_dev_id(tn, sn, cid, cmd, arg):
