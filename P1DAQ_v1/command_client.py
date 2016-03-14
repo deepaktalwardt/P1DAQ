@@ -43,6 +43,9 @@ def build_set_clock_command(tn, sn, cid, cmd, tz):
     c['cmd'] = cmd
 
     ts = datetime.datetime.now().isoformat() + tz
+    arg = ts
+
+    c['arg'] = arg
 
     to_send['c'] = c
     to_send['ts'] = ts
