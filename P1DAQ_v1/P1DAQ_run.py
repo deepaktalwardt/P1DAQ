@@ -25,7 +25,7 @@ dev_ids = ["c1c3", "c1c8", "c1c9", "c1b2", "002d"]
 dev_addrs = ["fa:c8:d9:40:4e:81",
              "d8:3c:9b:90:f3:d9",
              "f3:8f:db:af:9a:45",
-             "d5:07:7e:65:e7:45",]
+             "d5:07:7e:65:e7:45",
              "ed:3c:d4:9c:ff:74"]
 
 fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc", 
