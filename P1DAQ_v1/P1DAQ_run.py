@@ -302,7 +302,7 @@ def sensor_json(data, dev_id):
     to_send["d"] = d
     to_send["ts"] = time_now
     jsonized = json.dumps(to_send)
-    print('JSON packet sent: ' + jsonized)
+    #print('JSON packet sent: ' + jsonized)
     return jsonized
 
 # Decode Command Response JSON
@@ -316,10 +316,12 @@ def sensor_json(data, dev_id):
 def decode_command(command):
     j_com = json.loads(str(command)[2:-1])
     tn = j_com.get('c').get('tn')
+    print("tn: " + str(tn))
     sn = j_com.get('c').get('sn')
     cid = j_com.get('c').get('cid')
     cmd = j_com.get('c').get('cmd')
     arg = j_com.get('c').get('arg')
+    print("arg: " + str(arg))
     ts = j_com.get('ts')
     if cid == 1:
         set_st(tn, sn, cid, cmd, arg)
