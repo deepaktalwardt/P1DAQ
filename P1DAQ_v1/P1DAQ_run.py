@@ -468,6 +468,7 @@ client_1.connect(PUBLIC_BROKER, port=1883)
 client_1.loop_start()
 #client_2.connect_async(PUBLIC_BROKER, port=1883)
 #client_2.loop_start()
+print('here')
 
 for DEVICE_ID in DEVICE_IDS:
     client_1.subscribe(TOPIC_DOWN[DEVICE_ID], qos=1)
