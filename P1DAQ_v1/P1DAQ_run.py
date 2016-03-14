@@ -68,7 +68,7 @@ tz_dict = {'-11:00' :   'US/Samoa',
            '+09:00' :   'Asia/Dili',
            '+10:00' :   'Pacific/Yap',
            '+11:00' :   'Pacific/Bougainville'  
-            } # Add half/quarter time zones later
+            } # Add half/quarter time zones
 
 folder_name_1 = "/media/pi/Clarity/ClarityData/"
 folder_name_2 = "/media/pi/Clarity/Logs/"
@@ -145,19 +145,19 @@ def on_connect_1(client, data, flags, rc):
     print('Client 1 Connected, rc: ' + str(rc))
 
 # For client_2
-def on_message_2(client, userdata, msg):
+def on_message_1(client, userdata, msg):
     print('Command from ' + msg.topic + ' received')
     decode_command(msg.payload)
     command_record(msg.payload)
 
-def on_subscribe_2(client, userdata, mid, granted_qos):
+def on_subscribe_1(client, userdata, mid, granted_qos):
     print("Subscribed: "+str(mid)+" "+str(granted_qos))
  
-def on_connect_2(client, data, flags, rc):
-    print('Client 2 Connected, rc: ' + str(rc))
+# def on_connect_2(client, data, flags, rc):
+#     print('Client 2 Connected, rc: ' + str(rc))
 
-def on_publish_2(client, data, flags, rc):
-    print('Command Published:' + str(mid))
+# def on_publish_2(client, data, flags, rc):
+#     print('Command Published:' + str(mid))
 
 ## Sensor Data Acquisition functions
 # Check if the ble_path is recognized
@@ -447,27 +447,30 @@ def pub_sensor_reading(sensor_data):
 def pub_cmd_response(dev_id, tn, sn, cid, cmd, es):
     jsonized = cmd_resp_json(tn, sn, cid, cmd, es)
     dev_id = tn[-4:]
-    client_2.publish(TOPIC_DOWN[dev_id], jsonized, qos=1)
+    client_1.publish(TOPIC_DOWN[dev_id], jsonized, qos=1)
 
 # Setup MQTT Clients
 client_1                =   paho.Client(client_id='P1DAQ_readings')
 client_1.on_publish     =   on_publish_1
 client_1.on_connect     =   on_connect_1
+client_1.on_message     =   on_message_1
+client_1.on_subscribe   =   on_subscribe_1
 #client_1.username_pw_set(USERNAME, PASSWORD)
 
-client_2                =   paho.Client(client_id='P1DAQ_controls')
-client_2.on_message     =   on_message_2
-client_2.on_subscribe   =   on_subscribe_2
-client_2.on_connect     =   on_connect_2
-client_2.on_publish     =   on_publish_2
+#client_2                =   paho.Client(client_id='P1DAQ_controls')
+#client_2.on_message     =   on_message_2
+#client_2.on_subscribe   =   on_subscribe_2
+#client_2.on_connect     =   on_connect_2
+#client_2.on_publish     =   on_publish_2
 #client_2.username_pw_set(USERNAME, PASSWORD)
 
 client_1.connect(PUBLIC_BROKER, port=1883)
 client_1.loop_start()
-client_2.connect_async(PUBLIC_BROKER, port=1883)
-client_2.loop_start()
+#client_2.connect_async(PUBLIC_BROKER, port=1883)
+#client_2.loop_start()
 
-client_2.subscribe(TOPIC_UP + '/#', qos=1)
+for DEVICE_ID in DEVICE_IDS:
+    client_1.subscribe(TOPIC_DOWN[DEVICE_ID], qos=1)
 
 #for i in range(0,6):
 for i in range(0,1000):
