@@ -12,7 +12,7 @@ import time
 ORG_ID          =   "CLMTCO"
 DEVICE_TYPE     =   "P1"
 dev_id = "c1c8"
-topic_sub = 'iot/SSRIOT/P1/#'
+topic_sub = 'iot/SSRIOT/P1/' + dev_id
 topic_pub = "iot/SSRIOT/P1/" + dev_id
 tn = "d-" + ORG_ID + "-" + DEVICE_TYPE + "-" + dev_id
 sn = 100
