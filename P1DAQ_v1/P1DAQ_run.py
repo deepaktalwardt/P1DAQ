@@ -415,7 +415,7 @@ def command_record(command):
     to_save['cmd'] = cmd
     to_save['arg'] = arg
     to_save['ts'] = ts
-    to_save['es'] = es
+    #to_save['es'] = es
 
     save_to_file(to_save, file_name_2, log_fieldnames)
 
