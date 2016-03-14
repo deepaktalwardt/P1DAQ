@@ -17,7 +17,7 @@ topic_pub = "iot/SSRIOT/P1/" + dev_id
 tn = "d-" + ORG_ID + "-" + DEVICE_TYPE + "-" + dev_id
 sn = 100
 cid = 3
-cmd = 'set_clock'
+cmd = 'set_clock' #
 
 tz_test = ['+04:00',
 		   '+08:00',
