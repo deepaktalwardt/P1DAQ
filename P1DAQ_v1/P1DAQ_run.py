@@ -459,6 +459,7 @@ client_2.on_message     =   on_message_2
 client_2.on_subscribe   =   on_subscribe_2
 client_2.on_connect     =   on_connect_2
 client_2.on_publish     =   on_publish_2
+client_2.subscribe(TOPIC_UP + '/#', qos=1)
 #client_2.username_pw_set(USERNAME, PASSWORD)
 
 client_1.connect(PUBLIC_BROKER, port=1883)
