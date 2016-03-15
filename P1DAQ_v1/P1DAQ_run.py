@@ -404,7 +404,7 @@ def set_clock(tn, sn, cid, cmd, arg):
     dev_id = tn[-4:]
     if cmd == 'set_clock':
         new_tz = tz_dict[arg]
-        if new_tz in tz_dict.keys()
+        if new_tz in tz_dict.keys():
             os.environ['TZ'] = new_tz
             time.tzset()
             es = 'success'
