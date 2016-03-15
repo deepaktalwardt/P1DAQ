@@ -182,25 +182,25 @@ def save_to_file(reading, filename, fields):
         updater.writerow(reading)
 
 # Averages readings, truncated and not used anymore.
-def avg_readings(reading):
-    global counter
-    global readings_list
-    if counter < 1:
-        readings_list.append(reading)
-        return reading
-    else:
-        to_return = dict.fromkeys(fieldnames)
-        for k in readings_list[0].keys():
-            if not k == "Time (UT)":
-                v = 0
-                for r in readings_list:
-                    v += r.get(k)
-                v = v/5
-                to_return[k] = v
-            else:
-                to_return[k] = readings_list[0].get(k)
-        counter = 0
-        return to_return
+# def avg_readings(reading):
+#     global counter
+#     global readings_list
+#     if counter < 1:
+#         readings_list.append(reading)
+#         return reading
+#     else:
+#         to_return = dict.fromkeys(fieldnames)
+#         for k in readings_list[0].keys():
+#             if not k == "Time (UT)":
+#                 v = 0
+#                 for r in readings_list:
+#                     v += r.get(k)
+#                 v = v/5
+#                 to_return[k] = v
+#             else:
+#                 to_return[k] = readings_list[0].get(k)
+#         counter = 0
+#         return to_return
 
 # Averages readings from a single sensor over a few seconds
 def average_single_reading(data, dev_id):
@@ -378,10 +378,15 @@ def set_st(tn, sn, cid, cmd, arg):
     global SAMPLING_TIMES
     dev_id = tn[-4:]
     if cmd == 'set_st':
-        SAMPLING_TIMES[dev_id] = arg
-        print('Command Success')
-        es = 'success'
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
+        if arg >= 1 and arg <= 1440:
+            SAMPLING_TIMES[dev_id] = arg
+            print('Command Success')
+            es = 'success'
+            pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
+        else:
+            print('FAIL: Sampling time not in range')
+            es = 'fail'
+            pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
     else:
         print('FAIL: Command cmd does not match cid')
         es = 'fail'
@@ -508,11 +513,11 @@ while con:
 for DEVICE_ID in DEVICE_IDS:
     client_1.subscribe(TOPIC_DOWN[DEVICE_ID], qos=1)
 
-con = True:
-while con:
+loop = True:
+while loop:
     try:
         client_1.loop_start()
-        con = False
+        loop = False
     except:
         print('Retry loop')
 #for i in range(0,6):
