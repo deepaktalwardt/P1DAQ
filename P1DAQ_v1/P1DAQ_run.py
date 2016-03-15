@@ -148,7 +148,7 @@ def on_connect_1(client, data, flags, rc):
 def on_message_1(client, userdata, msg):
     print('Command from ' + msg.topic + ' received')
     decode_command(msg.payload)
-    command_record(msg.payload)
+    # command_record(msg.payload)
 
 def on_subscribe_1(client, userdata, mid, granted_qos):
     print("Subscribed: "+str(mid)+" "+str(granted_qos))
@@ -413,7 +413,7 @@ def set_clock(tn, sn, cid, cmd, arg):
 # Save commands to a file for record
 def command_record(command):
     to_save = {}
-    j_com = json.loads(str(command)[2:-1])
+    j_com = json.loads(str(command))
     tn = j_com.get('c').get('tn')
     sn = j_com.get('c').get('sn')
     cid = j_com.get('c').get('cid')
