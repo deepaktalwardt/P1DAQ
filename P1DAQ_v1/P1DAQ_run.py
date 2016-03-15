@@ -404,13 +404,15 @@ def set_clock(tn, sn, cid, cmd, arg):
     dev_id = tn[-4:]
     if cmd == 'set_clock':
         new_tz = tz_dict[arg]
-        if new_tz in tz_dict.keys():
+        if arg in tz_dict:
             os.environ['TZ'] = new_tz
             time.tzset()
             es = 'success'
             pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
         else:
             print('FAIL: Timezone not supported')
+            es = 'fail'
+            pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
     else:
         print('FAIL: Command cmd does not match cid')
         es = 'fail'
