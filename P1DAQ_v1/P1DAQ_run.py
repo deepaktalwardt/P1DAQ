@@ -328,26 +328,30 @@ def decode_command(command):
     arg = j_com.get('c').get('arg')
     print("arg: " + str(arg))
     ts = j_com.get('ts')
-    if cid == 1:
-        if arg is not None:
-            set_st(tn, sn, cid, cmd, arg)
+    if tn[-4:] in dev_ids:
+        if cid == 1:
+            if arg is not None:
+                set_st(tn, sn, cid, cmd, arg)
+            else:
+                print('Something else recieved. IGNORED')
+        elif cid == 2:
+            get_st(tn, sn, cid, cmd)
+        elif cid == 3:
+            if arg is not None:
+                arg = arg[-6:]
+                set_clock(tn, sn, cid, cmd, arg)
+            else:
+                print('Something else recieved. IGNORED')
+        elif cid == 4:
+            if arg is not None:
+                set_dev_id(tn, cmd, arg)
+            else:
+                print('Something else recieved. IGNORED')
         else:
-            print('Something else recieved. IGNORED')
-    elif cid == 2:
-        get_st(tn, sn, cid, cmd)
-    elif cid == 3:
-        if arg is not None:
-            arg = arg[-6:]
-            set_clock(tn, sn, cid, cmd, arg)
-        else:
-            print('Something else recieved. IGNORED')
-    elif cid == 4:
-        if arg is not None:
-            set_dev_id(tn, cmd, arg)
-        else:
-            print('Something else recieved. IGNORED')
+            not_recog_cmd(tn, sn, cid, cmd, arg)
     else:
-        not_recog_cmd(cmd)
+        print('Device ID (tn) not recognized.')
+        pub_cmd_response(tn[-4:], tn, sn, cid, cmd, '', 'fail')
 
 # Create Command Response JSON packet to be sent to the MQTT Broker by client 2
 def cmd_resp_json(tn, sn, cid, cmd, es):
@@ -377,11 +381,11 @@ def set_st(tn, sn, cid, cmd, arg):
         SAMPLING_TIMES[dev_id] = arg
         print('Command Success')
         es = 'success'
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
     else:
         print('Command cmd does not match cid')
         es = 'fail'
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
 
 # Gets the sampling time for the given device number
 def get_st(tn, sn, cid, cmd):
@@ -389,41 +393,45 @@ def get_st(tn, sn, cid, cmd):
     if cmd == 'get_st':
         es = SAMPLING_TIMES[dev_id]
         print('Command Success')
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
     else:
         print('Command cmd does not match cid')
         es = 'fail'
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
 
 # Sets the local clock timezone for the Raspberry Pi
 def set_clock(tn, sn, cid, cmd, arg):
     dev_id = tn[-4:]
     if cmd == 'set_clock':
         new_tz = tz_dict[arg]
-        os.environ['TZ'] = new_tz
-        time.tzset()
-        es = 'success'
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, es)
+        if new_tz 
+            os.environ['TZ'] = new_tz
+            time.tzset()
+            es = 'success'
+            pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
     else:
         print('Command cmd does not match cid')
         es = 'fail'
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
 
 # Resets the device ID for the device
 #---------->def set_dev_id(tn, sn, cid, cmd, arg):
 
 # Sends a fail execution status if the cid is not recognized
-#---------->def not_recog_cmd(tn, sn, cid, cmd):
+def not_recog_cmd(tn, sn, cid, cmd, arg):
+    print('Command not recognized')
+    dev_id = tn[-4:]
+    es = 'fail'
+    pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
 
 # Save commands to a file for record
-def command_record(command):
+def command_record(command, arg):
     to_save = {}
     j_com = json.loads(str(command))
     tn = j_com.get('c').get('tn')
     sn = j_com.get('c').get('sn')
     cid = j_com.get('c').get('cid')
     cmd = j_com.get('c').get('cmd')
-    arg = j_com.get('c').get('arg')
     es = j_com.get('c').get('es')
     ts = j_com.get('ts')
 
@@ -461,11 +469,11 @@ def pub_sensor_reading(sensor_data):
             CURR_MASS_DATA[DEVICE_ID] = []
 
 # Publish Command Response
-def pub_cmd_response(dev_id, tn, sn, cid, cmd, es):
+def pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es):
     jsonized = cmd_resp_json(tn, sn, cid, cmd, es)
     dev_id = tn[-4:]
     client_1.publish(TOPIC_DOWN[dev_id], jsonized, qos=1)
-    command_record(jsonized)
+    command_record(jsonized, arg)
 
 # Setup MQTT Clients
 client_1                =   paho.Client(client_id='P1DAQ_readings')
