@@ -7,6 +7,7 @@ import json
 import csv
 import datetime
 import sys
+import random
 import time
 
 ORG_ID          =   "CLMTCO"
@@ -25,7 +26,7 @@ tz_test = ['+04:00',
 		   '-08:00',
 		   '-10:00']
 
-st_test = [10, 5, 6, 1, 4]
+st_test = [2, 5, 8, 1, 4, 1]
 
 def on_publish(client, userdata, mid):
 	print("Published Command: "+str(mid))
@@ -85,14 +86,14 @@ def build_command(tn, sn, cid, cmd, arg):
     return json.dumps(to_send)
 
 
-# for tz in tz_test:
-# 	command = build_set_clock_command(tn, sn, cid, cmd, tz)
-# 	(rc, mid) = client.publish(topic_pub, command, qos=1)
-# 	time.sleep(6)
-
 for st in st_test:
 	command = build_command(tn, 100, 1, 'set_st', st)
 	(rc, mid) = client.publish(topic_pub, command, qos=1)
 	sleep_time = 2.1*st*2.5
 	print('Sleeping for: ' + str(sleep_time) + 'sec')
 	time.sleep(sleep_time)
+	if random.randint(0,10) > 7:
+		command = build_set_clock_command(tn, sn, cid, cmd, random.choice(tz_test.keys()))
+		print('Time command sent: ')
+		(rc, mid) = client.publish(topic_pub, command, qos=1)
+		time.sleep(1)
