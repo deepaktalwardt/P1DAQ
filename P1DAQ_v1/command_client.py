@@ -16,7 +16,7 @@ dev_id = "002d"
 topic_sub = 'iot/SSRIOT/P1/' + dev_id
 topic_pub = "iot/SSRIOT/P1/" + dev_id
 tn = "d-" + ORG_ID + "-" + DEVICE_TYPE + "-" + dev_id
-#sn = 100
+sn = 100
 #cid = 3
 #cmd = 'set_clock' #
 
@@ -92,8 +92,8 @@ for st in st_test:
 	sleep_time = 2.1*st*2.5
 	print('Sleeping for: ' + str(sleep_time) + 'sec')
 	time.sleep(sleep_time)
-	if random.randint(0,10) > 7:
-		command = build_set_clock_command(tn, sn, cid, cmd, random.choice(tz_test.keys()))
+	if random.randint(0,10) > 3:
+		command = build_set_clock_command(tn, sn, 3, 'set_clock', tz_test[random.randint(0,4)])
 		print('Time command sent: ')
 		(rc, mid) = client.publish(topic_pub, command, qos=1)
 		time.sleep(1)
