@@ -484,7 +484,8 @@ for DEVICE_ID in DEVICE_IDS:
 
 client_1.loop_start()
 #for i in range(0,6):
-for i in range(0,1000):
+#for i in range(0,1000):
+while True:
     readings = get_sensor_reading()
     save_to_file(readings, file_name_1, fieldnames)
     print('Curr_Mass: ' + str(CURR_MASS_DATA))
