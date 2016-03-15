@@ -42,7 +42,8 @@ log_fieldnames = ['tn',
                   'cid',
                   'cmd',
                   'arg',
-                  'ts']
+                  'ts',
+                  'es']
 
 tz_dict = {'-11:00' :   'US/Samoa',
            '-10:00' :   'Pacific/Honolulu',
