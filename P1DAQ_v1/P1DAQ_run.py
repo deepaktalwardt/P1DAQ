@@ -333,7 +333,7 @@ def decode_command(command):
             if arg is not None:
                 set_st(tn, sn, cid, cmd, arg)
             else:
-                print('Something else recieved. IGNORED')
+                print('IGNORED')
         elif cid == 2:
             get_st(tn, sn, cid, cmd)
         elif cid == 3:
@@ -341,16 +341,16 @@ def decode_command(command):
                 arg = arg[-6:]
                 set_clock(tn, sn, cid, cmd, arg)
             else:
-                print('Something else recieved. IGNORED')
+                print('IGNORED')
         elif cid == 4:
             if arg is not None:
                 set_dev_id(tn, cmd, arg)
             else:
-                print('Something else recieved. IGNORED')
+                print('IGNORED')
         else:
             not_recog_cmd(tn, sn, cid, cmd, arg)
     else:
-        print('Device ID (tn) not recognized.')
+        print('FAIL: Device ID (tn) not recognized.')
         pub_cmd_response(tn[-4:], tn, sn, cid, cmd, '', 'fail')
 
 # Create Command Response JSON packet to be sent to the MQTT Broker by client 2
@@ -383,7 +383,7 @@ def set_st(tn, sn, cid, cmd, arg):
         es = 'success'
         pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
     else:
-        print('Command cmd does not match cid')
+        print('FAIL: Command cmd does not match cid')
         es = 'fail'
         pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
 
@@ -395,7 +395,7 @@ def get_st(tn, sn, cid, cmd):
         print('Command Success')
         pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
     else:
-        print('Command cmd does not match cid')
+        print('FAIL: Command cmd does not match cid')
         es = 'fail'
         pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
 
@@ -404,13 +404,15 @@ def set_clock(tn, sn, cid, cmd, arg):
     dev_id = tn[-4:]
     if cmd == 'set_clock':
         new_tz = tz_dict[arg]
-        if new_tz 
+        if new_tz in tz_dict.keys()
             os.environ['TZ'] = new_tz
             time.tzset()
             es = 'success'
             pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
+        else:
+            print('FAIL: Timezone not supported')
     else:
-        print('Command cmd does not match cid')
+        print('FAIL: Command cmd does not match cid')
         es = 'fail'
         pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
 
@@ -419,7 +421,7 @@ def set_clock(tn, sn, cid, cmd, arg):
 
 # Sends a fail execution status if the cid is not recognized
 def not_recog_cmd(tn, sn, cid, cmd, arg):
-    print('Command not recognized')
+    print('FAIL: Command not recognized')
     dev_id = tn[-4:]
     es = 'fail'
     pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
