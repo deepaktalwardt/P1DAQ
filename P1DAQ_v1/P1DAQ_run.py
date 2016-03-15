@@ -218,6 +218,10 @@ def average_single_reading(data, dev_id):
         if nc >= 0:
             tot_nc = tot_nc + nc 
             cnt_nc += 1
+    if cnt_nc <= 0:
+        cnt_nc = 1
+    if cnt_mc <= 0:
+        cnt_mc = 1
     avg_mc = int(tot_mc/cnt_mc)
     avg_nc = int(tot_nc/cnt_nc)
     data[dev_id + "_mc"] = avg_mc
