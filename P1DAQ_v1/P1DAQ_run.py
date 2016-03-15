@@ -419,6 +419,7 @@ def command_record(command):
     cid = j_com.get('c').get('cid')
     cmd = j_com.get('c').get('cmd')
     arg = j_com.get('c').get('arg')
+    es = j_com.get('c').get('es')
     ts = j_com.get('ts')
 
     to_save['tn'] = tn
@@ -427,7 +428,7 @@ def command_record(command):
     to_save['cmd'] = cmd
     to_save['arg'] = arg
     to_save['ts'] = ts
-    #to_save['es'] = es
+    to_save['es'] = es
 
     save_to_file(to_save, file_name_2, log_fieldnames)
 
@@ -459,6 +460,7 @@ def pub_cmd_response(dev_id, tn, sn, cid, cmd, es):
     jsonized = cmd_resp_json(tn, sn, cid, cmd, es)
     dev_id = tn[-4:]
     client_1.publish(TOPIC_DOWN[dev_id], jsonized, qos=1)
+    command_record(jsonized)
 
 # Setup MQTT Clients
 client_1                =   paho.Client(client_id='P1DAQ_readings')
