@@ -506,6 +506,7 @@ while con:
         con = False
     except:
         print('Retry connection')
+        client_1.connect(PUBLIC_BROKER, port=1883)
 
 #client_2.connect_async(PUBLIC_BROKER, port=1883)
 #client_2.loop_start()
@@ -520,6 +521,7 @@ while loop:
         loop = False
     except:
         print('Retry loop')
+        client_1.loop_start()
 #for i in range(0,6):
 #for i in range(0,1000):
 while True:
