@@ -499,7 +499,7 @@ client_1.on_subscribe   =   on_subscribe_1
 #client_2.on_publish     =   on_publish_2
 #client_2.username_pw_set(USERNAME, PASSWORD)
 
-con = True:
+con = True
 while con:
     try:
         client_1.connect(PUBLIC_BROKER, port=1883)
@@ -513,7 +513,7 @@ while con:
 for DEVICE_ID in DEVICE_IDS:
     client_1.subscribe(TOPIC_DOWN[DEVICE_ID], qos=1)
 
-loop = True:
+loop = True
 while loop:
     try:
         client_1.loop_start()
