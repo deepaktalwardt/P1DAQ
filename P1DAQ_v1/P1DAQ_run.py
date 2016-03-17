@@ -171,6 +171,7 @@ def handleSms(sms):
     sms.reply(reply_text[1])
     #sms.reply(u'SMS received: "{0}{1}"'.format(sms.text[:20], '...' if len(sms.text) > 20 else ''))
     print('SMS sent.\n')
+    return
 
 def update_user_pass(sms_text):
     global USERNAME
