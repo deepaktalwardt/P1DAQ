@@ -185,6 +185,7 @@ def update_user_pass(sms_text):
         UP_RECEIVED = True
         to_return[0] = True
         to_return[1] = "SUCCESS | Username: " + USERNAME + " Password: " + PASSWORD
+        print(to_return[1])
         return to_return
     else:
         to_return[0] = False
