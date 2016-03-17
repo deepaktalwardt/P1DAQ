@@ -4,6 +4,9 @@ import os
 import time
 from gsmmodem.modem import GsmModem
 
+PORT = '/dev/ttyAMA0'
+BAUDRATE = 115200
+
 def GPRS_off():
     os.system('poff fona')
     #print('Turning Cellular Data OFF')
