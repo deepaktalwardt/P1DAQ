@@ -191,10 +191,10 @@ def update_user_pass(sms_text):
 def listen_for_sms():
     print('Initializing modem...')
     # Uncomment the following line to see what the modem is doing:
-    # logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
+    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
     modem = GsmModem(PORT, BAUDRATE, smsReceivedCallbackFunc=handleSms)
     modem.smsTextMode = False 
-    modem.connect(PIN)
+    modem.connect()
     print('Waiting for SMS message...')    
     try:    
         modem.rxThread.join(2**31) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
