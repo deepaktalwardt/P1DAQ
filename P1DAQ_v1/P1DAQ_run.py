@@ -176,7 +176,7 @@ def update_user_pass(sms_text):
     global USERNAME
     global PASSWORD
     global UP_RECEIVED
-    to_return = []
+    to_return = [False, '']
 
     cred = sms_text.split(' ')
     if len(cred) == 2:
