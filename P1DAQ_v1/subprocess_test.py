@@ -1,8 +1,9 @@
 from subprocess import call
 import time
+import os
 
 while True:
-	call('sudo poff fona')
+	call('poff fona')
 	time.sleep(12)
-	call('sudo pon fona')
+	call('pon fona')
 	time.sleep(12)
