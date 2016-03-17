@@ -178,7 +178,7 @@ def update_user_pass(sms_text):
     global UP_RECEIVED
     to_return = [False, '']
 
-    cred = sms_text.split(' ')
+    cred = sms_text.split(',')
     print('Len: ' + str(len(cred)))
     if len(cred) == 2:
         USERNAME = cred[0]
@@ -190,7 +190,7 @@ def update_user_pass(sms_text):
         return to_return
     else:
         to_return[0] = False
-        to_return[1] = 'FAIL | Try again: <USERNAME> <PASSWORD>'
+        to_return[1] = 'FAIL | Try again: <USERNAME>,<PASSWORD>'
         return to_return
 
 def listen_for_sms():
