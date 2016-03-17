@@ -20,13 +20,23 @@ import Adafruit_MCP9808.MCP9808 as int_temp
 
 ############ Variables and Setup #############
 ## File Saving
-dev_ids = ["c1c3", "c1c8", "c1c9", "c1b2", "002d"]
+# For P1DAQ Box 1
+dev_ids = ["0009", "0011", "0020", "0027", "000c"]
 
-dev_addrs = ["fa:c8:d9:40:4e:81",
-             "d8:3c:9b:90:f3:d9",
-             "f3:8f:db:af:9a:45",
-             "d5:07:7e:65:e7:45",
-             "ed:3c:d4:9c:ff:74"]
+dev_addrs = ["fd:9e:85:fe:57:ff",
+             "ef:9b:60:f5:db:82",
+             "f3:3d:9c:32:c4:c2",
+             "e6:23:33:d8:5e:0d",
+             "e9:6d:3d:79:17:c2"]
+
+# For P1DAQ Box 2
+# dev_ids = ["0001", "0010", "0016", "0024", "0032"]
+
+# dev_addrs = ["cc:50:39:b3:b8:9a",
+#              "cd:49:39:88:eb:79",
+#              "ce:bb:b9:a4:0c:e7",
+#              "e3:ce:c3:74:79:8d",
+#              "fa:26:e0:1f:4e:61"]
 
 fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc", 
               dev_ids[1] + "_mc", dev_ids[1] + "_nc",
@@ -105,7 +115,7 @@ TOPIC_UP        =   "iot/SSRIOT/" + DEVICE_TYPE
 PUBLIC_BROKER   =   "broker.hivemq.com"
 TOPIC_DOWN      =   {} # populated later
 SAMPLING_TIMES  =   {} # populated later
-SAMPLE_NUMBERS  =   {} # populated later
+SERIAL_NUMBERS  =   {} # populated later
 CURR_MASS_DATA  =   {} # populated later
 CURR_NUM_DATA   =   {} # populated later
 
@@ -120,9 +130,9 @@ for dev_id in DEVICE_IDS:
 ### Remove this!!!!!
 # SAMPLING_TIMES['c1c8'] = 2
 
-# Populate SAMPLE_NUMBERS
+# Populate SERIAL_NUMBERS
 for dev_id in DEVICE_IDS:
-    SAMPLE_NUMBERS[dev_id] = 0 # Increments only after reading is published
+    SERIAL_NUMBERS[dev_id] = dev_id # Serial Numbers refer to the Name
 
 # Populate CURR_MASS_DATA
 for dev_id in DEVICE_IDS:
@@ -238,9 +248,9 @@ def populate_curr_data(data):
         CURR_NUM_DATA[dev_id].append(data.get(dev_id + "_nc"))
 
 # Increments sample number as it is sent to the broker
-def increment_sn(dev_id):
-    global SAMPLE_NUMBERS
-    SAMPLE_NUMBERS[dev_id] = SAMPLE_NUMBERS.get(dev_id) + 1
+# def increment_sn(dev_id):
+#     global SAMPLE_NUMBERS
+#     SAMPLE_NUMBERS[dev_id] = SAMPLE_NUMBERS.get(dev_id) + 1
 
 # Gets sensor readings as a dictionary from Bluetooth stack
 def get_sensor_reading():
@@ -255,9 +265,9 @@ def get_sensor_reading():
             mass_conc = int("".join("{0:02x}".format(x) for x in data[35:33:-1]),16)
             to_return[dev_id + "_nc"] = num_conc
             to_return[dev_id + "_mc"] = mass_conc
-    to_return["In Temp (deg C)"] = int_temp_sensor.readTempC() # Change this later to a function call
-    to_return["Out Temp (deg C)"] = float("%.*f" % (3, read_temperature())) # Change this later to a function call
-    to_return["Relative Humidity (%)"] = float("%.*f" % (3, read_humidity())) # Change this later to a function call
+    to_return["In Temp (deg C)"] = int_temp_sensor.readTempC()
+    to_return["Out Temp (deg C)"] = float("%.*f" % (3, read_temperature())) 
+    to_return["Relative Humidity (%)"] = float("%.*f" % (3, read_humidity())) 
     to_return["Time (UT)"] = datetime.datetime.now().isoformat()
     to_return = check_reading(to_return)
     print('Sensor Reading: ' + str(to_return))
@@ -268,7 +278,7 @@ def get_sensor_reading():
 # Generates Single sensor reading JSON to be sent to the MQTT Broker by client 1
 def sensor_json(data, dev_id):
     # Increment SAMPLE_NUMBER to be sent
-    increment_sn(dev_id)
+    # increment_sn(dev_id)
 
     # Initialize all JSONs
     to_send = {}
@@ -277,14 +287,14 @@ def sensor_json(data, dev_id):
     mc = {}
 
     # Generate variables
-    t_n = "d-" + ORG_ID + "-" + DEVICE_TYPE + "-" + dev_id
+    t_n = DEVICE_TYPE + "-" + dev_id
     int_temp = data.get("In Temp (deg C)") # Change later to function call
     out_temp = data.get("Out Temp (deg C)") # Change later to function call
     out_humi = data.get("Relative Humidity (%)") # Change later to function call
     time_now = data.get("Time (UT)")
     air_flow = 1000 # Not sure if we need to change this
     sampling_time = SAMPLING_TIMES.get(dev_id) # May need to change later
-    sample_number = SAMPLE_NUMBERS.get(dev_id)
+    serial_number = SERIAL_NUMBERS.get(dev_id)
 
     # Generate Sub JSONs
     psd["unit"] = "cpcm3" # Counts per cm3
@@ -294,7 +304,7 @@ def sensor_json(data, dev_id):
     mc["pm25conc"] = data.get(dev_id + "_mc") #data.get(DEVICE_ID + "_mc")
 
     d["tn"] = t_n
-    d["sn"] = sample_number
+    d["sn"] = serial_number
     d["st"] = sampling_time
     d["psd"] = psd
     d["mc"] = mc
@@ -313,7 +323,6 @@ def sensor_json(data, dev_id):
 # Decode Command Response JSON
 # Current commands include the following:
 # cid: 1, cmd: set_st, arg: number of samples at 2.5 sec each
-#     (example: 4 samples = 10 sec, 12 samples = 30 sec), es: success/fail
 # cid: 2, cmd: get_st, arg: None, es: sampling time/fail
 # cid: 3, cmd: set_clock, arg: time in isoformat+time difference to be added/subt
 #     es: success/fail (Same for all sensors, cannot change individually)
@@ -344,7 +353,7 @@ def decode_command(command):
                 print('IGNORED')
         elif cid == 4:
             if arg is not None:
-                set_dev_id(tn, cmd, arg)
+                set_dev_name(tn, sn, cid, cmd, arg)
             else:
                 print('IGNORED')
         else:
@@ -378,8 +387,8 @@ def set_st(tn, sn, cid, cmd, arg):
     global SAMPLING_TIMES
     dev_id = tn[-4:]
     if cmd == 'set_st':
-        if arg >= 1 and arg <= 1440:
-            SAMPLING_TIMES[dev_id] = arg
+        if arg >= 2.5 and arg <= 3600:
+            SAMPLING_TIMES[dev_id] = int(arg/2.5)
             print('Command Success')
             es = 'success'
             pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
@@ -396,7 +405,7 @@ def set_st(tn, sn, cid, cmd, arg):
 def get_st(tn, sn, cid, cmd):
     dev_id = tn[-4:]
     if cmd == 'get_st':
-        es = SAMPLING_TIMES[dev_id]
+        es = int(SAMPLING_TIMES[dev_id]*2.5)
         print('Command Success')
         pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
     else:
@@ -423,8 +432,18 @@ def set_clock(tn, sn, cid, cmd, arg):
         es = 'fail'
         pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
 
-# Resets the device ID for the device
-#---------->def set_dev_id(tn, sn, cid, cmd, arg):
+# Resets the device name (serial number) for the device
+def set_dev_name(tn, sn, cid, cmd, arg):
+    global SERIAL_NUMBERS
+    dev_id = tn[-4:]
+    if cmd == 'set_dev_name':
+        SERIAL_NUMBERS[dev_id] = arg
+        es = 'success'
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
+    else:
+        print('FAIL: Command cmd does not match cid')
+        es = 'fail'
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
 
 # Sends a fail execution status if the cid is not recognized
 def not_recog_cmd(tn, sn, cid, cmd, arg):
@@ -461,14 +480,7 @@ def pub_sensor_reading(sensor_data):
     global CURR_MASS_DATA
     global CURR_NUM_DATA
     for DEVICE_ID in DEVICE_IDS:
-        #to_JSON = {}
         if len(CURR_MASS_DATA.get(DEVICE_ID)) >= SAMPLING_TIMES.get(DEVICE_ID):
-            # to_JSON[DEVICE_ID + "_mc"] = CURR_MASS_DATA.get(DEVICE_ID)
-            # to_JSON[DEVICE_ID + "_nc"] = CURR_NUM_DATA.get(DEVICE_ID)
-            # to_JSON["In Temp (deg C)"] = data.get("In Temp (deg C)")
-            # to_JSON["Out Temp (deg C)"] = data.get("Out Temp (deg C)")
-            # to_JSON["Relative Humidity (%)"] = data.get("Relative Humidity (%)")
-            # to_JSON["Time (UT)"] = data.get("Time (UT)")
             avgd_data = average_single_reading(sensor_data, DEVICE_ID)
             print(avgd_data)
             sensor_data[DEVICE_ID + "_mc"] = avgd_data[0]
@@ -485,7 +497,7 @@ def pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es):
     command_record(jsonized, arg)
 
 # Setup MQTT Clients
-client_1                =   paho.Client(client_id='P1DAQ_readings')
+client_1                =   paho.Client(client_id="d-" + ORG_ID + "-" + DEVICE_TYPE)
 client_1.on_publish     =   on_publish_1
 client_1.on_connect     =   on_connect_1
 client_1.on_message     =   on_message_1
