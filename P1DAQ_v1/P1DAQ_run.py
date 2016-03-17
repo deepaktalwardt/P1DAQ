@@ -9,6 +9,8 @@ import json
 import paho.mqtt.client as paho
 import Adafruit_MCP9808.MCP9808 as int_temp
 import datetime
+import logging
+from __future__ import print_function
 from random import randint
 from collections import defaultdict
 from THpythonLib import *
