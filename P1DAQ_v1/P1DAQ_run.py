@@ -168,7 +168,7 @@ def handleSms(sms):
     print(u'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text))
     reply_text = update_user_pass(sms.text)
     print('Replying to SMS...')
-    sms.reply(reply_text)
+    sms.reply(reply_text[1])
     #sms.reply(u'SMS received: "{0}{1}"'.format(sms.text[:20], '...' if len(sms.text) > 20 else ''))
     print('SMS sent.\n')
 
