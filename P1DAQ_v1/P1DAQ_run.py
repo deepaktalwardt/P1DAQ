@@ -213,7 +213,7 @@ def save_to_file(reading, filename, fields):
 #         return to_return
 
 # Averages readings from a single sensor over a few seconds
-def average_single_reading(data, dev_id):
+def average_single_sensor(data, dev_id):
     if len(CURR_MASS_DATA.get(dev_id)) == 1:
         return (CURR_MASS_DATA[dev_id][0], CURR_NUM_DATA[dev_id][0])
     tot_mc = 0
@@ -481,7 +481,7 @@ def pub_sensor_reading(sensor_data):
     global CURR_NUM_DATA
     for DEVICE_ID in DEVICE_IDS:
         if len(CURR_MASS_DATA.get(DEVICE_ID)) >= SAMPLING_TIMES.get(DEVICE_ID):
-            avgd_data = average_single_reading(sensor_data, DEVICE_ID)
+            avgd_data = average_single_sensor(sensor_data, DEVICE_ID)
             print(avgd_data)
             sensor_data[DEVICE_ID + "_mc"] = avgd_data[0]
             sensor_data[DEVICE_ID + "_nc"] = avgd_data[1]
