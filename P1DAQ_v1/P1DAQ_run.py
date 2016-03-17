@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 ############### Import dependencies ################
 import sys
 import os
@@ -6,16 +7,13 @@ import struct
 import csv
 import json
 import paho.mqtt.client as paho
-from random import randint
-import requests
+import Adafruit_MCP9808.MCP9808 as int_temp
 import datetime
+from random import randint
 from collections import defaultdict
 from THpythonLib import *
 from BLE_init import *
-#from ubidots import ApiClient
-#from MQTTize import *
-import Adafruit_MCP9808.MCP9808 as int_temp
-
+from gsmmodem.modem import GsmModem
 
 
 ############ Variables and Setup #############
@@ -105,12 +103,18 @@ with open(file_name_2, "a") as csvfile:
 int_temp_sensor = int_temp.MCP9808()
 int_temp_sensor.begin()
 
+## SMS Variables
+PORT            =   '/dev/ttyAMA0'
+BAUDRATE        =   115200
+PIN             =   None
+
 ## MQTT Variables
 ORG_ID          =   "CLMTCO"
 DEVICE_TYPE     =   "P1"
 DEVICE_IDS      =   dev_ids
 USERNAME        =   "sensoriot"              
-PASSWORD        =   "sensoriot"           
+PASSWORD        =   "sensoriot"
+UP_RECEIVED     =   False           
 TOPIC_UP        =   "iot/SSRIOT/" + DEVICE_TYPE 
 PUBLIC_BROKER   =   "broker.hivemq.com"
 TOPIC_DOWN      =   {} # populated later
@@ -145,8 +149,63 @@ for dev_id in DEVICE_IDS:
 print("Curr_Num_init: " + str(CURR_NUM_DATA))
 
 
-
 ############ Helper Functions ###############
+## GSM Modem SMS Functions
+# Turn GPRS mode off
+def GPRS_off():
+    os.system('poff fona')
+    print('Turning Cellular Data OFF')
+    time.sleep(3)
+
+def GPRS_on():
+    os.system('pon fona')
+    print('Turning Cellular Data ON...')
+    time.sleep(5)
+
+def handleSms(sms):
+    print(u'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text))
+    reply_text = update_user_pass(sms.txt)
+    print('Replying to SMS...')
+    sms.reply(reply_text)
+    #sms.reply(u'SMS received: "{0}{1}"'.format(sms.text[:20], '...' if len(sms.text) > 20 else ''))
+    print('SMS sent.\n')
+
+def update_user_pass(sms_text):
+    global USERNAME
+    global PASSWORD
+    global UP_RECEIVED
+    to_return = []
+
+    cred = sms_text.split(' ')
+    if len(cred) == 2:
+        USERNAME = cred[0]
+        PASSWORD = cred[1]
+        UP_RECEIVED = True
+        to_return[0] = True
+        to_return[1] = "SUCCESS | Username: " + USERNAME + " Password: " + PASSWORD
+        return to_return
+    else:
+        to_return[0] = False
+        to_return[1] = 'FAIL | Try again: <USERNAME> <PASSWORD> '
+
+def listen_for_sms():
+    print('Initializing modem...')
+    # Uncomment the following line to see what the modem is doing:
+    # logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
+    modem = GsmModem(PORT, BAUDRATE, smsReceivedCallbackFunc=handleSms)
+    modem.smsTextMode = False 
+    modem.connect(PIN)
+    print('Waiting for SMS message...')    
+    try:    
+        modem.rxThread.join(2**31) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
+    finally:
+        modem.close();
+    if UP_RECEIVED:
+        print('Closing modem')
+        time.sleep(2)
+        modem.close()
+        return
+
 ## MQTT Clients Callback functions
 # For client_1
 def on_publish_1(client, userdata, mid):
@@ -502,7 +561,6 @@ client_1.on_publish     =   on_publish_1
 client_1.on_connect     =   on_connect_1
 client_1.on_message     =   on_message_1
 client_1.on_subscribe   =   on_subscribe_1
-#client_1.username_pw_set(USERNAME, PASSWORD)
 
 #client_2                =   paho.Client(client_id='P1DAQ_controls')
 #client_2.on_message     =   on_message_2
@@ -511,31 +569,39 @@ client_1.on_subscribe   =   on_subscribe_1
 #client_2.on_publish     =   on_publish_2
 #client_2.username_pw_set(USERNAME, PASSWORD)
 
-con = True
-while con:
-    try:
-        client_1.connect(PUBLIC_BROKER, port=1883)
-        con = False
-    except:
-        print('Retry connection')
-        client_1.connect(PUBLIC_BROKER, port=1883)
+## MQTT Client Functions
+def client_1_connect():
+    con = True
+    client_1.username_pw_set(USERNAME, PASSWORD)
+    while con:
+        try:
+            client_1.connect(PUBLIC_BROKER, port=1883)
+            con = False
+        except:
+            print('Retry connection')
+            client_1.connect(PUBLIC_BROKER, port=1883)
 
 #client_2.connect_async(PUBLIC_BROKER, port=1883)
 #client_2.loop_start()
 
-for DEVICE_ID in DEVICE_IDS:
-    client_1.subscribe(TOPIC_DOWN[DEVICE_ID], qos=1)
+def client_1_subscribe():
+    for DEVICE_ID in DEVICE_IDS:
+        client_1.subscribe(TOPIC_DOWN[DEVICE_ID], qos=1)
 
-loop = True
-while loop:
-    try:
-        client_1.loop_start()
-        loop = False
-    except:
-        print('Retry loop')
-        client_1.loop_start()
-#for i in range(0,6):
-#for i in range(0,1000):
+def client_1_loop():
+    loop = True
+    while loop:
+        try:
+            client_1.loop_start()
+            loop = False
+        except:
+            print('Retry loop')
+            client_1.loop_start()
+
+## Main Script
+GPRS_off()
+listen_for_sms()
+GPRS_on()
 while True:
     readings = get_sensor_reading()
     save_to_file(readings, file_name_1, fieldnames)
