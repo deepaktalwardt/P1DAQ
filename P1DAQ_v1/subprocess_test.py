@@ -3,7 +3,9 @@ import time
 import os
 
 while True:
-	call('poff fona')
+	os.system('poff fona')
+	#call('poff fona')
 	time.sleep(12)
-	call('pon fona')
+	os.system('pon fona')
+	#call('pon fona')
 	time.sleep(12)
