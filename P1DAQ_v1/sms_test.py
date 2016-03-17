@@ -2,7 +2,7 @@ from __future__ import print_function
 import logging
 import os
 import time
-from GsmModem.modem import GsmModem
+from gsmmodem.modem import GsmModem
 
 def GPRS_off():
     os.system('poff fona')
