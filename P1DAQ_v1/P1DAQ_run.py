@@ -179,7 +179,7 @@ def update_user_pass(sms_text):
     to_return = [False, '']
 
     cred = sms_text.split(' ')
-    print('Len: ' + len(cred))
+    print('Len: ' + str(len(cred)))
     if len(cred) == 2:
         USERNAME = cred[0]
         PASSWORD = cred[1]
