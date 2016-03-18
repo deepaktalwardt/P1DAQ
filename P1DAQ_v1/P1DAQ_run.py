@@ -172,6 +172,8 @@ DEVICE_TYPE     =   "P1"
 DEVICE_IDS      =   dev_ids         
 TOPIC_UP        =   "iot/SSRIOT/" + DEVICE_TYPE 
 PUBLIC_BROKER   =   "broker.hivemq.com"
+IBM_BROKER      =   "119.81.84.237"
+BROKER          =   IBM_BROKER
 TOPIC_DOWN      =   {} # populated later
 SAMPLING_TIMES  =   {} # populated later
 SERIAL_NUMBERS  =   {} # populated later
@@ -560,12 +562,12 @@ def client_1_connect():
     client_1.username_pw_set(str(USERNAME), str(PASSWORD))
     while con:
         try:
-            client_1.connect(PUBLIC_BROKER, port=1883)
+            client_1.connect(BROKER, port=1883)
             con = False
         except:
             print('Retry connection')
             try:
-                client_1.connect(PUBLIC_BROKER, port=1883)
+                client_1.connect(BROKER, port=1883)
             except:
                 print('Re-run script and ask for SMS')
                 os.system('hciconfig hci0 down')
