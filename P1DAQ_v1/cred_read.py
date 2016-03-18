@@ -29,7 +29,8 @@ if updated:
 	print(username)
 	print(password)
 else:
-	print('Did not update')
+	print('Did not update...Restarting')
+	print(output)
+	os.execv(__file__)
 
-print(output)
 GPRS_on()
