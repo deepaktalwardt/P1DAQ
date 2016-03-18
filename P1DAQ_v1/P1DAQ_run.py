@@ -186,7 +186,12 @@ def up_check():
     else:
         print('Did not update...Restarting')
         print(SMS_OUTPUT)
-        os.system('python3 P1DAQ_run.py')
+        #os.system('python3 P1DAQ_run.py')
+        os.system('hciconfig hci0 down')
+        os.system('hciconfig hci0 up')
+        time.sleep(2)
+        os.system('hciconfig hci0 up')
+        os.execv(__file__, sys.argv)
     GPRS_on()
 
 # def handleSms(sms):
