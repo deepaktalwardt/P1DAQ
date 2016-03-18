@@ -31,4 +31,5 @@ if updated:
 else:
 	print('Did not update')
 
+print(output)
 GPRS_on()
