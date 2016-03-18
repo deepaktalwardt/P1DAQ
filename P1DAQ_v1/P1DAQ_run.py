@@ -178,8 +178,8 @@ def up_check():
     if int(SMS_OUTPUT[-3]) == 1:
         UP_RECEIVED = True
     if UP_RECEIVED:
-        USERNAME = output[-2]
-        PASSWORD = output[-1]
+        USERNAME = SMS_OUTPUT[-2]
+        PASSWORD = SMS_OUTPUT[-1]
         print('Received: ')
         print(USERNAME)
         print(PASSWORD)
