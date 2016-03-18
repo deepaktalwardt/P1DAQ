@@ -11,4 +11,5 @@ for line in proc.stdout:
 	print(str(line))
 
 parsed_json = json.loads(str(line)[1:-4]+str(line)[-1])
-print(str(parsed_json['USERNAME']), str(parsed_json['PASSWORD']))
+print(parsed_json['USERNAME'])
+print(parsed_json['PASSWORD'])
