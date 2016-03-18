@@ -22,10 +22,62 @@ os.system('hciconfig hci0 up')
 time.sleep(2)
 os.system('hciconfig hci0 up')
 
+## SMS Variables
+PORT            =   '/dev/ttyAMA0'
+BAUDRATE        =   115200
+PIN             =   None
+SMS_OUTPUT      =   []
+UP_RECEIVED     =   False
+USERNAME        =   "sensoriot"              
+PASSWORD        =   "sensoriot" 
+
 ## Main Script Part 1
 GPRS_off()
 run_sms_handler()
 up_check()
+
+## GSM Modem SMS Functions
+# Turn GPRS mode off
+def GPRS_off():
+    os.system('poff fona')
+    print('Turning Cellular Data OFF')
+    time.sleep(3)
+
+def GPRS_on():
+    os.system('pon fona')
+    print('Turning Cellular Data ON...')
+    time.sleep(5)
+
+def run_sms_handler():
+    global SMS_OUTPUT
+    proc = Popen(['python', 'sms_handler.py'], stdout=PIPE)
+    for line in proc.stdout:
+        SMS_OUTPUT.append(line)
+
+def up_check():
+    global UP_RECEIVED
+    global SMS_OUTPUT
+    global USERNAME
+    global PASSWORD
+    if int(SMS_OUTPUT[-3]) == 1:
+        UP_RECEIVED = True
+    if UP_RECEIVED:
+        USERNAME = SMS_OUTPUT[-2]
+        PASSWORD = SMS_OUTPUT[-1]
+        print('Received: ')
+        print(str(USERNAME))
+        print(str(PASSWORD))
+    else:
+        print('Did not update...Restarting')
+        print(SMS_OUTPUT)
+        #os.system('python3 P1DAQ_run.py')
+        os.system('hciconfig hci0 down')
+        os.system('hciconfig hci0 up')
+        time.sleep(2)
+        os.system('hciconfig hci0 up')
+        os.system('python3 P1DAQ_run.py')
+        sys.exit()
+    GPRS_on()
 
 ############ Variables and Setup #############
 ## File Saving
@@ -114,19 +166,10 @@ with open(file_name_2, "a") as csvfile:
 int_temp_sensor = int_temp.MCP9808()
 int_temp_sensor.begin()
 
-## SMS Variables
-PORT            =   '/dev/ttyAMA0'
-BAUDRATE        =   115200
-PIN             =   None
-SMS_OUTPUT      =   []
-UP_RECEIVED     =   False
-
 ## MQTT Variables
 ORG_ID          =   "CLMTCO"
 DEVICE_TYPE     =   "P1"
-DEVICE_IDS      =   dev_ids
-USERNAME        =   "sensoriot"              
-PASSWORD        =   "sensoriot"          
+DEVICE_IDS      =   dev_ids         
 TOPIC_UP        =   "iot/SSRIOT/" + DEVICE_TYPE 
 PUBLIC_BROKER   =   "broker.hivemq.com"
 TOPIC_DOWN      =   {} # populated later
@@ -143,9 +186,6 @@ for dev_id in DEVICE_IDS:
 for dev_id in DEVICE_IDS:
     SAMPLING_TIMES[dev_id] = 1 # Default set to 1, can be changed later
 
-### Remove this!!!!!
-# SAMPLING_TIMES['c1c8'] = 2
-
 # Populate SERIAL_NUMBERS
 for dev_id in DEVICE_IDS:
     SERIAL_NUMBERS[dev_id] = dev_id # Serial Numbers refer to the Name
@@ -160,51 +200,7 @@ for dev_id in DEVICE_IDS:
     CURR_NUM_DATA.setdefault(dev_id, list())
 print("Curr_Num_init: " + str(CURR_NUM_DATA))
 
-
 ############ Helper Functions ###############
-## GSM Modem SMS Functions
-# Turn GPRS mode off
-def GPRS_off():
-    os.system('poff fona')
-    print('Turning Cellular Data OFF')
-    time.sleep(3)
-
-def GPRS_on():
-    os.system('pon fona')
-    print('Turning Cellular Data ON...')
-    time.sleep(5)
-
-def run_sms_handler():
-    global SMS_OUTPUT
-    proc = Popen(['python', 'sms_handler.py'], stdout=PIPE)
-    for line in proc.stdout:
-        SMS_OUTPUT.append(line)
-
-def up_check():
-    global UP_RECEIVED
-    global SMS_OUTPUT
-    global USERNAME
-    global PASSWORD
-    if int(SMS_OUTPUT[-3]) == 1:
-        UP_RECEIVED = True
-    if UP_RECEIVED:
-        USERNAME = SMS_OUTPUT[-2]
-        PASSWORD = SMS_OUTPUT[-1]
-        print('Received: ')
-        print(str(USERNAME))
-        print(str(PASSWORD))
-    else:
-        print('Did not update...Restarting')
-        print(SMS_OUTPUT)
-        #os.system('python3 P1DAQ_run.py')
-        os.system('hciconfig hci0 down')
-        os.system('hciconfig hci0 up')
-        time.sleep(2)
-        os.system('hciconfig hci0 up')
-        os.system('python3 P1DAQ_run.py')
-        sys.exit()
-    GPRS_on()
-
 ## MQTT Clients Callback functions
 # For client_1
 def on_publish_1(client, userdata, mid):
@@ -217,17 +213,10 @@ def on_connect_1(client, data, flags, rc):
 def on_message_1(client, userdata, msg):
     print('Command from ' + msg.topic + ' received')
     decode_command(msg.payload)
-    # command_record(msg.payload)
 
 def on_subscribe_1(client, userdata, mid, granted_qos):
     print("Subscribed: "+str(mid)+" "+str(granted_qos))
  
-# def on_connect_2(client, data, flags, rc):
-#     print('Client 2 Connected, rc: ' + str(rc))
-
-# def on_publish_2(client, data, flags, rc):
-#     print('Command Published:' + str(mid))
-
 ## BLE Imports
 from THpythonLib import *
 from BLE_init import *
