@@ -20,6 +20,7 @@ def GPRS_on():
     time.sleep(5)
 
 def handleSms(sms):
+    global cred_json
     # print(u'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text))
     # reply_text = update_user_pass(sms.text)
     cred = sms.text.split(',')
@@ -47,7 +48,7 @@ def listen_for_sms():
     finally:
         print('Closing modem')
         modem.close();
-        return 
+        return cred_json
     # if UP_RECEIVED:
     #     print('Closing modem')
     #     time.sleep(2)
