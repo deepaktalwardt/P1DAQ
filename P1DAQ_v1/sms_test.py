@@ -47,7 +47,7 @@ def check_sms(sms_text):
         correct_format = 1
         print("I just checked the length and it's equal to" + str(len(cred_split)))
         to_reply[0] = correct_format
-        to_reply[1] = "SUCCESS | Username: " + cred_split[0] + " Password: " + cred_split[1]
+        to_reply[1] = "SUCCESS | Username: " + cred_split[0].strip() + " Password: " + cred_split[1].strip()
         print(to_reply)
         return to_reply
     else:
@@ -78,8 +78,8 @@ def listen_for_sms():
             print("the format is correct and equal to")
             print(correct_format)
             cred_return = cred.split(',')
-            print(cred_return[0])
-            print(cred_return[1])
+            print(cred_return[0].strip())
+            print(cred_return[1].strip())
         else:
             print("the format is NOT correct and equal to")
             print(correct_format)
