@@ -9,6 +9,7 @@ PORT = '/dev/ttyAMA0'
 BAUDRATE = 115200
 cred = ''
 DESTINATION = '+15592734835'
+correct_format = False
 
 def GPRS_off():
     os.system('poff fona')
@@ -22,9 +23,9 @@ def GPRS_on():
 
 def handleSms(sms):
     global cred
-    # print(u'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text))
-    # reply_text = update_user_pass(sms.text)
+    print(u'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text))
     cred = sms.text
+    sms_reply = check_sms(sms.text)
     # cred_json['USERNAME'] = cred[0]
     # cred_json['PASSWORD'] = cred[1]
     #return json.dumps(cred_json)
@@ -32,8 +33,27 @@ def handleSms(sms):
     #print(cred[1])
     # print('Replying to SMS...')
     # sms.reply(reply_text[1])
-    sms.reply(u'SMS received: "{0}{1}"'.format(sms.text[:20], '...' if len(sms.text) > 20 else ''))
+    sms.reply(sms_reply[1])
     #print('SMS sent.\n')
+
+def check_sms(sms_text):
+    global correct_format
+    cred_split = str(sms_text).split(',')
+    to_reply = []
+    print('Len: ' + str(len(cred_split)))
+    if len(cred_split) == 2:
+        to_reply[0] = True
+        to_reply[1] = "SUCCESS | Username: " + cred[0] + " Password: " + cred[1]
+        print(to_reply)
+        correct_format = True
+        return to_reply
+    else:
+        to_reply[0] = False
+        to_reply[1] = 'FAIL | Try again: <USERNAME>,<PASSWORD>'
+        print(to_reply)
+        correct_format = False
+        return to_reply
+
 
 def listen_for_sms():
     # print('Initializing modem...')
@@ -46,11 +66,19 @@ def listen_for_sms():
     sentmsg = modem.sendSms(DESTINATION, first_text)
     print('Waiting for SMS message...')    
     try:    
-        modem.rxThread.join(60) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
+        modem.rxThread.join(120) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
     finally:
         print('Closing modem')
         modem.close()
-        print(cred)
+        if correct_format:
+            print(correct_format)
+            cred_return = cred.split(',')
+            print(cred_return[0])
+            print(cred_return[1])
+        else:
+            print(correct_format)
+            print(' ')
+            print(' ')
     # if UP_RECEIVED:
     #     print('Closing modem')
     #     time.sleep(2)

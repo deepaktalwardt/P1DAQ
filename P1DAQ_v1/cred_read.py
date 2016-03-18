@@ -5,14 +5,21 @@ from subprocess import *
 
 # output_of_sms = subprocess.check_output(['python', 'sms_test.py'])
 # print(output_of_sms)
+updated = False
+
+output = []
 
 proc = Popen(['python', 'sms_test.py'], stdout=PIPE)
 for line in proc.stdout:
+	output.append(line)
 	print(str(line))
 
-msg = str(line).split(',')
-#parsed_json = json.loads(str(line)[1:-4]+str(line)[-1])
-# print(parsed_json.get('USERNAME'))
-# print(parsed_json.get('PASSWORD'))
-print(msg[0][2:])
-print(msg[1][0:-3])
+if output[-3] == True:
+	updated = True
+
+if updated:
+	username = output[-2]
+	password = output[-1]
+	print('Received: ')
+	print(username)
+	print(password)
