@@ -9,7 +9,7 @@ PORT = '/dev/ttyAMA0'
 BAUDRATE = 115200
 cred = ''
 DESTINATION = '+15592734835'
-correct_format = 'no'
+correct_format = 0
 modem = ''
 
 def GPRS_off():
@@ -44,13 +44,13 @@ def check_sms(sms_text):
     to_reply = ['','']
     print('Len: ' + str(len(cred_split)))
     if len(cred_split) == 2:
-        correct_format = 'yes'
+        correct_format = 1
         to_reply[0] = correct_format
         to_reply[1] = "SUCCESS | Username: " + cred_split[0] + " Password: " + cred_split[1]
         print(to_reply)
         return to_reply
     else:
-        correct_format = 'no'
+        correct_format = 0
         to_reply[0] = correct_format
         to_reply[1] = 'FAIL | Try again: <USERNAME>,<PASSWORD>'
         print(to_reply)
@@ -73,7 +73,7 @@ def listen_for_sms():
         modem.rxThread.join(80) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
     finally:
         print('Closing modem')
-        if correct_format == 'yes':
+        if correct_format == 1:
             print(correct_format)
             cred_return = cred.split(',')
             print(cred_return[0][2:-3])

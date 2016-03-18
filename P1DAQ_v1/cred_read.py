@@ -19,7 +19,7 @@ for line in proc.stdout:
 	output.append(line)
 	# print(str(line))
 
-if output[-3] == 'yes':
+if output[-3] == 1:
 	updated = True
 
 if updated:
