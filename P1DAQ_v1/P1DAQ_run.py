@@ -185,8 +185,8 @@ def up_check():
         USERNAME = SMS_OUTPUT[-2]
         PASSWORD = SMS_OUTPUT[-1]
         print('Received: ')
-        print(USERNAME)
-        print(PASSWORD)
+        print(str(USERNAME))
+        print(str(PASSWORD))
     else:
         print('Did not update...Restarting')
         print(SMS_OUTPUT)
@@ -629,8 +629,9 @@ def client_1_connect():
                 client_1.connect(PUBLIC_BROKER, port=1883)
             except:
                 print('Retrying connect again')
-                GPRS_off()
-                up_check()
+                # GPRS_off()
+                # up_check()
+                client_1_connect()
 
 #client_2.connect_async(PUBLIC_BROKER, port=1883)
 #client_2.loop_start()
