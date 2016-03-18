@@ -74,12 +74,12 @@ def listen_for_sms():
     finally:
         print('Closing modem')
         if correct_format == 'yes':
-            print(correct_format[2:-3])
+            print(correct_format)
             cred_return = cred.split(',')
             print(cred_return[0][2:-3])
             print(cred_return[1][2:-3])
         else:
-            print(correct_format[2:-3])
+            print(correct_format)
             print('')
             print('')
         modem.close()
