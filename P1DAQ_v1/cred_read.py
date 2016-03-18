@@ -31,6 +31,6 @@ if updated:
 else:
 	print('Did not update...Restarting')
 	print(output)
-	os.execv(__file__)
+	os.execv(__file__, sys.argv)
 
 GPRS_on()
