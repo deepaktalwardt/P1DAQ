@@ -9,6 +9,11 @@ updated = False
 
 output = []
 
+def GPRS_on():
+    os.system('pon fona')
+    # print('Turning Cellular Data ON...')
+    time.sleep(5)
+
 proc = Popen(['python', 'sms_test.py'], stdout=PIPE)
 for line in proc.stdout:
 	output.append(line)
@@ -25,3 +30,5 @@ if updated:
 	print(password)
 else:
 	print('Did not update')
+
+GPRS_on()
