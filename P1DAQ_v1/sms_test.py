@@ -31,14 +31,13 @@ def handleSms(sms):
     #print(cred[1])
     # print('Replying to SMS...')
     # sms.reply(reply_text[1])
-    # sms.reply(u'SMS received: "{0}{1}"'.format(sms.text[:20], '...' if len(sms.text) > 20 else ''))
-    # print('SMS sent.\n')
-    return
+    sms.reply(u'SMS received: "{0}{1}"'.format(sms.text[:20], '...' if len(sms.text) > 20 else ''))
+    print('SMS sent.\n')
 
 def listen_for_sms():
     # print('Initializing modem...')
     # Uncomment the following line to see what the modem is doing:
-    # logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
+    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
     modem = GsmModem(PORT, BAUDRATE, smsReceivedCallbackFunc=handleSms)
     modem.smsTextMode = False 
     modem.connect()
