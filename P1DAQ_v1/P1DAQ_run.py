@@ -631,6 +631,7 @@ def client_1_connect():
                 print('Retrying connect again')
                 # GPRS_off()
                 # up_check()
+                time.sleep(3)
                 client_1_connect()
 
 #client_2.connect_async(PUBLIC_BROKER, port=1883)
