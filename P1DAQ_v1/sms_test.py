@@ -8,6 +8,7 @@ from gsmmodem.modem import GsmModem
 PORT = '/dev/ttyAMA0'
 BAUDRATE = 115200
 cred = ''
+DESTINATION = '+15592734835'
 
 def GPRS_off():
     os.system('poff fona')
@@ -41,6 +42,8 @@ def listen_for_sms():
     modem = GsmModem(PORT, BAUDRATE, smsReceivedCallbackFunc=handleSms)
     modem.smsTextMode = False 
     modem.connect()
+    first_text = u'Waiting for Username and Password...'
+    sentmsg = modem.sendSms(DESTINATION, first_text)
     print('Waiting for SMS message...')    
     try:    
         modem.rxThread.join(60) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
