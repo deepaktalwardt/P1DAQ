@@ -621,7 +621,12 @@ def client_1_connect():
             con = False
         except:
             print('Retry connection')
-            client_1.connect(PUBLIC_BROKER, port=1883)
+            try:
+                client_1.connect(PUBLIC_BROKER, port=1883)
+            except:
+                print('Retrying connect again')
+                GPRS_off()
+                up_check()
 
 #client_2.connect_async(PUBLIC_BROKER, port=1883)
 #client_2.loop_start()
