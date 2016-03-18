@@ -621,12 +621,12 @@ def client_1_connect():
     client_1.username_pw_set(str(USERNAME), str(PASSWORD))
     while con:
         try:
-            client_1.connect(PUBLIC_BROKER, port=1883)
+            client_1.connect(PUBLIC_BROKER, port=188)
             con = False
         except:
             print('Retry connection')
             try:
-                client_1.connect(PUBLIC_BROKER, port=1883)
+                client_1.connect(PUBLIC_BROKER, port=188)
             except:
                 print('Re-run script and ask for SMS')
                 os.system('hciconfig hci0 down')
