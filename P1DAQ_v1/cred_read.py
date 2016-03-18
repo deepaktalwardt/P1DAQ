@@ -17,7 +17,7 @@ def GPRS_on():
 proc = Popen(['python', 'sms_test.py'], stdout=PIPE)
 for line in proc.stdout:
 	output.append(line)
-	print(str(line))
+	# print(str(line))
 
 if output[-3] == True:
 	updated = True
