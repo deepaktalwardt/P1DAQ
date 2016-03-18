@@ -628,11 +628,13 @@ def client_1_connect():
             try:
                 client_1.connect(PUBLIC_BROKER, port=1883)
             except:
-                print('Retrying connect again')
-                # GPRS_off()
-                # up_check()
-                time.sleep(3)
-                client_1_connect()
+                print('Re-run script and ask for SMS')
+                os.system('hciconfig hci0 down')
+                os.system('hciconfig hci0 up')
+                time.sleep(2)
+                os.system('hciconfig hci0 up')
+                os.system('python3 P1DAQ_run.py')
+                sys.exit()
 
 #client_2.connect_async(PUBLIC_BROKER, port=1883)
 #client_2.loop_start()
