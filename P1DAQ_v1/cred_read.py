@@ -23,3 +23,5 @@ if updated:
 	print('Received: ')
 	print(username)
 	print(password)
+else:
+	print('Did not update')

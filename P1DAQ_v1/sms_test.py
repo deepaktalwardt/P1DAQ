@@ -43,7 +43,7 @@ def check_sms(sms_text):
     print('Len: ' + str(len(cred_split)))
     if len(cred_split) == 2:
         to_reply[0] = True
-        to_reply[1] = "SUCCESS | Username: " + cred[0] + " Password: " + cred[1]
+        to_reply[1] = "SUCCESS | Username: " + cred_split[0] + " Password: " + cred_split[1]
         print(to_reply)
         correct_format = True
         return to_reply
@@ -66,17 +66,17 @@ def listen_for_sms():
     sentmsg = modem.sendSms(DESTINATION, first_text)
     print('Waiting for SMS message...')    
     try:    
-        modem.rxThread.join(120) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
+        modem.rxThread.join(80) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
     finally:
         print('Closing modem')
         modem.close()
         if correct_format:
-            print(correct_format)
+            print(correct_format[2:-3])
             cred_return = cred.split(',')
-            print(cred_return[0])
-            print(cred_return[1])
+            print(cred_return[0][2:-3])
+            print(cred_return[1][2:-3])
         else:
-            print(correct_format)
+            print(correct_format[2:-3])
             print(' ')
             print(' ')
     # if UP_RECEIVED:
