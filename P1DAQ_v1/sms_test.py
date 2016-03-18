@@ -71,7 +71,7 @@ def listen_for_sms():
     sentmsg = modem.sendSms(DESTINATION, first_text)
     print('Waiting for SMS message')    
     try:    
-        modem.rxThread.join(80) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
+        modem.rxThread.join(60) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
     finally:
         print('Closing modem')
         if correct_format == 1:
