@@ -1,4 +1,4 @@
-# from __future__ import print_function
+from __future__ import print_function
 import logging
 import os
 import time
@@ -78,8 +78,8 @@ def listen_for_sms():
             print("the format is correct and equal to")
             print(correct_format)
             cred_return = cred.split(',')
-            print(cred_return[0][2:-3])
-            print(cred_return[1][2:-3])
+            print(cred_return[0])
+            print(cred_return[1])
         else:
             print("the format is NOT correct and equal to")
             print(correct_format)
