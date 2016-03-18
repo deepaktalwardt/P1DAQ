@@ -9,7 +9,7 @@ PORT = '/dev/ttyAMA0'
 BAUDRATE = 115200
 cred = ''
 DESTINATION = '+15592734835'
-global correct_format = 0
+correct_format = 0
 modem = ''
 
 def GPRS_off():
