@@ -9,7 +9,7 @@ PORT = '/dev/ttyAMA0'
 BAUDRATE = 115200
 cred = ''
 DESTINATION = '+15592734835'
-correct_format = False
+correct_format = True
 modem = ''
 
 def GPRS_off():
@@ -58,6 +58,7 @@ def check_sms(sms_text):
 
 def listen_for_sms():
     global modem
+    global correct_format
     # print('Initializing modem...')
     # Uncomment the following line to see what the modem is doing:
     # logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
@@ -71,7 +72,7 @@ def listen_for_sms():
         modem.rxThread.join(80) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
     finally:
         print('Closing modem')
-        if correct_format is True:
+        if correct_format == True:
             print(correct_format)
             cred_return = cred.split(',')
             print(cred_return[0][2:-3])
