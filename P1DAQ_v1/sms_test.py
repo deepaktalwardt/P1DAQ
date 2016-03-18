@@ -46,8 +46,8 @@ def listen_for_sms():
         modem.rxThread.join(60) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
     finally:
         print('Closing modem')
-        modem.close();
-        return cred_json
+        modem.close()
+        print(cred_json)
     # if UP_RECEIVED:
     #     print('Closing modem')
     #     time.sleep(2)
