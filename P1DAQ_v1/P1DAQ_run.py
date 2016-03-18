@@ -643,6 +643,9 @@ def client_1_loop():
 GPRS_off()
 run_sms_handler()
 up_check()
+client_1_connect()
+client_1_subscribe()
+client_1_loop()
 while True:
     readings = get_sensor_reading()
     save_to_file(readings, file_name_1, fieldnames)
