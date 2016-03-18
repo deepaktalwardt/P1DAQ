@@ -15,7 +15,7 @@ def GPRS_on():
     # print('Turning Cellular Data ON...')
     time.sleep(5)
 
-proc = Popen(['python', 'sms_test.py'], stdout=PIPE)
+proc = Popen(['python', 'sms_handler.py'], stdout=PIPE)
 for line in proc.stdout:
 	output.append(line)
 	# print(str(line))

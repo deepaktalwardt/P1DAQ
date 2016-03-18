@@ -11,10 +11,9 @@ import paho.mqtt.client as paho
 import Adafruit_MCP9808.MCP9808 as int_temp
 import datetime
 import logging
+from subprocess import *
 from random import randint
 from collections import defaultdict
-from THpythonLib import *
-from BLE_init import *
 from gsmmodem.modem import GsmModem
 
 
@@ -109,14 +108,15 @@ int_temp_sensor.begin()
 PORT            =   '/dev/ttyAMA0'
 BAUDRATE        =   115200
 PIN             =   None
+SMS_OUTPUT      =   []
+UP_RECEIVED     =   False
 
 ## MQTT Variables
 ORG_ID          =   "CLMTCO"
 DEVICE_TYPE     =   "P1"
 DEVICE_IDS      =   dev_ids
 USERNAME        =   "sensoriot"              
-PASSWORD        =   "sensoriot"
-UP_RECEIVED     =   False           
+PASSWORD        =   "sensoriot"          
 TOPIC_UP        =   "iot/SSRIOT/" + DEVICE_TYPE 
 PUBLIC_BROKER   =   "broker.hivemq.com"
 TOPIC_DOWN      =   {} # populated later
@@ -164,54 +164,79 @@ def GPRS_on():
     print('Turning Cellular Data ON...')
     time.sleep(5)
 
-def handleSms(sms):
-    print(u'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text))
-    reply_text = update_user_pass(sms.text)
-    print('Replying to SMS...')
-    sms.reply(reply_text[1])
-    #sms.reply(u'SMS received: "{0}{1}"'.format(sms.text[:20], '...' if len(sms.text) > 20 else ''))
-    print('SMS sent.\n')
-    return
+def run_sms_handler():
+    global SMS_OUTPUT
+    proc = Popen(['python', 'sms_handler.py'], stdout=PIPE)
+    for line in proc.stdout:
+        SMS_OUTPUT.append(line)
 
-def update_user_pass(sms_text):
+def up_check():
+    global UP_RECEIVED
+    global SMS_OUTPUT
     global USERNAME
     global PASSWORD
-    global UP_RECEIVED
-    to_return = [False, '']
-
-    cred = sms_text.split(',')
-    print('Len: ' + str(len(cred)))
-    if len(cred) == 2:
-        USERNAME = cred[0]
-        PASSWORD = cred[1]
+    if int(SMS_OUTPUT[-3]) == 1:
         UP_RECEIVED = True
-        to_return[0] = True
-        to_return[1] = "SUCCESS | Username: " + USERNAME + " Password: " + PASSWORD
-        print(to_return[1])
-        return to_return
-    else:
-        to_return[0] = False
-        to_return[1] = 'FAIL | Try again: <USERNAME>,<PASSWORD>'
-        return to_return
-
-def listen_for_sms():
-    print('Initializing modem...')
-    # Uncomment the following line to see what the modem is doing:
-    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
-    modem = GsmModem(PORT, BAUDRATE, smsReceivedCallbackFunc=handleSms)
-    modem.smsTextMode = False 
-    modem.connect()
-    print('Waiting for SMS message...')    
-    try:    
-        modem.rxThread.join(180) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
-    finally:
-        print('Closing modem')
-        modem.close();
     if UP_RECEIVED:
-        print('Closing modem')
-        time.sleep(2)
-        modem.close()
-        return
+        USERNAME = output[-2]
+        PASSWORD = output[-1]
+        print('Received: ')
+        print(USERNAME)
+        print(PASSWORD)
+    else:
+        print('Did not update...Restarting')
+        print(SMS_OUTPUT)
+        os.system('python3 P1DAQ_run.py')
+    GPRS_on()
+
+# def handleSms(sms):
+#     print(u'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text))
+#     reply_text = update_user_pass(sms.text)
+#     print('Replying to SMS...')
+#     sms.reply(reply_text[1])
+#     #sms.reply(u'SMS received: "{0}{1}"'.format(sms.text[:20], '...' if len(sms.text) > 20 else ''))
+#     print('SMS sent.\n')
+#     return
+
+# def update_user_pass(sms_text):
+#     global USERNAME
+#     global PASSWORD
+#     global UP_RECEIVED
+#     to_return = [False, '']
+
+#     cred = sms_text.split(',')
+#     print('Len: ' + str(len(cred)))
+#     if len(cred) == 2:
+#         USERNAME = cred[0]
+#         PASSWORD = cred[1]
+#         UP_RECEIVED = True
+#         to_return[0] = True
+#         to_return[1] = "SUCCESS | Username: " + USERNAME + " Password: " + PASSWORD
+#         print(to_return[1])
+#         return to_return
+#     else:
+#         to_return[0] = False
+#         to_return[1] = 'FAIL | Try again: <USERNAME>,<PASSWORD>'
+#         return to_return
+
+# def listen_for_sms():
+#     print('Initializing modem...')
+#     # Uncomment the following line to see what the modem is doing:
+#     logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
+#     modem = GsmModem(PORT, BAUDRATE, smsReceivedCallbackFunc=handleSms)
+#     modem.smsTextMode = False 
+#     modem.connect()
+#     print('Waiting for SMS message...')    
+#     try:    
+#         modem.rxThread.join(180) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
+#     finally:
+#         print('Closing modem')
+#         modem.close();
+#     if UP_RECEIVED:
+#         print('Closing modem')
+#         time.sleep(2)
+#         modem.close()
+#         return
 
 ## MQTT Clients Callback functions
 # For client_1
@@ -235,6 +260,10 @@ def on_subscribe_1(client, userdata, mid, granted_qos):
 
 # def on_publish_2(client, data, flags, rc):
 #     print('Command Published:' + str(mid))
+
+## BLE Imports
+from THpythonLib import *
+from BLE_init import *
 
 ## Sensor Data Acquisition functions
 # Check if the ble_path is recognized
@@ -607,8 +636,8 @@ def client_1_loop():
 
 ## Main Script
 GPRS_off()
-listen_for_sms()
-GPRS_on()
+run_sms_handler()
+up_check()
 while True:
     readings = get_sensor_reading()
     save_to_file(readings, file_name_1, fieldnames)
