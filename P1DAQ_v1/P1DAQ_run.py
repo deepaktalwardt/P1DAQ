@@ -613,7 +613,7 @@ client_1.on_subscribe   =   on_subscribe_1
 ## MQTT Client Functions
 def client_1_connect():
     con = True
-    client_1.username_pw_set(USERNAME, PASSWORD)
+    client_1.username_pw_set(str(USERNAME), str(PASSWORD))
     while con:
         try:
             client_1.connect(PUBLIC_BROKER, port=1883)
