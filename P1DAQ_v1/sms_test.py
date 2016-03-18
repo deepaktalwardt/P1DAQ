@@ -10,6 +10,7 @@ BAUDRATE = 115200
 cred = ''
 DESTINATION = '+15592734835'
 correct_format = False
+modem = ''
 
 def GPRS_off():
     os.system('poff fona')
@@ -33,7 +34,7 @@ def handleSms(sms):
     #print(cred[1])
     # print('Replying to SMS...')
     # sms.reply(reply_text[1])
-    sms.reply(sms_reply[1])
+    modem.sendSms(sms.number, sms_reply[1])
     #print('SMS sent.\n')
 
 def check_sms(sms_text):
@@ -56,20 +57,21 @@ def check_sms(sms_text):
 
 
 def listen_for_sms():
+    global modem
     # print('Initializing modem...')
     # Uncomment the following line to see what the modem is doing:
     # logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
     modem = GsmModem(PORT, BAUDRATE, smsReceivedCallbackFunc=handleSms)
     modem.smsTextMode = False 
     modem.connect()
-    first_text = u'Waiting for Username and Password...'
+    first_text = u'Waiting for credentials | <USERNAME>,<PASSWORD>'
     sentmsg = modem.sendSms(DESTINATION, first_text)
-    print('Waiting for SMS message...')    
+    print('Waiting for SMS message')    
     try:    
         modem.rxThread.join(80) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
     finally:
         print('Closing modem')
-        if correct_format:
+        if correct_format is True:
             print(correct_format)
             cred_return = cred.split(',')
             print(cred_return[0][2:-3])
