@@ -39,7 +39,7 @@ def handleSms(sms):
 def check_sms(sms_text):
     global correct_format
     cred_split = str(sms_text).split(',')
-    to_reply = []
+    to_reply = ['','']
     print('Len: ' + str(len(cred_split)))
     if len(cred_split) == 2:
         to_reply[0] = True
