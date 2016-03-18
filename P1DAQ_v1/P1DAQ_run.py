@@ -192,6 +192,7 @@ def up_check():
         time.sleep(2)
         os.system('hciconfig hci0 up')
         os.system('python3 P1DAQ_run.py')
+        sys.exit()
     GPRS_on()
 
 # def handleSms(sms):
