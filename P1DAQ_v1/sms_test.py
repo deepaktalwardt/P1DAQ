@@ -26,13 +26,13 @@ def handleSms(sms):
     cred = sms.text.split(',')
     cred_json['USERNAME'] = cred[0]
     cred_json['PASSWORD'] = cred[1]
-    return json.dumps(cred_json)
+    #return json.dumps(cred_json)
     #print(cred[0])
     #print(cred[1])
     # print('Replying to SMS...')
     # sms.reply(reply_text[1])
     sms.reply(u'SMS received: "{0}{1}"'.format(sms.text[:20], '...' if len(sms.text) > 20 else ''))
-    print('SMS sent.\n')
+    #print('SMS sent.\n')
 
 def listen_for_sms():
     # print('Initializing modem...')
