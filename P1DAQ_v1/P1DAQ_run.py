@@ -31,11 +31,6 @@ UP_RECEIVED     =   False
 USERNAME        =   "sensoriot"              
 PASSWORD        =   "sensoriot" 
 
-## Main Script Part 1
-GPRS_off()
-run_sms_handler()
-up_check()
-
 ## GSM Modem SMS Functions
 # Turn GPRS mode off
 def GPRS_off():
@@ -78,6 +73,11 @@ def up_check():
         os.system('python3 P1DAQ_run.py')
         sys.exit()
     GPRS_on()
+
+## Main Script Part 1
+GPRS_off()
+run_sms_handler()
+up_check()
 
 ############ Variables and Setup #############
 ## File Saving
