@@ -9,3 +9,6 @@ from subprocess import *
 proc = Popen(['python', 'sms_test.py'], stdout=PIPE)
 for line in proc.stdout:
 	print(line)
+
+parsed_json = json.loads(line[2:-1])
+print(parsed_json[0], parsed_json[1])
