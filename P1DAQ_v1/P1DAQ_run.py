@@ -16,7 +16,11 @@ from random import randint
 from collections import defaultdict
 from gsmmodem.modem import GsmModem
 
-
+## Pre-Reqs
+os.system('hciconfig hci0 down')
+os.system('hciconfig hci0 up')
+time.sleep(2)
+os.system('hciconfig hci0 up')
 ############ Variables and Setup #############
 ## File Saving
 # For P1DAQ Box 1
