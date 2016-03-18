@@ -7,7 +7,7 @@ from gsmmodem.modem import GsmModem
 
 PORT = '/dev/ttyAMA0'
 BAUDRATE = 115200
-cred_json = {}
+cred = ''
 
 def GPRS_off():
     os.system('poff fona')
@@ -20,12 +20,12 @@ def GPRS_on():
     time.sleep(5)
 
 def handleSms(sms):
-    global cred_json
+    global cred
     # print(u'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text))
     # reply_text = update_user_pass(sms.text)
-    cred = sms.text.split(',')
-    cred_json['USERNAME'] = cred[0]
-    cred_json['PASSWORD'] = cred[1]
+    cred = sms.text
+    # cred_json['USERNAME'] = cred[0]
+    # cred_json['PASSWORD'] = cred[1]
     #return json.dumps(cred_json)
     #print(cred[0])
     #print(cred[1])
@@ -47,7 +47,7 @@ def listen_for_sms():
     finally:
         print('Closing modem')
         modem.close()
-        print(cred_json)
+        print(cred)
     # if UP_RECEIVED:
     #     print('Closing modem')
     #     time.sleep(2)

@@ -10,7 +10,9 @@ proc = Popen(['python', 'sms_test.py'], stdout=PIPE)
 for line in proc.stdout:
 	print(str(line))
 
-parsed_json = json.loads(str(line)[1:-4]+str(line)[-1])
+msg = line.split(',')
+#parsed_json = json.loads(str(line)[1:-4]+str(line)[-1])
 # print(parsed_json.get('USERNAME'))
 # print(parsed_json.get('PASSWORD'))
-print(parsed_json)
+print(msg[0])
+print(msg[1])
