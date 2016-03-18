@@ -9,7 +9,7 @@ PORT = '/dev/ttyAMA0'
 BAUDRATE = 115200
 cred = ''
 DESTINATION = '+15592734835'
-correct_format = 0
+global correct_format = 0
 modem = ''
 
 def GPRS_off():
@@ -42,9 +42,10 @@ def check_sms(sms_text):
     global correct_format
     cred_split = str(sms_text).split(',')
     to_reply = ['','']
-    print('Len: ' + str(len(cred_split)))
+    # print('Len: ' + str(len(cred_split)))
     if len(cred_split) == 2:
         correct_format = 1
+        print("I just checked the length and it's equal to" + str(len(cred_split)))
         to_reply[0] = correct_format
         to_reply[1] = "SUCCESS | Username: " + cred_split[0] + " Password: " + cred_split[1]
         print(to_reply)
@@ -74,11 +75,13 @@ def listen_for_sms():
     finally:
         print('Closing modem')
         if correct_format == 1:
+            print("the format is correct and equal to")
             print(correct_format)
             cred_return = cred.split(',')
             print(cred_return[0][2:-3])
             print(cred_return[1][2:-3])
         else:
+            print("the format is NOT correct and equal to")
             print(correct_format)
             print('')
             print('')
