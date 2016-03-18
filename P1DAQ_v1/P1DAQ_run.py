@@ -21,6 +21,12 @@ os.system('hciconfig hci0 down')
 os.system('hciconfig hci0 up')
 time.sleep(2)
 os.system('hciconfig hci0 up')
+
+## Main Script Part 1
+GPRS_off()
+run_sms_handler()
+up_check()
+
 ############ Variables and Setup #############
 ## File Saving
 # For P1DAQ Box 1
@@ -199,55 +205,6 @@ def up_check():
         sys.exit()
     GPRS_on()
 
-# def handleSms(sms):
-#     print(u'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text))
-#     reply_text = update_user_pass(sms.text)
-#     print('Replying to SMS...')
-#     sms.reply(reply_text[1])
-#     #sms.reply(u'SMS received: "{0}{1}"'.format(sms.text[:20], '...' if len(sms.text) > 20 else ''))
-#     print('SMS sent.\n')
-#     return
-
-# def update_user_pass(sms_text):
-#     global USERNAME
-#     global PASSWORD
-#     global UP_RECEIVED
-#     to_return = [False, '']
-
-#     cred = sms_text.split(',')
-#     print('Len: ' + str(len(cred)))
-#     if len(cred) == 2:
-#         USERNAME = cred[0]
-#         PASSWORD = cred[1]
-#         UP_RECEIVED = True
-#         to_return[0] = True
-#         to_return[1] = "SUCCESS | Username: " + USERNAME + " Password: " + PASSWORD
-#         print(to_return[1])
-#         return to_return
-#     else:
-#         to_return[0] = False
-#         to_return[1] = 'FAIL | Try again: <USERNAME>,<PASSWORD>'
-#         return to_return
-
-# def listen_for_sms():
-#     print('Initializing modem...')
-#     # Uncomment the following line to see what the modem is doing:
-#     logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
-#     modem = GsmModem(PORT, BAUDRATE, smsReceivedCallbackFunc=handleSms)
-#     modem.smsTextMode = False 
-#     modem.connect()
-#     print('Waiting for SMS message...')    
-#     try:    
-#         modem.rxThread.join(180) # Specify a (huge) timeout so that it essentially blocks indefinitely, but still receives CTRL+C interrupt signal
-#     finally:
-#         print('Closing modem')
-#         modem.close();
-#     if UP_RECEIVED:
-#         print('Closing modem')
-#         time.sleep(2)
-#         modem.close()
-#         return
-
 ## MQTT Clients Callback functions
 # For client_1
 def on_publish_1(client, userdata, mid):
@@ -382,8 +339,6 @@ def get_sensor_reading():
 ## MQTT JSON Packets generation
 # Generates Single sensor reading JSON to be sent to the MQTT Broker by client 1
 def sensor_json(data, dev_id):
-    # Increment SAMPLE_NUMBER to be sent
-    # increment_sn(dev_id)
 
     # Initialize all JSONs
     to_send = {}
@@ -608,25 +563,20 @@ client_1.on_connect     =   on_connect_1
 client_1.on_message     =   on_message_1
 client_1.on_subscribe   =   on_subscribe_1
 
-#client_2                =   paho.Client(client_id='P1DAQ_controls')
-#client_2.on_message     =   on_message_2
-#client_2.on_subscribe   =   on_subscribe_2
-#client_2.on_connect     =   on_connect_2
-#client_2.on_publish     =   on_publish_2
-#client_2.username_pw_set(USERNAME, PASSWORD)
-
 ## MQTT Client Functions
+# Attempts to connect client_1 to the MQTT broker. In case of a failure,
+# it attempts to reconnect and eventually restarts the script.
 def client_1_connect():
     con = True
     client_1.username_pw_set(str(USERNAME), str(PASSWORD))
     while con:
         try:
-            client_1.connect(PUBLIC_BROKER, port=188)
+            client_1.connect(PUBLIC_BROKER, port=1883)
             con = False
         except:
             print('Retry connection')
             try:
-                client_1.connect(PUBLIC_BROKER, port=188)
+                client_1.connect(PUBLIC_BROKER, port=1883)
             except:
                 print('Re-run script and ask for SMS')
                 os.system('hciconfig hci0 down')
@@ -636,13 +586,12 @@ def client_1_connect():
                 os.system('python3 P1DAQ_run.py')
                 sys.exit()
 
-#client_2.connect_async(PUBLIC_BROKER, port=1883)
-#client_2.loop_start()
-
+# Subscribe to the necessary topics
 def client_1_subscribe():
     for DEVICE_ID in DEVICE_IDS:
         client_1.subscribe(TOPIC_DOWN[DEVICE_ID], qos=1)
 
+# Begin client_1 loop
 def client_1_loop():
     loop = True
     while loop:
@@ -653,10 +602,7 @@ def client_1_loop():
             print('Retry loop')
             client_1.loop_start()
 
-## Main Script
-GPRS_off()
-run_sms_handler()
-up_check()
+## Main Script Part 2
 client_1_connect()
 client_1_subscribe()
 client_1_loop()
