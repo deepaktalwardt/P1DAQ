@@ -16,6 +16,10 @@ from random import randint
 from collections import defaultdict
 from gsmmodem.modem import GsmModem
 
+## BLE Imports
+from THpythonLib import *
+from BLE_init import *
+
 ## Pre-Reqs
 os.system('hciconfig hci0 down')
 os.system('hciconfig hci0 up')
@@ -215,10 +219,7 @@ def on_message_1(client, userdata, msg):
 
 def on_subscribe_1(client, userdata, mid, granted_qos):
     print("Subscribed: "+str(mid)+" "+str(granted_qos))
- 
-## BLE Imports
-from THpythonLib import *
-from BLE_init import *
+
 
 ## Sensor Data Acquisition functions
 # Check if the ble_path is recognized
