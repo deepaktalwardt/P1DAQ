@@ -16,15 +16,15 @@ from random import randint
 from collections import defaultdict
 from gsmmodem.modem import GsmModem
 
-## BLE Imports
-from THpythonLib import *
-from BLE_init import *
-
 ## Pre-Reqs
 os.system('hciconfig hci0 down')
 os.system('hciconfig hci0 up')
 time.sleep(2)
 os.system('hciconfig hci0 up')
+
+## BLE Imports
+from THpythonLib import *
+from BLE_init import *
 
 ## SMS Variables
 SMS_OUTPUT      =   []
