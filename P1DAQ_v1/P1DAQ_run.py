@@ -23,9 +23,6 @@ time.sleep(2)
 os.system('hciconfig hci0 up')
 
 ## SMS Variables
-PORT            =   '/dev/ttyAMA0'
-BAUDRATE        =   115200
-PIN             =   None
 SMS_OUTPUT      =   []
 UP_RECEIVED     =   False
 USERNAME        =   "sensoriot"              
@@ -600,7 +597,7 @@ client_1_loop()
 while True:
     readings = get_sensor_reading()
     save_to_file(readings, file_name_1, fieldnames)
-    print('Curr_Mass: ' + str(CURR_MASS_DATA))
-    print('Curr_Num: ' + str(CURR_NUM_DATA))
+    #print('Curr_Mass: ' + str(CURR_MASS_DATA))
+    #print('Curr_Num: ' + str(CURR_NUM_DATA))
     pub_sensor_reading(readings)
     print('----------------------------------------------------')
