@@ -18,8 +18,8 @@ fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc",
 			  "Relative Humidity (%)",
 			  "Time (UT)"]
 
-#folder_name = "/media/pi/Clarity/MQTTData/"
-folder_name = "C:/Users/Deepak/Dropbox (Clarity Movement)/Hardware R&D/P1 sensor/Custom Projects/RPi2/P1DAQ/MQTTtesting/testMQTT/"
+folder_name = "/media/pi/Clarity/MQTTData/"
+#folder_name = "C:/Users/Deepak/Dropbox (Clarity Movement)/Hardware R&D/P1 sensor/Custom Projects/RPi2/P1DAQ/MQTTtesting/testMQTT/"
 num_file = len([f for f in os.listdir(folder_name)]) + 1
 file_name = folder_name + "MQTTFile" + str(num_file) + ".csv"
 
