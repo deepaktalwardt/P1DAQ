@@ -33,7 +33,7 @@ def write_dest(number):
     print('New Destination: ' + number)
     with open(USERPASS_FILE, 'w') as file_to_write:
         updater = csv.writer(file_to_write)
-        updater.writerow(number)
+        updater.writerow(u'{0}'.format(number))
 
 def GPRS_off():
     os.system('poff fona')
