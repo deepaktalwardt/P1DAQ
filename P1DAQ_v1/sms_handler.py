@@ -50,7 +50,7 @@ def handleSms(sms):
     cred = sms.text
     sms_reply = check_sms(sms.text)
     print(sms.number)
-    write_dest(str(sms.number))
+    write_dest(str(sms.number).strip())
     modem.sendSms(sms.number, sms_reply[1])
     print('SMS sent.\n')
 
