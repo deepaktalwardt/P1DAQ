@@ -47,12 +47,15 @@ def handleSms(sms):
     global cred
     global correct_format
     print(u'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text))
-    cred = sms.text
-    sms_reply = check_sms(sms.text)
     print(sms.number)
-    write_dest(str(sms.number).strip())
-    modem.sendSms(sms.number, sms_reply[1])
-    print('SMS sent.\n')
+    if not len(str(sms.number).strip()) < 10:
+        cred = sms.text
+        sms_reply = check_sms(sms.text)
+        write_dest(str(sms.number).strip())
+        modem.sendSms(sms.number, sms_reply[1])
+        print('SMS sent.\n')
+    else:
+        print('SMS not sent')
 
 def check_sms(sms_text):
     global correct_format
