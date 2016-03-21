@@ -3,6 +3,7 @@ import logging
 import os
 import time
 import json
+import csv
 from gsmmodem.modem import GsmModem
 
 PORT = '/dev/ttyAMA0'
@@ -23,8 +24,10 @@ def load_dest():
         for line in reader:
             latest_number = line
         DESTINATION = latest_number
+        print('Destination: ' + DESTINATION)
 
 def write_dest(number):
+    print('New Destination: ' + number)
     with open(USERPASS_FILE, 'w') as file_to_write:
         updater = csv.writer(file_to_write, delimiter=' ')
         updater.writerow(number)

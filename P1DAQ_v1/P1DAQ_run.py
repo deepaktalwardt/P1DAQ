@@ -170,8 +170,8 @@ int_temp_sensor.begin()
 ## MQTT Variables
 ORG_ID          =   "CLMTCO"
 DEVICE_TYPE     =   "P1"
-BOX             =   "P1DAQ-1" 
-# BOX             =   "P1DAQ-2" # For box number 2
+BOX             =   "P1DAQ1" 
+# BOX             =   "P1DAQ2" # For box number 2
 DEVICE_IDS      =   dev_ids         
 TOPIC_UP        =   "iot/SSRIOT/" + DEVICE_TYPE 
 PUBLIC_BROKER   =   "broker.hivemq.com"
