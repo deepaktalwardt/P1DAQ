@@ -21,7 +21,7 @@ def load_dest():
     global DESTINATION
     try:
         with open(USERPASS_FILE, 'rb') as file_to_read:
-            reader = csv.reader(file_to_read, delimiter=' ')
+            reader = csv.reader(file_to_read)
             for line in reader:
                 latest_number = line
             DESTINATION = latest_number
@@ -32,7 +32,7 @@ def load_dest():
 def write_dest(number):
     print('New Destination: ' + number)
     with open(USERPASS_FILE, 'w') as file_to_write:
-        updater = csv.writer(file_to_write, delimiter=' ')
+        updater = csv.writer(file_to_write)
         updater.writerow(number)
 
 def GPRS_off():
