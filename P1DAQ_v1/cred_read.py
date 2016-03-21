@@ -29,6 +29,7 @@ if updated:
 	print('Received: ')
 	print(username)
 	print(password)
+	print(output)
 else:
 	print('Did not update...Restarting')
 	print(output)
