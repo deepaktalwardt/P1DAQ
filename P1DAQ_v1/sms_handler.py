@@ -19,12 +19,15 @@ cred = ''
 
 def load_dest():
     global DESTINATION
-    with open(USERPASS_FILE, 'rb') as file_to_read:
-        reader = csv.reader(file_to_read, delimiter=' ')
-        for line in reader:
-            latest_number = line
-        DESTINATION = latest_number
-        print('Destination: ' + DESTINATION)
+    try:
+        with open(USERPASS_FILE, 'rb') as file_to_read:
+            reader = csv.reader(file_to_read, delimiter=' ')
+            for line in reader:
+                latest_number = line
+            DESTINATION = latest_number
+            print('Destination: ' + DESTINATION)
+    except:
+        pass
 
 def write_dest(number):
     print('New Destination: ' + number)
