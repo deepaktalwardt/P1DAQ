@@ -24,7 +24,7 @@ def load_dest():
             reader = csv.reader(file_to_read, delimiter=',')
             for line in reader:
                 latest_number = line
-            DESTINATION = latest_number
+            DESTINATION = latest_number[0]
             print('Destination: ' + DESTINATION)
     except:
         pass
