@@ -170,6 +170,8 @@ int_temp_sensor.begin()
 ## MQTT Variables
 ORG_ID          =   "CLMTCO"
 DEVICE_TYPE     =   "P1"
+BOX             =   "P1DAQ-1" 
+# BOX             =   "P1DAQ-2" # For box number 2
 DEVICE_IDS      =   dev_ids         
 TOPIC_UP        =   "iot/SSRIOT/" + DEVICE_TYPE 
 PUBLIC_BROKER   =   "broker.hivemq.com"
@@ -546,7 +548,7 @@ def pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es):
     command_record(jsonized, arg)
 
 # Setup MQTT Clients
-client_1                =   paho.Client(client_id="d-" + ORG_ID + "-" + DEVICE_TYPE)
+client_1                =   paho.Client(client_id="d-" + ORG_ID + "-" + DEVICE_TYPE + "-" + BOX)
 client_1.on_publish     =   on_publish_1
 client_1.on_connect     =   on_connect_1
 client_1.on_message     =   on_message_1

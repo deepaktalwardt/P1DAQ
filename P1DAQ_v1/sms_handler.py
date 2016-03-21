@@ -8,10 +8,26 @@ from gsmmodem.modem import GsmModem
 PORT = '/dev/ttyAMA0'
 BAUDRATE = 115200
 TIMEOUT = 60
-cred = ''
+BOX = "P1DAQ-1: "
+#BOX = "P1DAQ-2: "
 DESTINATION = '+15592734835'
+USERPASS_FILE = "/media/pi/Clarity/destinations.csv"
 correct_format = 0
 modem = ''
+cred = ''
+
+def load_dest():
+    global DESTINATION
+    with open(USERPASS_FILE, 'rb') as file_to_read:
+        reader = csv.reader(file_to_read, delimiter=' ')
+        for line in reader:
+            latest_number = line
+        DESTINATION = latest_number
+
+def write_dest(number):
+    with open(USERPASS_FILE, 'w') as file_to_write:
+        updater = csv.writer(file_to_write, delimiter=' ')
+        updater.writerow(number)
 
 def GPRS_off():
     os.system('poff fona')
@@ -27,6 +43,7 @@ def handleSms(sms):
     print(u'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text))
     cred = sms.text
     sms_reply = check_sms(sms.text)
+    write_dest(sms.number)
     modem.sendSms(sms.number, sms_reply[1])
     print('SMS sent.\n')
 
@@ -38,16 +55,15 @@ def check_sms(sms_text):
         correct_format = 1
         #print("I just checked the length and it's equal to" + str(len(cred_split)))
         to_reply[0] = correct_format
-        to_reply[1] = "SUCCESS | Username: " + cred_split[0].strip() + " Password: " + cred_split[1].strip()
+        to_reply[1] = BOX+"SUCCESS | Username: " + cred_split[0].strip() + " Password: " + cred_split[1].strip()
         print(to_reply)
         return to_reply
     else:
         correct_format = 0
         to_reply[0] = correct_format
-        to_reply[1] = 'FAIL | Try again: <USERNAME>,<PASSWORD>'
+        to_reply[1] = BOX+'FAIL | Try again: <USERNAME>,<PASSWORD>'
         print(to_reply)
         return to_reply
-
 
 def listen_for_sms():
     global modem
@@ -58,7 +74,8 @@ def listen_for_sms():
     modem = GsmModem(PORT, BAUDRATE, smsReceivedCallbackFunc=handleSms)
     modem.smsTextMode = False 
     modem.connect()
-    first_text = u'Waiting for credentials | <USERNAME>,<PASSWORD>'
+    first_text = BOX+'Waiting for credentials | <USERNAME>,<PASSWORD>'
+    load_dest()
     sentmsg = modem.sendSms(DESTINATION, first_text)
     print('Waiting for SMS message')    
     try:    
