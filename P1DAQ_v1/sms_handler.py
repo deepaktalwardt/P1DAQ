@@ -49,7 +49,8 @@ def handleSms(sms):
     print(u'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text))
     cred = sms.text
     sms_reply = check_sms(sms.text)
-    write_dest(sms.number)
+    print(sms.number)
+    write_dest(str(sms.number))
     modem.sendSms(sms.number, sms_reply[1])
     print('SMS sent.\n')
 
