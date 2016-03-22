@@ -8,7 +8,7 @@ from gsmmodem.modem import GsmModem
 
 PORT = '/dev/ttyAMA0'
 BAUDRATE = 115200
-TIMEOUT = 60
+TIMEOUT = 90
 BOX = "P1DAQ-1: "
 #BOX = "P1DAQ-2: "
 DESTINATION = '+15592734835'
