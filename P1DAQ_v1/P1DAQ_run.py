@@ -562,7 +562,7 @@ def client_1_connect():
     client_1.username_pw_set(str(USERNAME), str(PASSWORD))
     while con:
         try:
-            client_1.connect(IBM_BROKER)
+            client_1.connect(IBM_BROKER,port=1883)
             #client_1_connect(PUBLIC_BROKER, port=1883)
             con = False
         except:
