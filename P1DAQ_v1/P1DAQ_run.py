@@ -107,7 +107,7 @@ fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc",
               dev_ids[4] + "_mc", dev_ids[4] + "_nc",
               "In Temp (deg C)", "Out Temp (deg C)",
               "Relative Humidity (%)",
-              "Time (UT)"]
+              "Time"]
 
 log_fieldnames = ['tn',
                   'sn',
@@ -338,13 +338,13 @@ def sensor_json(data, dev_id):
     mc = {}
 
     # Generate variables
-    t_n = DEVICE_TYPE + "-" + dev_id
+    t_n = BOX + DEVICE_TYPE + "-" + dev_id
     int_temp = data.get("In Temp (deg C)") # Change later to function call
     out_temp = data.get("Out Temp (deg C)") # Change later to function call
     out_humi = data.get("Relative Humidity (%)") # Change later to function call
     time_now = data.get("Time (UT)")
     air_flow = 1000 # Not sure if we need to change this
-    sampling_time = SAMPLING_TIMES.get(dev_id) # May need to change later
+    sampling_time = int(SAMPLING_TIMES.get(dev_id)*2.5) # May need to change later
     serial_number = SERIAL_NUMBERS.get(dev_id)
 
     # Generate Sub JSONs
@@ -562,14 +562,14 @@ def client_1_connect():
     client_1.username_pw_set(str(USERNAME), str(PASSWORD))
     while con:
         try:
-            client_1.connect(IBM_BROKER,port=1883)
-            #client_1_connect(PUBLIC_BROKER, port=1883)
+            #client_1.connect(IBM_BROKER,port=1883)
+            client_1_connect(PUBLIC_BROKER, port=1883)
             con = False
         except:
             print('Retry connection')
             try:
-                client_1.connect(IBM_BROKER,port=1883)
-                #client_1_connect(PUBLIC_BROKER, port=1883)
+                #client_1.connect(IBM_BROKER,port=1883)
+                client_1_connect(PUBLIC_BROKER, port=1883)
             except:
                 print('Re-run script and ask for SMS')
                 os.system('hciconfig hci0 down')

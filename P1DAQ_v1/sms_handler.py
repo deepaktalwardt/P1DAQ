@@ -65,7 +65,7 @@ def check_sms(sms_text):
         correct_format = 1
         #print("I just checked the length and it's equal to" + str(len(cred_split)))
         to_reply[0] = correct_format
-        to_reply[1] = BOX+"SUCCESS | Username: " + cred_split[0].strip() + " Password: " + cred_split[1].strip()
+        to_reply[1] = BOX+"SUCCESS | Username: " + cred_split[0].strip() + ", Password: " + cred_split[1].strip()
         print(to_reply)
         return to_reply
     else:
