@@ -6,7 +6,7 @@ import datetime
 import sys
 
 DEVICE_TYPE     =   "P1"
-TOPIC           =   "iot/SSRIOT/" + DEVICE_TYPE +"/"
+TOPIC           =   "iot/SSRIOT/" + DEVICE_TYPE
 COUNTER = 0
 dev_ids = ["0009", "0011", "0020", "0027", "000c"]
 fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc", 
@@ -64,6 +64,6 @@ client.on_subscribe = on_subscribe
 client.on_message = on_message
 client.connect("broker.hivemq.com", 1883)
 for dev_id in dev_ids:
-    client.subscribe(TOPIC+dev_id, qos=1)
+    client.subscribe(TOPIC, qos=1)
  
 client.loop_forever()

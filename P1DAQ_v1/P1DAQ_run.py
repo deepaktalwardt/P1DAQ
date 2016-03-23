@@ -83,18 +83,18 @@ up_check()
 ############ Variables and Setup #############
 ## File Saving
 # For P1DAQ Box 1
-dev_ids = ["0009", "0011", "0020", "0027", "000c"]
+dev_ids = ["0001", "0024", "0020", "0027", "000c"]
 
-dev_addrs = ["fd:9e:85:fe:57:ff",
-             "ef:9b:60:f5:db:82",
+dev_addrs = ["cc:50:39:b3:b8:9a",
+             "e3:ce:c3:74:79:8d",
              "f3:3d:9c:32:c4:c2",
              "e6:23:33:d8:5e:0d",
              "e9:6d:3d:79:17:c2"]
 
 # For P1DAQ Box 2
-# dev_ids = ["0001", "0010", "0016", "0024", "0032"]
+# dev_ids = ["0009", "0010", "0016", "0024", "0032"]
 
-# dev_addrs = ["cc:50:39:b3:b8:9a",
+# dev_addrs = ["fd:9e:85:fe:57:ff",
 #              "cd:49:39:88:eb:79",
 #              "ce:bb:b9:a4:0c:e7",
 #              "e3:ce:c3:74:79:8d",
@@ -342,7 +342,7 @@ def sensor_json(data, dev_id):
     int_temp = data.get("In Temp (deg C)") # Change later to function call
     out_temp = data.get("Out Temp (deg C)") # Change later to function call
     out_humi = data.get("Relative Humidity (%)") # Change later to function call
-    time_now = data.get("Time (UT)")
+    time_now = data.get("Time")
     air_flow = 1000 # Not sure if we need to change this
     sampling_time = int(SAMPLING_TIMES.get(dev_id)*2.5) # May need to change later
     serial_number = SERIAL_NUMBERS.get(dev_id)
