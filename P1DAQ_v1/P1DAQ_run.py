@@ -321,7 +321,7 @@ def get_sensor_reading():
     to_return["In Temp (deg C)"] = int_temp_sensor.readTempC()
     to_return["Out Temp (deg C)"] = float("%.*f" % (3, read_temperature())) 
     to_return["Relative Humidity (%)"] = float("%.*f" % (3, read_humidity())) 
-    to_return["Time (UT)"] = datetime.datetime.now().isoformat()
+    to_return["Time"] = datetime.datetime.now().isoformat()
     to_return = check_reading(to_return)
     print('Sensor Reading: ' + str(to_return))
     populate_curr_data(to_return)
