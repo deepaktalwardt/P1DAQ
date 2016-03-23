@@ -8,7 +8,7 @@ import sys
 DEVICE_TYPE     =   "P1"
 TOPIC           =   "iot/SSRIOT/" + DEVICE_TYPE
 COUNTER = 0
-dev_ids = ["0009", "0011", "0020", "0027", "000c"]
+dev_ids = ["0001", "0024", "0020", "0027", "000c"]
 fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc", 
 			  dev_ids[1] + "_mc", dev_ids[1] + "_nc",
 			  dev_ids[2] + "_mc", dev_ids[2] + "_nc",
