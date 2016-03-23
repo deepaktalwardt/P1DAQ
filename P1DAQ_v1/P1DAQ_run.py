@@ -559,17 +559,17 @@ client_1.on_subscribe   =   on_subscribe_1
 # it attempts to reconnect and eventually restarts the script.
 def client_1_connect():
     con = True
-    client_1.username_pw_set(str(USERNAME), str(PASSWORD))
+    #client_1.username_pw_set(str(USERNAME), str(PASSWORD))
     while con:
         try:
             #client_1.connect(IBM_BROKER,port=1883)
-            client_1_connect(PUBLIC_BROKER, port=1883)
+            client_1.connect(PUBLIC_BROKER, port=1883)
             con = False
         except:
             print('Retry connection')
             try:
                 #client_1.connect(IBM_BROKER,port=1883)
-                client_1_connect(PUBLIC_BROKER, port=1883)
+                client_1.connect(PUBLIC_BROKER, port=1883)
             except:
                 print('Re-run script and ask for SMS')
                 os.system('hciconfig hci0 down')

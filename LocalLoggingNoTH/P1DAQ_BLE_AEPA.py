@@ -17,8 +17,8 @@ from socket import (
     HCI_FILTER,
 )
 ###############################################################
-# folderName = "/home/pi/ClarityData/"
-folderName = "/media/pi/ClarityDataStorageDrive1/ClarityData/"
+folderName = "/home/pi/TestingData/"
+#folderName = "/media/pi/ClarityDataStorageDrive1/ClarityData/"
 numFile = len([f for f in os.listdir(folderName)]) + 1
 #tnow = datetime.datetime.now().isoformat()
 #fixedTime = tnow[0:10] + "--" + tnow[11:13] + "-" + tnow[14:16] + "-" + tnow[17:19]
@@ -147,6 +147,6 @@ while True:
             updater = csv.DictWriter(fileToUpdate, fieldnames = devReadings.keys())
             updater.writerow(toSave)
         counter += 1
-        #print(str(devReadings))
+        print(str(devReadings))
 
               
