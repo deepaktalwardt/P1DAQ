@@ -103,8 +103,8 @@ def listen_for_sms():
             #print("the format is correct and equal to")
             print(correct_format)
             cred_return = cred.split(',')
-            print(cred_return[0].strip())
             print(cred_return[1].strip())
+            print(cred_return[2].strip())
         else:
             #print("the format is NOT correct and equal to")
             print(correct_format)
