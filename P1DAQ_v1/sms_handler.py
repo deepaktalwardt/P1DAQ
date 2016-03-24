@@ -78,7 +78,7 @@ def check_sms(sms_text):
     else:
         correct_format = 0
         to_reply[0] = correct_format
-        to_reply[1] = BOX+'FAIL | Try again: <USERNAME>,<PASSWORD>'
+        to_reply[1] = BOX+'FAIL | Try again: cmcibm,<USERNAME>,<PASSWORD>'
         print(to_reply)
         return to_reply
 
@@ -91,7 +91,7 @@ def listen_for_sms():
     modem = GsmModem(PORT, BAUDRATE, smsReceivedCallbackFunc=handleSms)
     modem.smsTextMode = False 
     modem.connect()
-    first_text = BOX+'Waiting for credentials | <USERNAME>,<PASSWORD>'
+    first_text = BOX+'Waiting for credentials | cmcibm,<USERNAME>,<PASSWORD>'
     load_dest()
     sentmsg = modem.sendSms(DESTINATION, first_text)
     print('Waiting for SMS message')    

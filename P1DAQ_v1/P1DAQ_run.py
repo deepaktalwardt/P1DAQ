@@ -338,7 +338,7 @@ def sensor_json(data, dev_id):
     mc = {}
 
     # Generate variables
-    t_n = BOX + DEVICE_TYPE + "-" + dev_id
+    t_n = BOX + "-" + DEVICE_TYPE + "-" + dev_id
     int_temp = data.get("In Temp (deg C)") # Change later to function call
     out_temp = data.get("Out Temp (deg C)") # Change later to function call
     out_humi = data.get("Relative Humidity (%)") # Change later to function call
