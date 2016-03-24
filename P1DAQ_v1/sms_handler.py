@@ -48,7 +48,7 @@ def handleSms(sms):
     global correct_format
     print(u'== SMS message received ==\nFrom: {0}\nTime: {1}\nMessage:\n{2}\n'.format(sms.number, sms.time, sms.text))
     print(sms.number)
-    if not len(str(sms.number).strip()) < 10:
+    if valid_sender(sms):
         cred = sms.text
         sms_reply = check_sms(sms.text)
         write_dest(str(sms.number).strip())
@@ -57,15 +57,22 @@ def handleSms(sms):
     else:
         print('SMS not sent')
 
+def valid_sender(rec_sms):
+    text = rec_sms.text
+    split_text = str(rec_sms).split(',')
+    if split_text[0].strip() == 'cmcibm':
+        return True
+    else:
+        return False
+
 def check_sms(sms_text):
     global correct_format
     cred_split = str(sms_text).split(',')
     to_reply = ['','']
-    if len(cred_split) == 2:
+    if len(cred_split) == 3:
         correct_format = 1
-        #print("I just checked the length and it's equal to" + str(len(cred_split)))
         to_reply[0] = correct_format
-        to_reply[1] = BOX+"SUCCESS | Username: " + cred_split[0].strip() + ", Password: " + cred_split[1].strip()
+        to_reply[1] = BOX+"SUCCESS | Username: " + cred_split[1].strip() + ", Password: " + cred_split[2].strip()
         print(to_reply)
         return to_reply
     else:
