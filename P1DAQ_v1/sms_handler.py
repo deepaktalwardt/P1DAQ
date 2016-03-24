@@ -59,7 +59,7 @@ def handleSms(sms):
 
 def valid_sender(rec_sms):
     text = rec_sms.text
-    split_text = str(rec_sms).split(',')
+    split_text = str(text).split(',')
     if split_text[0].strip() == 'cmcibm':
         return True
     else:
