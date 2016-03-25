@@ -31,7 +31,7 @@ def is_connected():
 		print('Not Connected')
 		connected = False
 		pass
-	return False:
+	return False
 
 def toggle_fona():
 	GPIO.output(fona_key, 0)
