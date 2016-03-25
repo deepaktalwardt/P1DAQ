@@ -5,7 +5,7 @@ import os
 import socket
 
 connected = False
-REMOTE_SERVER = "www.baidu.com"
+REMOTE_SERVER = "www.google.com"
 
 GPIO.setmode(GPIO.BCM)
 fona_key = 22
@@ -34,6 +34,7 @@ def is_connected():
 	return False
 
 def toggle_fona():
+	print('Toggling')
 	GPIO.output(fona_key, 0)
 	time.sleep(2)
 
