@@ -1,6 +1,7 @@
 ## Restart fona ##
 import RPi.GPIO as GPIO
 import time
+from sms_handler import *
 
 GPIO.setmode(GPIO.BCM)
 
