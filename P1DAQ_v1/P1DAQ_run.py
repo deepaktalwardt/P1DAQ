@@ -17,6 +17,7 @@ from collections import defaultdict
 from gsmmodem.modem import GsmModem
 
 ## Pre-Reqs
+os.system('python3 restart_fona.py')
 os.system('hciconfig hci0 down')
 os.system('hciconfig hci0 up')
 time.sleep(2)

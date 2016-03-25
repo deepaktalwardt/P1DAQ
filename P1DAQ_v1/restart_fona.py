@@ -22,7 +22,7 @@ time.sleep(2)
 
 GPIO.cleanup()
 time.sleep(10)
-GPRS_on()
+# GPRS_on()
 
 
 
