@@ -2,6 +2,14 @@
 import RPi.GPIO as GPIO
 import time
 import os
+import socket
+
+connected = False
+REMOTE_SERVER = "www.baidu.com"
+
+GPIO.setmode(GPIO.BCM)
+fona_key = 22
+GPIO.setup(fona_key, GPIO.OUT)
 
 def GPRS_off():
     os.system('poff fona')
@@ -11,19 +19,27 @@ def GPRS_on():
     os.system('pon fona')
     time.sleep(5)
 
-GPRS_off()
-GPIO.setmode(GPIO.BCM)
+def is_connected():
+	global connected
+	try:
+		host = socket.gethostbyname(REMOTE_SERVER)
+		s = socket.create_connection((host, 80), 2)
+		print('Connected!')
+		connected = True
+		return True
+	except:
+		print('Not Connected')
+		connected = False
+		pass
+	return False:
 
-fona_key = 22
-GPIO.setup(fona_key, GPIO.OUT)
+def toggle_fona():
+	GPIO.output(fona_key, 0)
+	time.sleep(2)
 
-GPIO.output(fona_key, 0)
-time.sleep(2)
+while not is_connected():
+	toggle_fona()
+	time.sleep(10)
+	GPRS_on()
 
 GPIO.cleanup()
-time.sleep(10)
-# GPRS_on()
-
-
-
-
