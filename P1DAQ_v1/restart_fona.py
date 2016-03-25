@@ -10,3 +10,6 @@ GPIO.setup(fona_key, GPIO.OUT)
 
 GPIO.output(fona_key, 0)
 time.sleep(2)
+
+# print('Turning on GPRS')
+# GPRS_on()
