@@ -8,7 +8,8 @@ import sys
 DEVICE_TYPE     =   "P1"
 TOPIC           =   "iot/SSRIOT/" + DEVICE_TYPE
 COUNTER = 0
-dev_ids = ["0001", "0024", "0020", "0027", "000c"]
+#dev_ids = ["0001", "0024", "0020", "0027", "000c"]
+dev_ids = ["0009", "0010", "0016", "0024", "0032"]
 fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc", 
 			  dev_ids[1] + "_mc", dev_ids[1] + "_nc",
 			  dev_ids[2] + "_mc", dev_ids[2] + "_nc",
@@ -62,7 +63,8 @@ def on_message(client, userdata, msg):
 client = paho.Client(client_id = "p1", clean_session = True)
 client.on_subscribe = on_subscribe
 client.on_message = on_message
-client.connect("broker.hivemq.com", 1883)
+#client.connect("broker.hivemq.com", 1883)
+client.connect("119.81.84.237", 1883)
 for dev_id in dev_ids:
     client.subscribe(TOPIC, qos=1)
  

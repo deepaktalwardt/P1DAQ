@@ -84,22 +84,22 @@ up_check()
 ############ Variables and Setup #############
 ## File Saving
 # For P1DAQ Box 1
-dev_ids = ["0001", "0024", "0020", "0027", "000c"]
+dev_ids = ["0009", "0010", "0016", "0024", "0032"]
 
-dev_addrs = ["cc:50:39:b3:b8:9a",
-             "e3:ce:c3:74:79:8d",
-             "f3:3d:9c:32:c4:c2",
-             "e6:23:33:d8:5e:0d",
-             "e9:6d:3d:79:17:c2"]
+dev_addrs = ["fd:9e:85:fe:57:ff",
+              "cd:49:39:88:eb:79",
+              "ce:bb:b9:a4:0c:e7",
+              "e3:ce:c3:74:79:8d",
+              "fa:26:e0:1f:4e:61"]
 
 # For P1DAQ Box 2
-# dev_ids = ["0009", "0010", "0016", "0024", "0032"]
-
-# dev_addrs = ["fd:9e:85:fe:57:ff",
-#              "cd:49:39:88:eb:79",
-#              "ce:bb:b9:a4:0c:e7",
-#              "e3:ce:c3:74:79:8d",
-#              "fa:26:e0:1f:4e:61"]
+##dev_ids = ["0012", "0014", "0016", "0020", "000f"]
+##
+##dev_addrs = ["cc:50:39:b3:b8:9a",
+##             "e3:ce:c3:74:79:8d",
+##             "da:12:04:e1:8a:77",
+##             "e6:23:33:d8:5e:0d",
+##             "e9:6d:3d:79:17:c2"]
 
 fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc", 
               dev_ids[1] + "_mc", dev_ids[1] + "_nc",
@@ -171,8 +171,8 @@ int_temp_sensor.begin()
 ## MQTT Variables
 ORG_ID          =   "CLMTCO"
 DEVICE_TYPE     =   "P1"
-BOX             =   "P1DAQ1" 
-# BOX             =   "P1DAQ2" # For box number 2
+# BOX             =   "P1DAQ1" 
+BOX             =   "P1DAQ2" # For box number 2
 DEVICE_IDS      =   dev_ids         
 TOPIC_UP        =   "iot/SSRIOT/" + DEVICE_TYPE 
 PUBLIC_BROKER   =   "broker.hivemq.com"
@@ -563,14 +563,14 @@ def client_1_connect():
     #client_1.username_pw_set(str(USERNAME), str(PASSWORD))
     while con:
         try:
-            #client_1.connect(IBM_BROKER,port=1883)
-            client_1.connect(PUBLIC_BROKER, port=1883)
+            client_1.connect(IBM_BROKER,port=1883)
+            #client_1.connect(PUBLIC_BROKER, port=1883)
             con = False
         except:
             print('Retry connection')
             try:
-                #client_1.connect(IBM_BROKER,port=1883)
-                client_1.connect(PUBLIC_BROKER, port=1883)
+                client_1.connect(IBM_BROKER,port=1883)
+                #client_1.connect(PUBLIC_BROKER, port=1883)
             except:
                 print('Re-run script and ask for SMS')
                 os.system('hciconfig hci0 down')
