@@ -192,7 +192,7 @@ def test_set_dev_name():
 		dev_id = dev_ids[i]
 		tn = t_n + dev_id
 		sn = dev_id
-		command = build_command(tn, sn, 4q3, 'set_dev_name', name)
+		command = build_command(tn, sn, 43, 'set_dev_name', name)
 		(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
 		time.sleep(1)
 	print('Name not a string')
