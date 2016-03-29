@@ -244,6 +244,7 @@ def on_connect_1(client, data, flags, rc):
 def on_message_1(client, userdata, msg):
     print('Command from ' + msg.topic + ' received')
     decode_command(msg.payload)
+    return
 
 def on_subscribe_1(client, userdata, mid, granted_qos):
     print("Subscribed: "+str(mid)+" "+str(granted_qos))
