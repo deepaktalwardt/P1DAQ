@@ -121,7 +121,7 @@ def test_set_st():
 	print('Argument as a string')
 	i = 0
 	for dev_id in dev_ids:
-		tn = tn + dev_id
+		tn = t_n + dev_id
 		sn = dev_id
 		command = build_command(tn, sn, 1, 'set_st', 'dsf')
 		(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
