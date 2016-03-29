@@ -132,7 +132,7 @@ def test_get_st():
 	for dev_id in dev_ids:
 		tn = t_n + dev_id
 		sn = dev_id
-		command = build_command(tn, sn, 2, 'get_st', '')
+		command = build_command(tn, sn, 2, 'get_st', ' ')
 		(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
 		time.sleep(3)
 	print('Testing failure cases')
@@ -140,7 +140,7 @@ def test_get_st():
 	for dev_id in dev_ids:
 		tn = t_n + dev_id
 		sn = dev_id
-		command = build_command(tn, sn, 2341, 'get_st', '')
+		command = build_command(tn, sn, 2341, 'get_st', ' ')
 		(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
 		time.sleep(3)
 
@@ -216,4 +216,4 @@ def test_unrec_cmd():
 	time.sleep(1)
 
 test_set_st()
-test_get_st()
+#test_get_st()
