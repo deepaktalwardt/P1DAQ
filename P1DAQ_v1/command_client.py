@@ -107,7 +107,7 @@ def test_set_st():
 		command = build_command(tn, sn, 1, 'set_st', st_test[i])
 		(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
 		i += 1
-		time.sleep(1.5)
+		time.sleep(3)
 	print('Testing failure cases')
 	print('Wrong CID')
 	i = 0
@@ -117,7 +117,7 @@ def test_set_st():
 		command = build_command(tn, sn, 2341, 'set_st', st_test[i])
 		(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
 		i += 1
-		time.sleep(1.5)
+		time.sleep(3)
 	print('Argument as a string')
 	i = 0
 	for dev_id in dev_ids:
@@ -126,7 +126,7 @@ def test_set_st():
 		command = build_command(tn, sn, 1, 'set_st', 'dsf')
 		(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
 		i += 1
-		time.sleep(1.5)
+		time.sleep(3)
 
 def test_get_st():
 	for dev_id in dev_ids:
@@ -134,7 +134,7 @@ def test_get_st():
 		sn = dev_id
 		command = build_command(tn, sn, 2, 'get_st', '')
 		(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
-		time.sleep(1.5)
+		time.sleep(3)
 	print('Testing failure cases')
 	print('Wrong CID')
 	for dev_id in dev_ids:
@@ -142,7 +142,7 @@ def test_get_st():
 		sn = dev_id
 		command = build_command(tn, sn, 2341, 'get_st', '')
 		(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
-		time.sleep(1.5)
+		time.sleep(3)
 
 def test_tz():
 	for tz in tz_test:
