@@ -197,8 +197,8 @@ except:
 ## MQTT Variables
 ORG_ID          =   "CLMTCO"
 DEVICE_TYPE     =   "P1"
-# BOX             =   "P1DAQ1" 
-BOX             =   "P1DAQ2" # For box number 2
+BOX             =   "P1DAQ1" 
+#BOX             =   "P1DAQ2" # For box number 2
 DEVICE_IDS      =   dev_ids         
 TOPIC_UP        =   "iot/SSRIOT/" + DEVICE_TYPE 
 PUBLIC_BROKER   =   "broker.hivemq.com"
@@ -404,19 +404,6 @@ def sensor_json(data, dev_id):
     jsonized = json.dumps(to_send)
     #print('JSON packet sent: ' + jsonized)
     return jsonized
-#######################################
-# Test function, remove if not needed #
-#######################################
-def byteify(input):
-    if isinstance(input, dict):
-        return {byteify(key): byteify(value)
-                for key, value in input.iteritems()}
-    elif isinstance(input, list):
-        return [byteify(element) for element in input]
-    elif isinstance(input, unicode):
-        return input.encode('utf-8')
-    else:
-        return input
 
 # Decode Command Response JSON
 # Current commands include the following:
@@ -427,8 +414,6 @@ def byteify(input):
 # cid: 4, cmd: set_dev_name, arg: name in the correct format, es: success/fail
 def decode_command(command):
     j_com = json.loads(str(command)[2:-1])
-    #j_com = json.loads(str(command)[2:-1])
-    #j_com = byteify(json.loads(command))
     tn = j_com.get('c').get('tn')
     print("tn: " + str(tn))
     sn = j_com.get('c').get('sn')
@@ -437,6 +422,7 @@ def decode_command(command):
     arg = j_com.get('c').get('arg')
     print("arg: " + str(arg))
     ts = j_com.get('ts')
+    es = j_com.get('c').get('es')
     if tn[-4:] in dev_ids:
         if cid == 1:
             if arg is not None:
@@ -444,7 +430,7 @@ def decode_command(command):
             else:
                 print('IGNORED')
         elif cid == 2:
-            if arg is not None:
+            if es is None:
                 get_st(tn, sn, cid, cmd)
             else:
                 print('IGNORED')
