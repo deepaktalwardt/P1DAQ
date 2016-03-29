@@ -416,7 +416,7 @@ def byteify(input):
 #     es: success/fail (Same for all sensors, cannot change individually)
 # cid: 4, cmd: set_dev_name, arg: name in the correct format, es: success/fail
 def decode_command(command):
-    j_com = json.loads(str(command))
+    j_com = json.loads(str(command)[2:-1])
     #j_com = json.loads(str(command)[2:-1])
     #j_com = byteify(json.loads(command))
     tn = j_com.get('c').get('tn')
