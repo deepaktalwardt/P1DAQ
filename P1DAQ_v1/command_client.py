@@ -13,7 +13,8 @@ import time
 ORG_ID          =   	"CLMTCO"
 DEVICE_TYPE     =   	"P1"
 BOX 			= 		"P1DAQ1"
-dev_ids 		=		["0001", "0024", "000c", "0027", "0031"]
+#dev_ids 		=		["0001", "0024", "000c", "0027", "0031"]
+dev_ids = ["0012", "0014", "0016", "0020", "000f"]
 PUBLIC_BROKER   =   	"broker.hivemq.com"
 IBM_BROKER      =   	"119.81.84.237"
 BROKER          =   	IBM_BROKER
