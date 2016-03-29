@@ -63,10 +63,10 @@ def up_check():
     if UP_RECEIVED:
         USERNAME = SMS_OUTPUT[-2]
         PASSWORD = SMS_OUTPUT[-1]
-            if USERNAME == '-' or PASSWORD = '-':
-                UP_SET = False
-            else:
-                UP_SET = True
+        if USERNAME == '-' or PASSWORD == '-':
+            UP_SET = False
+        else:
+            UP_SET = True
         print('Received: ')
         print(str(USERNAME))
         print(str(PASSWORD))
@@ -232,7 +232,6 @@ def on_publish_1(client, userdata, mid):
 def on_connect_1(client, data, flags, rc):
     print('Client 1 Connected, rc: ' + str(rc))
 
-# For client_2
 def on_message_1(client, userdata, msg):
     print('Command from ' + msg.topic + ' received')
     decode_command(msg.payload)
@@ -417,8 +416,9 @@ def byteify(input):
 #     es: success/fail (Same for all sensors, cannot change individually)
 # cid: 4, cmd: set_dev_name, arg: name in the correct format, es: success/fail
 def decode_command(command):
+    j_com = json.loads(str(command))
     #j_com = json.loads(str(command)[2:-1])
-    j_com = byteify(json.loads(command))
+    #j_com = byteify(json.loads(command))
     tn = j_com.get('c').get('tn')
     print("tn: " + str(tn))
     sn = j_com.get('c').get('sn')
