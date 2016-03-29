@@ -444,7 +444,10 @@ def decode_command(command):
             else:
                 print('IGNORED')
         elif cid == 2:
-            get_st(tn, sn, cid, cmd)
+            if arg is not None:
+                get_st(tn, sn, cid, cmd)
+            else:
+                print('IGNORED')
         elif cid == 3:
             if arg is not None:
                 arg = arg[-6:]
@@ -498,11 +501,11 @@ def set_st(tn, sn, cid, cmd, arg):
             else:
                 print('FAIL: Sampling time not in range')
                 es = 'fail'
-                pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
+                pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
         else:
             print('FAIL: Argument needs to be integer or float')
             es = 'fail'
-            pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
+            pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
     else:
         print('FAIL: Command cmd does not match cid')
         es = 'fail'
@@ -529,15 +532,15 @@ def set_clock(tn, sn, cid, cmd, arg):
             os.environ['TZ'] = new_tz
             time.tzset()
             es = 'success'
-            pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
+            pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
         else:
             print('FAIL: Timezone not supported')
             es = 'fail'
-            pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
+            pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
     else:
         print('FAIL: Command cmd does not match cid')
         es = 'fail'
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
 
 # Resets the device name (serial number) for the device
 def set_dev_name(tn, sn, cid, cmd, arg):
@@ -550,14 +553,14 @@ def set_dev_name(tn, sn, cid, cmd, arg):
     else:
         print('FAIL: Command cmd does not match cid')
         es = 'fail'
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
 
 # Sends a fail execution status if the cid is not recognized
 def not_recog_cmd(tn, sn, cid, cmd, arg):
     print('FAIL: Command not recognized')
     dev_id = tn[-4:]
     es = 'fail'
-    pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
+    pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
 
 # Save commands to a file for record
 def command_record(command, arg):
