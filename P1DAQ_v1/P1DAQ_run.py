@@ -555,7 +555,7 @@ def not_recog_cmd(tn, sn, cid, cmd, arg):
     print('FAIL: Command not recognized')
     dev_id = tn[-4:]
     es = 'fail'
-    pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
+    pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
 
 # Save commands to a file for record
 def command_record(command, arg):
@@ -655,7 +655,7 @@ client_1_loop()
 while True:
     readings = get_sensor_reading()
     save_to_file(readings, file_name_1, fieldnames)
-    #print('Curr_Mass: ' + str(CURR_MASS_DATA))
-    #print('Curr_Num: ' + str(CURR_NUM_DATA))
+    print('Curr_Mass: ' + str(CURR_MASS_DATA))
+    print('Curr_Num: ' + str(CURR_NUM_DATA))
     pub_sensor_reading(readings)
     print('----------------------------------------------------')
