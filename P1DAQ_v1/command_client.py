@@ -21,6 +21,7 @@ BROKER          =   	IBM_BROKER
 topic_sub 		= 		"iot/SSRIOT/P1/"
 topic_pub		= 		"iot/SSRIOT/P1/"
 t_n 			= 		BOX + "-" + DEVICE_TYPE + "-"
+dev_id  		= 		dev_ids[0]
 
 tz_test = ['+04:00',
 		   '+08:00',
@@ -217,3 +218,4 @@ def test_unrec_cmd():
 
 test_set_st()
 test_get_st()
+test_tz()

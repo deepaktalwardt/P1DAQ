@@ -513,8 +513,8 @@ def get_st(tn, sn, cid, cmd):
 def set_clock(tn, sn, cid, cmd, arg):
     dev_id = tn[-4:]
     if cmd == 'set_clock':
-        new_tz = tz_dict[arg]
         if arg in tz_dict:
+            new_tz = tz_dict[arg]
             os.environ['TZ'] = new_tz
             time.tzset()
             es = 'success'
