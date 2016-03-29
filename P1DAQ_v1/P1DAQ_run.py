@@ -98,7 +98,7 @@ except:
 
 ############ Variables and Setup #############
 ## File Saving
-For P1DAQ Box 1
+# For P1DAQ Box 1
 dev_ids = ["0012", "0014", "0016", "0020", "000f"]
 
 dev_addrs = ["dd:19:ae:49:ae:d3",
