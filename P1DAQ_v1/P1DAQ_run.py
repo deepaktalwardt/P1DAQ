@@ -88,8 +88,13 @@ run_sms_handler()
 try:
     up_check()
 except:
-    run_sms_handler()
-    up_check()
+    print('Re-run script and ask for SMS')
+    os.system('hciconfig hci0 down')
+    os.system('hciconfig hci0 up')
+    time.sleep(2)
+    os.system('hciconfig hci0 up')
+    os.system('python3 P1DAQ_run.py')
+    sys.exit()
 
 ############ Variables and Setup #############
 ## File Saving
