@@ -498,15 +498,15 @@ def set_st(tn, sn, cid, cmd, arg):
             else:
                 print('FAIL: Sampling time not in range')
                 es = 'fail'
-                pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
+                pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
         else:
             print('FAIL: Argument needs to be integer or float')
             es = 'fail'
-            pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
+            pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
     else:
         print('FAIL: Command cmd does not match cid')
         es = 'fail'
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
 
 # Gets the sampling time for the given device number
 def get_st(tn, sn, cid, cmd):
@@ -514,11 +514,11 @@ def get_st(tn, sn, cid, cmd):
     if cmd == 'get_st':
         es = int(SAMPLING_TIMES[dev_id]*2.5)
         print('Command Success')
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
     else:
         print('FAIL: Command cmd does not match cid')
         es = 'fail'
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
 
 # Sets the local clock timezone for the Raspberry Pi
 def set_clock(tn, sn, cid, cmd, arg):
@@ -529,15 +529,15 @@ def set_clock(tn, sn, cid, cmd, arg):
             os.environ['TZ'] = new_tz
             time.tzset()
             es = 'success'
-            pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
+            pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
         else:
             print('FAIL: Timezone not supported')
             es = 'fail'
-            pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
+            pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
     else:
         print('FAIL: Command cmd does not match cid')
         es = 'fail'
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
 
 # Resets the device name (serial number) for the device
 def set_dev_name(tn, sn, cid, cmd, arg):
@@ -550,7 +550,7 @@ def set_dev_name(tn, sn, cid, cmd, arg):
     else:
         print('FAIL: Command cmd does not match cid')
         es = 'fail'
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
 
 # Sends a fail execution status if the cid is not recognized
 def not_recog_cmd(tn, sn, cid, cmd, arg):
