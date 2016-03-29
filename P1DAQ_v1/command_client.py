@@ -31,13 +31,6 @@ st_test = [10, 5, 8, 12, 6]
 
 dev_name_test = ['heyo', 'yuhu', 'yayy', 'clay', 'peep']
 
-client = paho.Client()
-client.on_publish = on_publish
-client.on_message = on_message
-client.on_subscribe = on_subscribe
-client.connect(BROKER, port=1883)
-client.loop_start()
-
 def on_publish(client, userdata, mid):
 	print("Published Command: "+str(mid))
 
@@ -46,6 +39,13 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 def on_message(client, userdata, msg):
 	print(str(msg.payload))
+
+client = paho.Client()
+client.on_publish = on_publish
+client.on_message = on_message
+client.on_subscribe = on_subscribe
+client.connect(BROKER, port=1883)
+client.loop_start()
 
 def build_set_clock_command(tn, sn, cid, cmd, tz):
     # Initialize all JSONs
