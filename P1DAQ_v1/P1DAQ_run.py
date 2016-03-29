@@ -30,6 +30,7 @@ from BLE_init import *
 ## SMS Variables
 SMS_OUTPUT      =   []
 UP_RECEIVED     =   False
+UP_SET          =   False
 USERNAME        =   "sensoriot"              
 PASSWORD        =   "sensoriot" 
 
@@ -53,6 +54,7 @@ def run_sms_handler():
 
 def up_check():
     global UP_RECEIVED
+    global UP_SET
     global SMS_OUTPUT
     global USERNAME
     global PASSWORD
@@ -61,6 +63,10 @@ def up_check():
     if UP_RECEIVED:
         USERNAME = SMS_OUTPUT[-2]
         PASSWORD = SMS_OUTPUT[-1]
+            if USERNAME == '-' or PASSWORD = '-':
+                UP_SET = False
+            else:
+                UP_SET = True
         print('Received: ')
         print(str(USERNAME))
         print(str(PASSWORD))
@@ -153,20 +159,31 @@ file_name_1 = folder_name_1 + "DataFile" + str(num_file_1) + ".csv"
 num_file_2 = len([f for f in os.listdir(folder_name_2)]) + 1
 file_name_2 = folder_name_2 + "LogFile" + str(num_file_2) + ".csv"
 
-# Initialize Files to save readings and logs
-with open(file_name_1, "a") as csvfile:
-    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-    writer.writeheader()
-    print('Readings at: ' + file_name_1)
+# Initialize Files to save readings and 
+try:
+    with open(file_name_1, "a") as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        print('Readings at: ' + file_name_1)
+except:
+    print('No USB drive found. File cannot be written')
+    pass
 
-with open(file_name_2, "a") as csvfile:
-    writer = csv.DictWriter(csvfile, fieldnames=log_fieldnames)
-    writer.writeheader()
-    print('Logs at: ' + file_name_2)
+try:
+    with open(file_name_2, "a") as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=log_fieldnames)
+        writer.writeheader()
+        print('Logs at: ' + file_name_2)
+except:
+    print('No USB drive found. File cannot be written')
+    pass
 
 ## Internal Temperature Sensor Initialize
-int_temp_sensor = int_temp.MCP9808()
-int_temp_sensor.begin()
+try:
+    int_temp_sensor = int_temp.MCP9808()
+    int_temp_sensor.begin()
+except:
+    pass
 
 ## MQTT Variables
 ORG_ID          =   "CLMTCO"
@@ -199,12 +216,12 @@ for dev_id in DEVICE_IDS:
 # Populate CURR_MASS_DATA
 for dev_id in DEVICE_IDS:
     CURR_MASS_DATA.setdefault(dev_id, list())
-print("Curr_Mass_init: " + str(CURR_MASS_DATA))
+# print("Curr_Mass_init: " + str(CURR_MASS_DATA))
 
 # Populate CURR_NUM_DATA
 for dev_id in DEVICE_IDS:
     CURR_NUM_DATA.setdefault(dev_id, list())
-print("Curr_Num_init: " + str(CURR_NUM_DATA))
+# print("Curr_Num_init: " + str(CURR_NUM_DATA))
 
 ############ Helper Functions ###############
 ## MQTT Clients Callback functions
@@ -241,9 +258,13 @@ def check_reading(reading):
 
 # Saves a row of readings to an already open file object
 def save_to_file(reading, filename, fields):
-    with open(filename, "a") as file_to_update:
-        updater = csv.DictWriter(file_to_update, fieldnames = fields)
-        updater.writerow(reading)
+    try:
+        with open(filename, "a") as file_to_update:
+            updater = csv.DictWriter(file_to_update, fieldnames = fields)
+            updater.writerow(reading)
+    except:
+        print('Writerow failed. No file to write on')
+        pass
 
 # Averages readings, truncated and not used anymore.
 # def avg_readings(reading):
@@ -319,7 +340,10 @@ def get_sensor_reading():
             mass_conc = int("".join("{0:02x}".format(x) for x in data[35:33:-1]),16)
             to_return[dev_id + "_nc"] = num_conc
             to_return[dev_id + "_mc"] = mass_conc
-    to_return["In Temp (deg C)"] = int_temp_sensor.readTempC()
+    try:
+        to_return["In Temp (deg C)"] = int_temp_sensor.readTempC()
+    except:
+        to_return["In Temp (deg C)"] = -1
     to_return["Out Temp (deg C)"] = float("%.*f" % (3, read_temperature())) 
     to_return["Relative Humidity (%)"] = float("%.*f" % (3, read_humidity())) 
     to_return["Time"] = datetime.datetime.now().isoformat()
@@ -371,6 +395,19 @@ def sensor_json(data, dev_id):
     jsonized = json.dumps(to_send)
     #print('JSON packet sent: ' + jsonized)
     return jsonized
+#######################################
+# Test function, remove if not needed #
+#######################################
+def byteify(input):
+    if isinstance(input, dict):
+        return {byteify(key): byteify(value)
+                for key, value in input.iteritems()}
+    elif isinstance(input, list):
+        return [byteify(element) for element in input]
+    elif isinstance(input, unicode):
+        return input.encode('utf-8')
+    else:
+        return input
 
 # Decode Command Response JSON
 # Current commands include the following:
@@ -378,9 +415,10 @@ def sensor_json(data, dev_id):
 # cid: 2, cmd: get_st, arg: None, es: sampling time/fail
 # cid: 3, cmd: set_clock, arg: time in isoformat+time difference to be added/subt
 #     es: success/fail (Same for all sensors, cannot change individually)
-# cid: 4, cmd: set_dev_id, arg: name in the correct format, es: success/fail
+# cid: 4, cmd: set_dev_name, arg: name in the correct format, es: success/fail
 def decode_command(command):
-    j_com = json.loads(str(command)[2:-1])
+    #j_com = json.loads(str(command)[2:-1])
+    j_com = byteify(json.loads(command))
     tn = j_com.get('c').get('tn')
     print("tn: " + str(tn))
     sn = j_com.get('c').get('sn')
@@ -439,13 +477,18 @@ def set_st(tn, sn, cid, cmd, arg):
     global SAMPLING_TIMES
     dev_id = tn[-4:]
     if cmd == 'set_st':
-        if arg >= 2.5 and arg <= 3600:
-            SAMPLING_TIMES[dev_id] = int(arg/2.5)
-            print('Command Success')
-            es = 'success'
-            pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
+        if isinstance(arg, int) or isinstance(arg, float):
+            if arg >= 2.5 and arg <= 3600:
+                SAMPLING_TIMES[dev_id] = int(arg/2.5)
+                print('Command Success')
+                es = 'success'
+                pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
+            else:
+                print('FAIL: Sampling time not in range')
+                es = 'fail'
+                pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
         else:
-            print('FAIL: Sampling time not in range')
+            print('FAIL: Argument needs to be integer or float')
             es = 'fail'
             pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
     else:
@@ -489,9 +532,9 @@ def set_dev_name(tn, sn, cid, cmd, arg):
     global SERIAL_NUMBERS
     dev_id = tn[-4:]
     if cmd == 'set_dev_name':
-        SERIAL_NUMBERS[dev_id] = arg
+        SERIAL_NUMBERS[dev_id] = str(arg)
         es = 'success'
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, str(arg), es)
     else:
         print('FAIL: Command cmd does not match cid')
         es = 'fail'
@@ -560,17 +603,16 @@ client_1.on_subscribe   =   on_subscribe_1
 # it attempts to reconnect and eventually restarts the script.
 def client_1_connect():
     con = True
-    #client_1.username_pw_set(str(USERNAME), str(PASSWORD))
+    if UP_SET:
+        client_1.username_pw_set(str(USERNAME), str(PASSWORD))
     while con:
         try:
             client_1.connect(BROKER,port=1883)
-            #client_1.connect(PUBLIC_BROKER, port=1883)
             con = False
         except:
             print('Retry connection')
             try:
                 client_1.connect(BROKER,port=1883)
-                #client_1.connect(PUBLIC_BROKER, port=1883)
             except:
                 print('Re-run script and ask for SMS')
                 os.system('hciconfig hci0 down')
