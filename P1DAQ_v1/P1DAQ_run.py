@@ -457,7 +457,9 @@ def decode_command(command):
             else:
                 print('IGNORED')
         else:
-            not_recog_cmd(tn, sn, cid, cmd, arg)
+            if arg is not None:
+                not_recog_cmd(tn, sn, cid, cmd, arg)
+            print('IGNORED')
     else:
         print('FAIL: Device ID (tn) not recognized.')
         pub_cmd_response(tn[-4:], tn, sn, cid, cmd, '', 'fail')
