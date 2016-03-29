@@ -85,27 +85,31 @@ def up_check():
 ## Main Script Part 1
 GPRS_off()
 run_sms_handler()
-up_check()
+try:
+    up_check()
+except:
+    run_sms_handler()
+    up_check()
 
 ############ Variables and Setup #############
 ## File Saving
-# For P1DAQ Box 1
-##dev_ids = ["0012", "0014", "0016", "0020", "000f"]
-##
-##dev_addrs = ["dd:19:ae:49:ae:d3",
-##             "ed:89:3a:e0:80:8b",
-##             "ce:bb:b9:a4:0c:e7",
-##             "f3:3d:9c:32:c4:c2",
-##             "e3:35:be:3c:db:1f"]
+For P1DAQ Box 1
+dev_ids = ["0012", "0014", "0016", "0020", "000f"]
+
+dev_addrs = ["dd:19:ae:49:ae:d3",
+            "ed:89:3a:e0:80:8b",
+            "ce:bb:b9:a4:0c:e7",
+            "f3:3d:9c:32:c4:c2",
+            "e3:35:be:3c:db:1f"]
 
 # For P1DAQ Box 2
-dev_ids = ["0001", "0024", "000c", "0027", "0031"]
+# dev_ids = ["0001", "0024", "000c", "0027", "0031"]
 
-dev_addrs = ["cc:50:39:b3:b8:9a",
-             "e3:ce:c3:74:79:8d",
-             "e9:6d:3d:79:17:c2",
-             "e6:23:33:d8:5e:0d",
-             "da:12:04:e1:8a:77"]
+# dev_addrs = ["cc:50:39:b3:b8:9a",
+#              "e3:ce:c3:74:79:8d",
+#              "e9:6d:3d:79:17:c2",
+#              "e6:23:33:d8:5e:0d",
+#              "da:12:04:e1:8a:77"]
 
 fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc", 
               dev_ids[1] + "_mc", dev_ids[1] + "_nc",
