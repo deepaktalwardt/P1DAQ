@@ -213,3 +213,6 @@ def test_unrec_cmd():
 	command = build_command(tn, sn, 4, 'set_blah', 12)
 	(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
 	time.sleep(1)
+
+test_set_st()
+test_get_st()
