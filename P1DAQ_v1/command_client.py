@@ -100,24 +100,24 @@ def build_command(tn, sn, cid, cmd, arg):
 # 		time.sleep(1)
 
 def test_set_st():
-	# i = 0
-	# for dev_id in dev_ids:
-	# 	tn = t_n + dev_id
-	# 	sn = dev_id
-	# 	command = build_command(tn, sn, 1, 'set_st', st_test[i])
-	# 	(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
-	# 	i += 1
-	# 	time.sleep(3)
-	# print('Testing failure cases')
-	# print('Wrong CID')
-	# i = 0
-	# for dev_id in dev_ids:
-	# 	tn = t_n + dev_id
-	# 	sn = dev_id
-	# 	command = build_command(tn, sn, 2341, 'set_st', st_test[i])
-	# 	(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
-	# 	i += 1
-	# 	time.sleep(3)
+	i = 0
+	for dev_id in dev_ids:
+		tn = t_n + dev_id
+		sn = dev_id
+		command = build_command(tn, sn, 1, 'set_st', st_test[i])
+		(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
+		i += 1
+		time.sleep(3)
+	print('Testing failure cases')
+	print('Wrong CID')
+	i = 0
+	for dev_id in dev_ids:
+		tn = t_n + dev_id
+		sn = dev_id
+		command = build_command(tn, sn, 2341, 'set_st', st_test[i])
+		(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
+		i += 1
+		time.sleep(3)
 	print('Argument as a string')
 	i = 0
 	for dev_id in dev_ids:
