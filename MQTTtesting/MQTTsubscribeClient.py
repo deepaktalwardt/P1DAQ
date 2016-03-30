@@ -6,10 +6,10 @@ import datetime
 import sys
 
 DEVICE_TYPE     =   "P1"
-TOPIC           =   "iot/SSRIOT/" + DEVICE_TYPE
+TOPIC           =   "iot/SSRIOT/" + DEVICE_TYPE + "/#"
 COUNTER = 0
-#dev_ids = ["0001", "0024", "0020", "0027", "000c"]
-dev_ids = ["0009", "0010", "0016", "0024", "0032"]
+dev_ids = ["0001", "0024", "0031", "0027", "000c"]
+#dev_ids = ["0009", "0010", "0016", "0024", "0032"]
 fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc", 
 			  dev_ids[1] + "_mc", dev_ids[1] + "_nc",
 			  dev_ids[2] + "_mc", dev_ids[2] + "_nc",
@@ -19,8 +19,8 @@ fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc",
 			  "Relative Humidity (%)",
 			  "Time (UT)"]
 
-folder_name = "/media/pi/Clarity/MQTTData/"
-#folder_name = "C:/Users/Deepak/Dropbox (Clarity Movement)/Hardware R&D/P1 sensor/Custom Projects/RPi2/P1DAQ/MQTTtesting/testMQTT/"
+#folder_name = "/media/pi/Clarity/MQTTData/"
+folder_name = "C:/Users/Deepak/Dropbox (Clarity Movement)/Hardware R&D/P1 sensor/Custom Projects/RPi2/P1DAQ/MQTTtesting/testMQTT/"
 num_file = len([f for f in os.listdir(folder_name)]) + 1
 file_name = folder_name + "MQTTFile" + str(num_file) + ".csv"
 
@@ -56,9 +56,9 @@ def on_message(client, userdata, msg):
 	COUNTER += 1
 	if COUNTER % 5 == 0:
 		print("Saving now")
-		with open(file_name, "a") as file_to_update:
-			updater = csv.DictWriter(file_to_update, fieldnames = fieldnames)
-			updater.writerow(dict_to_write)
+		# with open(file_name, "a") as file_to_update:
+		# 	updater = csv.DictWriter(file_to_update, fieldnames = fieldnames)
+		# 	updater.writerow(dict_to_write)
 
 client = paho.Client(client_id = "p1", clean_session = True)
 client.on_subscribe = on_subscribe

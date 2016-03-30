@@ -5,7 +5,7 @@ import os
 import socket
 
 connected = False
-REMOTE_SERVER = "www.google.com"
+REMOTE_SERVER = "www.baidu.com"
 
 GPIO.setmode(GPIO.BCM)
 fona_key = 22
