@@ -380,6 +380,7 @@ def sensor_json(data, dev_id):
     air_flow = 1000 # Not sure if we need to change this
     sampling_time = int(SAMPLING_TIMES.get(dev_id)*2.5) # May need to change later
     serial_number = SERIAL_NUMBERS.get(dev_id)
+    print(serial_number)
 
     # Generate Sub JSONs
     psd["unit"] = "cpcm3" # Counts per cm3
@@ -578,10 +579,10 @@ def pub_sensor_reading(sensor_data):
     for DEVICE_ID in DEVICE_IDS:
         if len(CURR_MASS_DATA.get(DEVICE_ID)) >= SAMPLING_TIMES.get(DEVICE_ID):
             avgd_data = average_single_sensor(sensor_data, DEVICE_ID)
-            print(avgd_data)
             sensor_data[DEVICE_ID + "_mc"] = avgd_data[0]
             sensor_data[DEVICE_ID + "_nc"] = avgd_data[1]
             client_1.publish(TOPIC_UP, sensor_json(sensor_data, DEVICE_ID), qos=1)
+            print(avgd_data)
             CURR_NUM_DATA[DEVICE_ID] = []
             CURR_MASS_DATA[DEVICE_ID] = []
 

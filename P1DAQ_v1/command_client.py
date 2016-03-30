@@ -178,6 +178,8 @@ def test_set_dev_name():
 		command = build_command(tn, sn, 4, 'set_dev_name', name)
 		(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
 		time.sleep(1)
+
+def test_set_dev_name_failure():
 	print('Resetting...')
 	for i in range(0,5):
 		name = dev_ids[i]
@@ -216,6 +218,7 @@ def test_unrec_cmd():
 	(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
 	time.sleep(1)
 
-test_set_st()
-test_get_st()
-test_tz()
+# test_set_st()
+# test_get_st()
+# test_tz()
+test_set_dev_name()
