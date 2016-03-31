@@ -99,11 +99,11 @@ except:
 ############ Variables and Setup #############
 ## File Saving
 # For P1DAQ Box 1
-dev_ids = ["0012", "0014", "002c", "0020", "000f"]
+dev_ids = ["0012", "0014", "0011", "0020", "000f"]
 
 dev_addrs = ["dd:19:ae:49:ae:d3",
             "ed:89:3a:e0:80:8b",
-            "d8:3c:9b:90:f3:d9",
+            "ef:9b:60:f5:db:82",
             "f3:3d:9c:32:c4:c2",
             "e3:35:be:3c:db:1f"]
 
