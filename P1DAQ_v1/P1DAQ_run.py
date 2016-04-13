@@ -62,6 +62,8 @@ def up_check():
     global SMS_PORT
     global USERNAME
     global PASSWORD
+    print('SMS Output: ')
+    print(SMS_OUTPUT)
     change_required = int(SMS_OUTPUT[-6])
     if int(SMS_OUTPUT[-5]) == 1:
         UP_RECEIVED = True
@@ -80,7 +82,6 @@ def up_check():
         print(str(PASSWORD))
     elif UP_RECEIVED and change_required:
         print('New MQTT info required')
-        print(SMS_OUTPUT)
         #os.system('python3 P1DAQ_run.py')
         # os.system('hciconfig hci0 down')
         # os.system('hciconfig hci0 up')
