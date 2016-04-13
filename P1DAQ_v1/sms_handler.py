@@ -21,7 +21,7 @@ change_required = 0
 
 def load_mqtt():
     try:
-        with open(USERPASS_FILE, 'rb') as file_to_read:
+        with open(USERPASS_FILE, 'r') as file_to_read:
             reader = csv.reader(file_to_read)
             for line in reader:
                 latest_number = line
