@@ -38,6 +38,7 @@ def toggle_fona():
 	GPIO.output(fona_key, 0)
 	time.sleep(2)
 
+GPRS_on()
 while not is_connected():
 	toggle_fona()
 	time.sleep(10)
