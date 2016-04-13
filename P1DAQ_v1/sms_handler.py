@@ -25,15 +25,17 @@ def load_mqtt():
             reader = csv.reader(file_to_read)
             for line in reader:
                 latest_number = line
-            split_info = latest_number.split(',')
-            b = split_info[0]
-            po = split_info[1]
-            u = split_info[2]
-            p = split_info[3]
-            to_return = [b, po, u, p]
+            # split_info = latest_number.split(',')
+            # b = split_info[0]
+            # po = split_info[1]
+            # u = split_info[2]
+            # p = split_info[3]
+            # to_return = [b, po, u, p]
+            to_return = latest_number
             print('MQTT info: ' +  to_return)
             return to_return
     except:
+        print('File reading failed')
         return ["","","",""]
 
 def write_mqtt(url, prt, us, pw):
