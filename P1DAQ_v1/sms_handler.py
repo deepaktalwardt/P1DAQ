@@ -22,13 +22,14 @@ change_required = 0
 def load_mqtt():
     try:
         with open(USERPASS_FILE, 'rb') as file_to_read:
-            reader = csv.reader(file_to_read, delimiter=',')
+            reader = csv.reader(file_to_read)
             for line in reader:
                 latest_number = line
-            b = latest_number[0]
-            po = latest_number[1]
-            u = latest_number[2]
-            p = latest_number[3]
+            split_info = latest_number.split(',')
+            b = split_info[0]
+            po = split_info[1]
+            u = split_info[2]
+            p = split_info[3]
             to_return = [b, po, u, p]
             print('MQTT info: ' +  to_return)
             return to_return
