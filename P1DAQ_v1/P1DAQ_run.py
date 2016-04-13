@@ -31,6 +31,8 @@ from BLE_init import *
 SMS_OUTPUT      =   []
 UP_RECEIVED     =   False
 UP_SET          =   False
+SMS_BROKER      =   ""
+SMS_PORT        =   ""
 USERNAME        =   "sensoriot"              
 PASSWORD        =   "sensoriot" 
 
@@ -48,7 +50,7 @@ def GPRS_on():
 
 def run_sms_handler():
     global SMS_OUTPUT
-    proc = Popen(['python', 'sms_handler.py'], stdout=PIPE)
+    proc = Popen(['python', 'sms_handler.py', sys.argv[1]], stdout=PIPE)
     for line in proc.stdout:
         SMS_OUTPUT.append(line)
 
@@ -56,11 +58,16 @@ def up_check():
     global UP_RECEIVED
     global UP_SET
     global SMS_OUTPUT
+    global SMS_BROKER
+    global SMS_PORT
     global USERNAME
     global PASSWORD
-    if int(SMS_OUTPUT[-3]) == 1:
+    change_required = int(SMS_OUTPUT[-6])
+    if int(SMS_OUTPUT[-5]) == 1:
         UP_RECEIVED = True
-    if UP_RECEIVED:
+    if UP_RECEIVED and not change_required:
+        SMS_BROKER =  SMS_OUTPUT[-4]
+        SMS_PORT   =  SMS_OUTPUT[-3]
         USERNAME = SMS_OUTPUT[-2]
         PASSWORD = SMS_OUTPUT[-1]
         if USERNAME == '-' or PASSWORD == '-':
@@ -68,17 +75,28 @@ def up_check():
         else:
             UP_SET = True
         print('Received: ')
+        print('Broker: ' +  str(SMS_BROKER) + ":" + str(SMS_PORT))
         print(str(USERNAME))
         print(str(PASSWORD))
-    else:
+    elif UP_RECEIVED and change_required:
+        print('New MQTT info required')
+        print(SMS_OUTPUT)
+        #os.system('python3 P1DAQ_run.py')
+        # os.system('hciconfig hci0 down')
+        # os.system('hciconfig hci0 up')
+        # time.sleep(2)
+        # os.system('hciconfig hci0 up')
+        os.system('python3 P1DAQ_run.py 1')
+        sys.exit()
+    elif not UP_RECEIVED and not change_required:
         print('Did not update...Restarting')
         print(SMS_OUTPUT)
         #os.system('python3 P1DAQ_run.py')
-        os.system('hciconfig hci0 down')
-        os.system('hciconfig hci0 up')
-        time.sleep(2)
-        os.system('hciconfig hci0 up')
-        os.system('python3 P1DAQ_run.py')
+        # os.system('hciconfig hci0 down')
+        # os.system('hciconfig hci0 up')
+        # time.sleep(2)
+        # os.system('hciconfig hci0 up')
+        os.system('python3 P1DAQ_run.py 0')
         sys.exit()
     GPRS_on()
 
@@ -89,11 +107,11 @@ try:
     up_check()
 except:
     print('Re-run script and ask for SMS')
-    os.system('hciconfig hci0 down')
-    os.system('hciconfig hci0 up')
-    time.sleep(2)
-    os.system('hciconfig hci0 up')
-    os.system('python3 P1DAQ_run.py')
+    # os.system('hciconfig hci0 down')
+    # os.system('hciconfig hci0 up')
+    # time.sleep(2)
+    # os.system('hciconfig hci0 up')
+    os.system('python3 P1DAQ_run.py 1')
     sys.exit()
 
 ############ Variables and Setup #############
@@ -249,6 +267,16 @@ def on_message_1(client, userdata, msg):
 def on_subscribe_1(client, userdata, mid, granted_qos):
     print("Subscribed: "+str(mid)+" "+str(granted_qos))
 
+def on_disconnect_1(client, userdata, rc):
+    print('rc: ' + str(rc))
+    print('Disconnected! Restarting and asking for MQTT information')
+    # os.system('hciconfig hci0 down')
+    # os.system('hciconfig hci0 up')
+    # time.sleep(2)
+    # os.system('hciconfig hci0 up')
+    os.system('python3 P1DAQ_run.py 1')
+    sys.exit()
+
 
 ## Sensor Data Acquisition functions
 # Check if the ble_path is recognized
@@ -377,7 +405,7 @@ def sensor_json(data, dev_id):
     out_temp = data.get("Out Temp (deg C)") # Change later to function call
     out_humi = data.get("Relative Humidity (%)") # Change later to function call
     time_now = data.get("Time")
-    air_flow = 1000 # Not sure if we need to change this
+    air_flow = '-' # Not sure if we need to change this
     sampling_time = int(SAMPLING_TIMES.get(dev_id)*2.5) # May need to change later
     serial_number = SERIAL_NUMBERS.get(dev_id)
     print(serial_number)
@@ -414,6 +442,8 @@ def sensor_json(data, dev_id):
 #     es: success/fail (Same for all sensors, cannot change individually)
 # cid: 4, cmd: set_dev_name, arg: name in the correct format, es: success/fail
 def decode_command(command):
+    #comm = json.dumps(command)
+    #j_com = json.loads(comm)
     j_com = json.loads(str(command)[2:-1])
     tn = j_com.get('c').get('tn')
     print("tn: " + str(tn))
@@ -599,6 +629,7 @@ client_1.on_publish     =   on_publish_1
 client_1.on_connect     =   on_connect_1
 client_1.on_message     =   on_message_1
 client_1.on_subscribe   =   on_subscribe_1
+client_1.on_disconnect  =   on_disconnect_1
 
 ## MQTT Client Functions
 # Attempts to connect client_1 to the MQTT broker. In case of a failure,
@@ -609,19 +640,19 @@ def client_1_connect():
         client_1.username_pw_set(str(USERNAME), str(PASSWORD))
     while con:
         try:
-            client_1.connect(BROKER,port=1883)
+            client_1.connect(SMS_BROKER,port=SMS_PORT)
             con = False
         except:
             print('Retry connection')
             try:
-                client_1.connect(BROKER,port=1883)
+                client_1.connect(SMS_BROKER,port=SMS_PORT)
             except:
                 print('Re-run script and ask for SMS')
-                os.system('hciconfig hci0 down')
-                os.system('hciconfig hci0 up')
-                time.sleep(2)
-                os.system('hciconfig hci0 up')
-                os.system('python3 P1DAQ_run.py')
+                # os.system('hciconfig hci0 down')
+                # os.system('hciconfig hci0 up')
+                # time.sleep(2)
+                # os.system('hciconfig hci0 up')
+                os.system('python3 P1DAQ_run.py 1')
                 sys.exit()
 
 # Subscribe to the necessary topics
