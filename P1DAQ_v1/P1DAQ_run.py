@@ -463,7 +463,7 @@ def decode_command(command, cmd_topic):
                 else:
                     print('IGNORED')
             elif cid == 2:
-                if int(arg) == -1:
+                if int(arg) == -1 and es is None:
                     get_st(tn, sn, cid, cmd)
                 else:
                     print('IGNORED')
@@ -487,7 +487,7 @@ def decode_command(command, cmd_topic):
             pub_cmd_response(tn[-4:], tn, sn, cid, cmd, None, 'fail')
     except:
         print('FAIL: Could not decode JSON properly')
-        pub_cmd_response(cmd_topic[-4:], cmd_topic[-4:], '', '', '', None, 'fail')
+        pub_cmd_response(cmd_topic[-4:], BOX + '-' + DEVICE_TYPE + '-' + cmd_topic[-4:], '', '', '', None, 'fail')
 
 # Create Command Response JSON packet to be sent to the MQTT Broker by client 2
 def cmd_resp_json(tn, sn, cid, cmd, es):
@@ -539,11 +539,11 @@ def get_st(tn, sn, cid, cmd):
     if cmd == 'get_st':
         es = int(SAMPLING_TIMES[dev_id]*2.5)
         print('Command Success')
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
     else:
         print('FAIL: Command cmd does not match cid')
         es = 'fail'
-        pub_cmd_response(dev_id, tn, sn, cid, cmd, None, es)
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, '', es)
 
 # Sets the local clock timezone for the Raspberry Pi
 def set_clock(tn, sn, cid, cmd, arg):
