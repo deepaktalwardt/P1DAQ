@@ -463,7 +463,7 @@ def decode_command(command, cmd_topic):
                 else:
                     print('IGNORED')
             elif cid == 2:
-                if arg is None:
+                if arg is None and es is None:
                     get_st(tn, sn, cid, cmd)
                 else:
                     print('IGNORED')
