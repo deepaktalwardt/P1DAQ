@@ -3,13 +3,16 @@ import RPi.GPIO as GPIO
 import time
 import os
 import socket
+import atexit
 
 connected = False
-REMOTE_SERVER = "www.baidu.com"
+REMOTE_SERVER = "www.ping.com"
 
 GPIO.setmode(GPIO.BCM)
 fona_key = 22
 GPIO.setup(fona_key, GPIO.OUT)
+
+atexit.register(GPIO.cleanup)
 
 def GPRS_off():
     os.system('poff fona')
@@ -37,6 +40,7 @@ def toggle_fona():
 	print('Toggling')
 	GPIO.output(fona_key, 0)
 	time.sleep(2)
+	GPIO.output(fona_key, 1)
 
 GPRS_on()
 while not is_connected():

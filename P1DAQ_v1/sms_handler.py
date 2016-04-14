@@ -20,6 +20,7 @@ cred = ''
 change_required = 0
 
 def load_mqtt():
+    global correct_format
     try:
         with open(USERPASS_FILE, 'r') as file_to_read:
             reader = csv.reader(file_to_read)
@@ -31,6 +32,7 @@ def load_mqtt():
             u = str(latest_number[2]).strip()
             p = str(latest_number[3]).strip()
             to_return = [b, po, u, p]
+            correct_format = 1
             #to_return = latest_number
             print('MQTT info: ' +  str(to_return))
             return to_return
@@ -119,9 +121,10 @@ def listen_for_sms():
         modem.rxThread.join(TIMEOUT) 
     finally:
         print('Closing modem')
+        to_print = load_mqtt()
         if correct_format == 1:
             #print("the format is correct and equal to")
-            to_print = load_mqtt()
+            # to_print = load_mqtt()
             print(change_required)
             print(correct_format)
             print(to_print[0])
