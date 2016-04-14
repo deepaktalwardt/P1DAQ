@@ -486,7 +486,7 @@ def decode_command(command, cmd_topic):
             print('FAIL: Device ID (tn) not recognized.')
             pub_cmd_response(tn[-4:], tn, sn, cid, cmd, None, 'fail')
     except:
-        print('FAIL: Device ID (tn) not recognized.')
+        print('FAIL: Could not decode JSON properly')
         pub_cmd_response(cmd_topic[-4:], cmd_topic[-4:], '', '', '', None, 'fail')
 
 # Create Command Response JSON packet to be sent to the MQTT Broker by client 2
@@ -567,10 +567,13 @@ def set_clock(tn, sn, cid, cmd, arg):
 # Resets the device name (serial number) for the device
 def set_dev_name(tn, sn, cid, cmd, arg):
     global SERIAL_NUMBERS
+    global 
     dev_id = tn[-4:]
     if cmd == 'set_dev_name':
         SERIAL_NUMBERS[dev_id] = str(arg)
         es = 'success'
+        TOPIC_DOWN[str(arg)] = TOPIC_UP + '/' + str(arg)
+        client_1.subscribe(TOPIC_DOWN.get(str(arg)))
         pub_cmd_response(dev_id, tn, sn, cid, cmd, str(arg), es)
     else:
         print('FAIL: Command cmd does not match cid')
