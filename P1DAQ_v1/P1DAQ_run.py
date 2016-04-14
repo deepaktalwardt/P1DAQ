@@ -567,7 +567,7 @@ def set_clock(tn, sn, cid, cmd, arg):
 # Resets the device name (serial number) for the device
 def set_dev_name(tn, sn, cid, cmd, arg):
     global SERIAL_NUMBERS
-    global 
+    global TOPIC_DOWN
     dev_id = tn[-4:]
     if cmd == 'set_dev_name':
         SERIAL_NUMBERS[dev_id] = str(arg)
