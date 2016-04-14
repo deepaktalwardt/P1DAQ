@@ -624,7 +624,7 @@ def pub_sensor_reading(sensor_data):
 # Publish Command Response
 def pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es):
     jsonized = cmd_resp_json(tn, sn, cid, cmd, es)
-    dev_id = tn[-4:]
+    #dev_id = tn[-4:]
     client_1.publish(TOPIC_DOWN[dev_id], jsonized, qos=1)
     command_record(jsonized, arg)
 
