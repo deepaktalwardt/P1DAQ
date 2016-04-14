@@ -463,7 +463,7 @@ def decode_command(command, cmd_topic):
                 else:
                     print('IGNORED')
             elif cid == 2:
-                if es is None:
+                if arg is None:
                     get_st(tn, sn, cid, cmd)
                 else:
                     print('IGNORED')
@@ -484,10 +484,10 @@ def decode_command(command, cmd_topic):
                 print('IGNORED')
         else:
             print('FAIL: Device ID (tn) not recognized.')
-            pub_cmd_response(tn[-4:], tn, sn, cid, cmd, '', 'fail')
+            pub_cmd_response(tn[-4:], tn, sn, cid, cmd, None, 'fail')
     except:
         print('FAIL: Device ID (tn) not recognized.')
-        pub_cmd_response(cmd_topic[-4:], '', '', '', '', '', 'fail')
+        pub_cmd_response(cmd_topic[-4:], cmd_topic[-4:], '', '', '', None, 'fail')
 
 # Create Command Response JSON packet to be sent to the MQTT Broker by client 2
 def cmd_resp_json(tn, sn, cid, cmd, es):
@@ -624,7 +624,7 @@ def pub_sensor_reading(sensor_data):
 # Publish Command Response
 def pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es):
     jsonized = cmd_resp_json(tn, sn, cid, cmd, es)
-    #dev_id = tn[-4:]
+    dev_id = tn[-4:]
     client_1.publish(TOPIC_DOWN[dev_id], jsonized, qos=1)
     command_record(jsonized, arg)
 
