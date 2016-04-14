@@ -262,7 +262,7 @@ def on_connect_1(client, data, flags, rc):
 
 def on_message_1(client, userdata, msg):
     print('Command from ' + msg.topic + ' received')
-    decode_command(msg.payload)
+    decode_command(msg.payload, msg.topic)
     return
 
 def on_subscribe_1(client, userdata, mid, granted_qos):
@@ -442,48 +442,52 @@ def sensor_json(data, dev_id):
 # cid: 3, cmd: set_clock, arg: time in isoformat+time difference to be added/subt
 #     es: success/fail (Same for all sensors, cannot change individually)
 # cid: 4, cmd: set_dev_name, arg: name in the correct format, es: success/fail
-def decode_command(command):
+def decode_command(command, cmd_topic):
     #comm = json.dumps(command)
     #j_com = json.loads(comm)
-    j_com = json.loads(str(command)[2:-1])
-    tn = j_com.get('c').get('tn')
-    print("tn: " + str(tn))
-    sn = j_com.get('c').get('sn')
-    cid = j_com.get('c').get('cid')
-    cmd = j_com.get('c').get('cmd')
-    arg = j_com.get('c').get('arg')
-    print("arg: " + str(arg))
-    ts = j_com.get('ts')
-    es = j_com.get('c').get('es')
-    if tn[-4:] in dev_ids:
-        if cid == 1:
-            if arg is not None:
-                set_st(tn, sn, cid, cmd, arg)
+    try:
+        j_com = json.loads(str(command)[2:-1])
+        tn = j_com.get('c').get('tn')
+        print("tn: " + str(tn))
+        sn = j_com.get('c').get('sn')
+        cid = j_com.get('c').get('cid')
+        cmd = j_com.get('c').get('cmd')
+        arg = j_com.get('c').get('arg')
+        print("arg: " + str(arg))
+        ts = j_com.get('ts')
+        es = j_com.get('c').get('es')
+        if tn[-4:] in dev_ids:
+            if cid == 1:
+                if arg is not None:
+                    set_st(tn, sn, cid, cmd, arg)
+                else:
+                    print('IGNORED')
+            elif cid == 2:
+                if es is None:
+                    get_st(tn, sn, cid, cmd)
+                else:
+                    print('IGNORED')
+            elif cid == 3:
+                if arg is not None:
+                    arg = arg[-6:]
+                    set_clock(tn, sn, cid, cmd, arg)
+                else:
+                    print('IGNORED')
+            elif cid == 4:
+                if arg is not None:
+                    set_dev_name(tn, sn, cid, cmd, arg)
+                else:
+                    print('IGNORED')
             else:
-                print('IGNORED')
-        elif cid == 2:
-            if es is None:
-                get_st(tn, sn, cid, cmd)
-            else:
-                print('IGNORED')
-        elif cid == 3:
-            if arg is not None:
-                arg = arg[-6:]
-                set_clock(tn, sn, cid, cmd, arg)
-            else:
-                print('IGNORED')
-        elif cid == 4:
-            if arg is not None:
-                set_dev_name(tn, sn, cid, cmd, arg)
-            else:
+                if arg is not None:
+                    not_recog_cmd(tn, sn, cid, cmd, arg)
                 print('IGNORED')
         else:
-            if arg is not None:
-                not_recog_cmd(tn, sn, cid, cmd, arg)
-            print('IGNORED')
-    else:
+            print('FAIL: Device ID (tn) not recognized.')
+            pub_cmd_response(tn[-4:], tn, sn, cid, cmd, '', 'fail')
+    except:
         print('FAIL: Device ID (tn) not recognized.')
-        pub_cmd_response(tn[-4:], tn, sn, cid, cmd, '', 'fail')
+        pub_cmd_response(cmd_topic[-4:], '', '', '', '', '', 'fail')
 
 # Create Command Response JSON packet to be sent to the MQTT Broker by client 2
 def cmd_resp_json(tn, sn, cid, cmd, es):
