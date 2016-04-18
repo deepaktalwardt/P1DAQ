@@ -239,7 +239,7 @@ for dev_id in DEVICE_IDS:
 
 # Populate SERIAL_NUMBERS
 for dev_id in DEVICE_IDS:
-    SERIAL_NUMBERS[dev_id] = dev_id # Serial Numbers refer to the Name
+    SERIAL_NUMBERS[dev_id] = BOX + "-" + DEVICE_TYPE + "-" + dev_id # Serial Numbers refer to the Name
 
 # Populate CURR_MASS_DATA
 for dev_id in DEVICE_IDS:
@@ -401,15 +401,15 @@ def sensor_json(data, dev_id):
     mc = {}
 
     # Generate variables
-    t_n = BOX + "-" + DEVICE_TYPE + "-" + dev_id
+    t_n = SERIAL_NUMBERS.get(dev_id) #BOX + "-" + DEVICE_TYPE + "-" + dev_id
     int_temp = data.get("In Temp (deg C)") # Change later to function call
     out_temp = data.get("Out Temp (deg C)") # Change later to function call
     out_humi = data.get("Relative Humidity (%)") # Change later to function call
     time_now = data.get("Time")
     air_flow = '-' # Not sure if we need to change this
     sampling_time = int(SAMPLING_TIMES.get(dev_id)*2.5) # May need to change later
-    serial_number = SERIAL_NUMBERS.get(dev_id)
-    print(serial_number)
+    #serial_number = SERIAL_NUMBERS.get(dev_id)
+    #print(serial_number)
 
     # Generate Sub JSONs
     psd["unit"] = "cpcm3" # Counts per cm3
@@ -419,7 +419,7 @@ def sensor_json(data, dev_id):
     mc["pm25conc"] = data.get(dev_id + "_mc") #data.get(DEVICE_ID + "_mc")
 
     d["tn"] = t_n
-    d["sn"] = serial_number
+    d["sn"] = dev_id
     d["st"] = sampling_time
     d["psd"] = psd
     d["mc"] = mc
@@ -456,7 +456,7 @@ def decode_command(command, cmd_topic):
         print("arg: " + str(arg))
         ts = j_com.get('ts')
         es = j_com.get('c').get('es')
-        if tn[-4:] in dev_ids:
+        if sn in dev_ids:
             if cid == 1:
                 if arg is not None:
                     set_st(tn, sn, cid, cmd, arg)
@@ -483,11 +483,11 @@ def decode_command(command, cmd_topic):
                     not_recog_cmd(tn, sn, cid, cmd, arg)
                 print('IGNORED')
         else:
-            print('FAIL: Device ID (tn) not recognized.')
-            pub_cmd_response(tn[-4:], tn, sn, cid, cmd, None, 'fail')
+            print('FAIL: Device ID (sn) not recognized.')
+            pub_cmd_response(sn, tn, sn, cid, cmd, None, 'fail')
     except:
         print('FAIL: Could not decode JSON properly')
-        pub_cmd_response(cmd_topic[-4:], BOX + '-' + DEVICE_TYPE + '-' + cmd_topic[-4:], '', '', '', None, 'fail')
+        pub_cmd_response(cmd_topic[-4:], '', cmd_topic[-4:], '', '', None, 'fail')
 
 # Create Command Response JSON packet to be sent to the MQTT Broker by client 2
 def cmd_resp_json(tn, sn, cid, cmd, es):
@@ -512,7 +512,7 @@ def cmd_resp_json(tn, sn, cid, cmd, es):
 # Sets a new sampling time for the given device ID
 def set_st(tn, sn, cid, cmd, arg):
     global SAMPLING_TIMES
-    dev_id = tn[-4:]
+    dev_id = sn
     if cmd == 'set_st':
         if isinstance(arg, int) or isinstance(arg, float):
             if arg >= 2.5 and arg <= 3600:
@@ -535,7 +535,7 @@ def set_st(tn, sn, cid, cmd, arg):
 
 # Gets the sampling time for the given device number
 def get_st(tn, sn, cid, cmd):
-    dev_id = tn[-4:]
+    dev_id = sn
     if cmd == 'get_st':
         es = int(SAMPLING_TIMES[dev_id]*2.5)
         print('Command Success')
@@ -547,7 +547,7 @@ def get_st(tn, sn, cid, cmd):
 
 # Sets the local clock timezone for the Raspberry Pi
 def set_clock(tn, sn, cid, cmd, arg):
-    dev_id = tn[-4:]
+    dev_id = sn
     if cmd == 'set_clock':
         if arg in tz_dict:
             new_tz = tz_dict[arg]
@@ -568,12 +568,12 @@ def set_clock(tn, sn, cid, cmd, arg):
 def set_dev_name(tn, sn, cid, cmd, arg):
     global SERIAL_NUMBERS
     global TOPIC_DOWN
-    dev_id = tn[-4:]
+    dev_id = sn
     if cmd == 'set_dev_name':
         SERIAL_NUMBERS[dev_id] = str(arg)
         es = 'success'
-        TOPIC_DOWN[str(arg)] = TOPIC_UP + '/' + str(arg)
-        client_1.subscribe(TOPIC_DOWN.get(str(arg)))
+        #TOPIC_DOWN[str(arg)] = TOPIC_UP + '/' + str(arg)
+        #client_1.subscribe(TOPIC_DOWN.get(str(arg)))
         pub_cmd_response(dev_id, tn, sn, cid, cmd, str(arg), es)
     else:
         print('FAIL: Command cmd does not match cid')
@@ -583,7 +583,7 @@ def set_dev_name(tn, sn, cid, cmd, arg):
 # Sends a fail execution status if the cid is not recognized
 def not_recog_cmd(tn, sn, cid, cmd, arg):
     print('FAIL: Command not recognized')
-    dev_id = tn[-4:]
+    dev_id = sn
     es = 'fail'
     pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
 
@@ -627,7 +627,7 @@ def pub_sensor_reading(sensor_data):
 # Publish Command Response
 def pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es):
     jsonized = cmd_resp_json(tn, sn, cid, cmd, es)
-    dev_id = tn[-4:]
+    dev_id = sn
     client_1.publish(TOPIC_DOWN[dev_id], jsonized, qos=1)
     command_record(jsonized, arg)
 
