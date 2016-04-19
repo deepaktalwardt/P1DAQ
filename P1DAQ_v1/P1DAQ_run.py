@@ -275,7 +275,7 @@ def on_disconnect_1(client, userdata, rc):
     # os.system('hciconfig hci0 up')
     # time.sleep(2)
     # os.system('hciconfig hci0 up')
-    os.system('python3 P1DAQ_run.py 1')
+    os.system('python3 P1DAQ_run.py 0')
     sys.exit()
 
 
