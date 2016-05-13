@@ -43,6 +43,7 @@ def toggle_fona():
 	GPIO.output(fona_key, 0)
 	time.sleep(2)
 	GPIO.output(fona_key, 1)
+	time.sleep(2)
 
 def powered():
 	return GPIO.input(fona_ps)
