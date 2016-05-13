@@ -65,5 +65,6 @@ def main():
 		while not powered():
 			restart()
 
+main()
 time.sleep(2)
 # GPIO.cleanup()
