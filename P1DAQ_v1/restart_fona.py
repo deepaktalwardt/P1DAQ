@@ -60,9 +60,11 @@ def restart():
 def main():
 	restart()
 	if powered():
+		print('Powered!')
 		return
 	else:
 		while not powered():
+			print('Not powered, retrying')
 			restart()
 
 main()
