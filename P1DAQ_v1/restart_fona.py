@@ -56,3 +56,4 @@ else:
 	toggle_fona()
 
 time.sleep(5)
+GPIO.cleanup()
