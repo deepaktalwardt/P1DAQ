@@ -68,5 +68,5 @@ def main():
 			restart()
 
 main()
-time.sleep(2)
+time.sleep(10)
 # GPIO.cleanup()
