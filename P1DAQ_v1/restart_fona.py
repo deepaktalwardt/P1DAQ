@@ -48,13 +48,15 @@ def toggle_fona():
 def powered():
 	return GPIO.input(fona_ps)
 
-if powered():
-	print('Restarting')
-	toggle_fona()
-	toggle_fona()
-else:
-	print('Turning on')
-	toggle_fona()
+def restart():
+	if powered():
+		print('Restarting')
+		toggle_fona()
+		toggle_fona()
+	else:
+		print('Turning on')
+		toggle_fona()
 
+restart()
 time.sleep(5)
-GPIO.cleanup()
+# GPIO.cleanup()
