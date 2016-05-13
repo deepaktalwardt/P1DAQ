@@ -10,7 +10,9 @@ REMOTE_SERVER = "www.ping.com"
 
 GPIO.setmode(GPIO.BCM)
 fona_key = 22
+fona_ps = 12
 GPIO.setup(fona_key, GPIO.OUT)
+GPIO.setup(fona_ps, GPIO.IN)
 
 atexit.register(GPIO.cleanup)
 
@@ -42,10 +44,15 @@ def toggle_fona():
 	time.sleep(2)
 	GPIO.output(fona_key, 1)
 
-GPRS_on()
-while not is_connected():
-	toggle_fona()
-	time.sleep(10)
-	GPRS_on()
+def powered():
+	return GPIO.input(fona_ps)
 
-GPIO.cleanup()
+if powered():
+	print('Restarting')
+	toggle_fona()
+	toggle_fona()
+else:
+	print('Turning on')
+	toggle_fona()
+
+time.sleep(5)
