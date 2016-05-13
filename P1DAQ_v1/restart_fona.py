@@ -5,7 +5,7 @@ import os
 import socket
 import atexit
 
-connected = False
+connected = 0
 REMOTE_SERVER = "www.ping.com"
 
 GPIO.setmode(GPIO.BCM)
@@ -57,6 +57,13 @@ def restart():
 		print('Turning on')
 		toggle_fona()
 
-restart()
-time.sleep(5)
+def main():
+	restart()
+	if powered():
+		return
+	else:
+		while not powered():
+			restart()
+
+time.sleep(2)
 # GPIO.cleanup()
