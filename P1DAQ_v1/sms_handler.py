@@ -10,10 +10,11 @@ from gsmmodem.modem import GsmModem
 PORT = '/dev/ttyAMA0'
 BAUDRATE = 115200
 TIMEOUT = 120
-# BOX = "P1DAQ-1: "
-BOX = "P1DAQ-2: "
-DESTINATION = '13581791804' # change this to default number
-USERPASS_FILE = "/media/pi/Clarity/mqtt_info.csv"
+BOX = "P1DAQ-1: "
+# BOX = "P1DAQ-2: "
+# DESTINATION = '13581791804' # change this to default number
+DESTINATION = '+15592734835'
+USERPASS_FILE = "/mnt/Clarity/mqtt_info.csv"
 correct_format = 0
 modem = ''
 cred = ''
