@@ -142,7 +142,7 @@ fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc",
               dev_ids[4] + "_mc", dev_ids[4] + "_nc",
               "In Temp (deg C)", "Out Temp (deg C)",
               "Relative Humidity (%)",
-              "Time"]
+              "Time"] #
 
 log_fieldnames = ['tn',
                   'sn',
