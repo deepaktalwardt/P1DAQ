@@ -648,12 +648,12 @@ def client_1_connect():
         client_1.username_pw_set(str(USERNAME), str(PASSWORD))
     while con:
         try:
-            client_1.connect(SMS_BROKER,port=int(SMS_PORT))
+            client_1.connect(SMS_BROKER.decode('utf-8'),port=int(SMS_PORT))
             con = False
         except:
             print('Retry connection')
             try:
-                client_1.connect(SMS_BROKER,port=int(SMS_PORT))
+                client_1.connect(SMS_BROKER.decode('utf-8'),port=int(SMS_PORT))
             except:
                 print('Re-run script and ask for SMS')
                 # os.system('hciconfig hci0 down')
