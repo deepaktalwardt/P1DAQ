@@ -17,8 +17,9 @@ from socket import (
     HCI_FILTER,
 )
 ###############################################################
+sensing_time = 1.5
 #folderName = "/home/pi/TestingData/"
-folderName = "/media/pi/ClarityDrive/ClarityData/"
+folderName = "/media/pi/Clarity/ClarityData/"
 numFile = len([f for f in os.listdir(folderName)]) + 1
 #tnow = datetime.datetime.now().isoformat()
 #fixedTime = tnow[0:10] + "--" + tnow[11:13] + "-" + tnow[14:16] + "-" + tnow[17:19]
@@ -117,7 +118,7 @@ while True:
     noOfDevs = 0
     for k in devReadings.keys():
         devReadings[k] = -1
-    while (time.time() - startTime) < 2.5:
+    while (time.time() - startTime) < sensing_time:
         data = sock.recv(1024)
         arr = ':'.join("{0:02x}".format(x) for x in data[12:6:-1])
         devName = str(''.join("{0:02x}".format(x) for x in data[16:23:1]))
