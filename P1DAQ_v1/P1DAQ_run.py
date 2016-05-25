@@ -40,7 +40,7 @@ restart_file_name = "/mnt/Clarity/restart_counts.txt"
 
 def read_restart_counter():
     try:
-        with open(file_name, "r") as file_to_read:
+        with open(restart_file_name, "r") as file_to_read:
             restart_counts = int(file_to_read.read())
     except:
         print("Restart counter file not found")
