@@ -75,7 +75,7 @@ def main():
 		print('Powered!')
 		return
 	else:
-		while not powered() or fona_counts < 2:
+		while (not powered()) and (fona_counts < 2):
 			print('Not powered, retrying')
 			fona_counts += 1
 			restart()
