@@ -12,8 +12,6 @@ import Adafruit_MCP9808.MCP9808 as int_temp
 import datetime
 import logging
 from subprocess import *
-from random import randint
-from collections import defaultdict
 from gsmmodem.modem import GsmModem
 
 ## Pre-Reqs
@@ -35,6 +33,28 @@ SMS_BROKER      =   ""
 SMS_PORT        =   ""
 USERNAME        =   "sensoriot"              
 PASSWORD        =   "sensoriot" 
+restart_limit   =   5
+
+## Check if restarted N number of times
+restart_file_name = "/mnt/Clarity/restart_counts.txt"
+
+def read_restart_counter():
+    try:
+        with open(file_name, "r") as file_to_read:
+            restart_counts = int(file_to_read.read())
+    except:
+        print("Restart counter file not found")
+        return 0
+    return restart_counts
+
+if read_restart_counter() > restart_limit:
+    print("CONNECTION TRIES EXCEEDED 5, STORING DATA ON USB DRIVE NOW")
+    os.system('hciconfig hci0 down')
+    os.system('hciconfig hci0 up')
+    time.sleep(2)
+    os.system('hciconfig hci0 up')
+    os.system('python3 P1DAQ_usb.py')
+    sys.exit()
 
 ## GSM Modem SMS Functions
 # Turn GPRS mode off
@@ -118,7 +138,7 @@ except:
 ############ Variables and Setup #############
 ## File Saving
 # For P1DAQ Box 1
-dev_ids = ["0012", "0014", "0009", "0020", "000f"]
+dev_ids = ["0012", "000e", "0009", "0020", "000f"]
 
 dev_addrs = ["dd:19:ae:49:ae:d3",
             "ed:89:3a:e0:80:8b",
@@ -142,7 +162,7 @@ fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc",
               dev_ids[4] + "_mc", dev_ids[4] + "_nc",
               "In Temp (deg C)", "Out Temp (deg C)",
               "Relative Humidity (%)",
-              "Time"] #
+              "Time"]
 
 log_fieldnames = ['tn',
                   'sn',
@@ -369,7 +389,7 @@ def populate_curr_data(data):
 def get_sensor_reading():
     to_return = dict.fromkeys(fieldnames)
     start_time = time.time()
-    while (time.time() - start_time) < 2.5:
+    while (time.time() - start_time) < 1.5:
         data = get_BLE_raw()
         ble_path = ':'.join("{0:02x}".format(x) for x in data[12:6:-1])
         if known_sensor(str(ble_path)):
