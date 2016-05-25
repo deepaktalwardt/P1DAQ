@@ -69,13 +69,15 @@ def restart():
 		toggle_fona()
 
 def main():
+	fona_counts = 0
 	restart()
 	if powered():
 		print('Powered!')
 		return
 	else:
-		while not powered():
+		while not powered() or fona_counts < 2:
 			print('Not powered, retrying')
+			fona_counts += 1
 			restart()
 
 increment_restart_counter()
