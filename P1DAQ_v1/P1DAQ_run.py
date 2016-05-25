@@ -33,7 +33,7 @@ SMS_BROKER      =   ""
 SMS_PORT        =   ""
 USERNAME        =   "sensoriot"              
 PASSWORD        =   "sensoriot" 
-restart_limit   =   5
+restart_limit   =   2
 
 ## Check if restarted N number of times
 restart_file_name = "/mnt/Clarity/restart_counts.txt"
@@ -141,7 +141,7 @@ except:
 dev_ids = ["0012", "000e", "0009", "0020", "000f"]
 
 dev_addrs = ["dd:19:ae:49:ae:d3",
-            "ed:89:3a:e0:80:8b",
+            "cd:3f:6c:1c:7d:d5",
             "fd:9e:85:fe:57:ff",
             "f3:3d:9c:32:c4:c2",
             "e3:35:be:3c:db:1f"]
