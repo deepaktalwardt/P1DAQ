@@ -18,13 +18,13 @@ GPIO.setup(fona_ps, GPIO.IN)
 atexit.register(GPIO.cleanup)
 
 def increment_restart_counter():
-	with open(file_name, "r") as file_to_read:
+	with open(restart_file_name, "r") as file_to_read:
 		restart_counts = int(file_to_read.read())
 
 		restart_counts += 1
 		print("Restart Counts: " + str(restart_counts))
 
-	with open(file_name, "w") as file_to_write:
+	with open(restart_file_name, "w") as file_to_write:
 		file_to_write.write(str(restart_counts))
 
 # def GPRS_off():
