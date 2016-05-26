@@ -5,8 +5,6 @@ import os
 import socket
 import atexit
 
-connected = 0
-REMOTE_SERVER = "www.ping.com"
 restart_file_name = "/mnt/Clarity/restart_counts.txt"
 
 GPIO.setmode(GPIO.BCM)
@@ -26,28 +24,6 @@ def increment_restart_counter():
 
 	with open(restart_file_name, "w") as file_to_write:
 		file_to_write.write(str(restart_counts))
-
-# def GPRS_off():
-#     os.system('poff fona')
-#     time.sleep(3)
-
-# def GPRS_on():
-#     os.system('pon fona')
-#     time.sleep(5)
-
-# def is_connected():
-# 	global connected
-# 	try:
-# 		host = socket.gethostbyname(REMOTE_SERVER)
-# 		s = socket.create_connection((host, 80), 2)
-# 		print('Connected!')
-# 		connected = True
-# 		return True
-# 	except:
-# 		print('Not Connected')
-# 		connected = False
-# 		pass
-# 	return False
 
 def toggle_fona():
 	print('Toggling')

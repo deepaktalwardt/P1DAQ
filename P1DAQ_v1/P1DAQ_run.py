@@ -48,7 +48,7 @@ def read_restart_counter():
     return restart_counts
 
 if read_restart_counter() > restart_limit:
-    print("CONNECTION TRIES EXCEEDED 5, STORING DATA ON USB DRIVE NOW")
+    print("CONNECTION TRIES EXCEEDED 3, STORING DATA ON USB DRIVE NOW")
     os.system('hciconfig hci0 down')
     os.system('hciconfig hci0 up')
     time.sleep(2)
