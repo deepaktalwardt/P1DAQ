@@ -48,7 +48,7 @@ def read_restart_counter():
     return restart_counts
 
 if read_restart_counter() > restart_limit:
-    print("CONNECTION TRIES EXCEEDED 3, STORING DATA ON USB DRIVE NOW")
+    print("CONNECTION TRIES EXCEEDED " + str(restart_limit) + " , STORING DATA ON USB DRIVE NOW")
     os.system('hciconfig hci0 down')
     os.system('hciconfig hci0 up')
     time.sleep(2)
@@ -120,6 +120,14 @@ def up_check():
         os.system('python3 P1DAQ_run.py 0')
         sys.exit()
     GPRS_on()
+
+## Additional functions
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
 
 ## Main Script Part 1
 GPRS_off()
@@ -248,6 +256,7 @@ SAMPLING_TIMES  =   {} # populated later
 SERIAL_NUMBERS  =   {} # populated later
 CURR_MASS_DATA  =   {} # populated later
 CURR_NUM_DATA   =   {} # populated later
+DENSITY         =   1.0
 
 # Populate TOPIC_DOWN
 for dev_id in DEVICE_IDS:
@@ -396,6 +405,7 @@ def get_sensor_reading():
             dev_id = str("".join("{0:02x}".format(x) for x in data[31:29:-1]))
             num_conc = int("".join("{0:02x}".format(x) for x in data[33:31:-1]),16)
             mass_conc = int("".join("{0:02x}".format(x) for x in data[35:33:-1]),16)
+            mass_conc = int(DENSITY*mass_conc)
             to_return[dev_id + "_nc"] = num_conc
             to_return[dev_id + "_mc"] = mass_conc
     try:
@@ -462,6 +472,7 @@ def sensor_json(data, dev_id):
 # cid: 3, cmd: set_clock, arg: time in isoformat+time difference to be added/subt
 #     es: success/fail (Same for all sensors, cannot change individually)
 # cid: 4, cmd: set_dev_name, arg: name in the correct format, es: success/fail
+# cid: 5, cmd: set_density, arg: density value > 0, es: success/fail
 def decode_command(command, cmd_topic):
     #comm = json.dumps(command)
     #j_com = json.loads(comm)
@@ -496,6 +507,11 @@ def decode_command(command, cmd_topic):
             elif cid == 4:
                 if arg is not None:
                     set_dev_name(tn, sn, cid, cmd, arg)
+                else:
+                    print('IGNORED')
+            elif cid == 5:
+                if arg is not None:
+                    set_density(tn, sn, cid, cmd, arg)
                 else:
                     print('IGNORED')
             else:
@@ -599,6 +615,24 @@ def set_dev_name(tn, sn, cid, cmd, arg):
         print('FAIL: Command cmd does not match cid')
         es = 'fail'
         pub_cmd_response(dev_id, tn, sn, cid, cmd, arg, es)
+
+# Resets the density of the particles
+def set_density(tn, sn, cid, cmd, arg):
+    global DENSITY
+    dev_id = sn
+    if cmd == 'set_density':
+        if is_number(arg):
+            DENSITY = arg
+            es = 'success'
+        else:
+            es = 'fail'
+            print('FAIL: Density is not in the correct format')
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, str(arg), es)
+    else:
+        print('FAIL: Command cmd does not match cid')
+        es = 'fail'
+        pub_cmd_response(dev_id, tn, sn, cid, cmd, str(arg), es)
+
 
 # Sends a fail execution status if the cid is not recognized
 def not_recog_cmd(tn, sn, cid, cmd, arg):
