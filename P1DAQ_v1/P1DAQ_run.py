@@ -405,7 +405,7 @@ def get_sensor_reading():
             dev_id = str("".join("{0:02x}".format(x) for x in data[31:29:-1]))
             num_conc = int("".join("{0:02x}".format(x) for x in data[33:31:-1]),16)
             mass_conc = int("".join("{0:02x}".format(x) for x in data[35:33:-1]),16)
-            mass_conc = int(DENSITY*mass_conc)
+            mass_conc = int(float(DENSITY) * float(mass_conc))
             to_return[dev_id + "_nc"] = num_conc
             to_return[dev_id + "_mc"] = mass_conc
     try:
