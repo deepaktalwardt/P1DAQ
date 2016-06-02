@@ -256,7 +256,7 @@ SAMPLING_TIMES  =   {} # populated later
 SERIAL_NUMBERS  =   {} # populated later
 CURR_MASS_DATA  =   {} # populated later
 CURR_NUM_DATA   =   {} # populated later
-DENSITY         =   1.0
+DENSITY         =   1.9
 
 # Populate TOPIC_DOWN
 for dev_id in DEVICE_IDS:

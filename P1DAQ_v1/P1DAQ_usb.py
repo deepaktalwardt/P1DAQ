@@ -24,6 +24,8 @@ fieldnames = [dev_ids[0] + "_mc", dev_ids[0] + "_nc",
               "Relative Humidity (%)",
               "Time"]
 
+density = 1.9
+
 
 folder_name_1 = "/mnt/Clarity/ClarityData/"
 
@@ -82,6 +84,7 @@ def get_sensor_reading():
             dev_id = str("".join("{0:02x}".format(x) for x in data[31:29:-1]))
             num_conc = int("".join("{0:02x}".format(x) for x in data[33:31:-1]),16)
             mass_conc = int("".join("{0:02x}".format(x) for x in data[35:33:-1]),16)
+            mass_conc = int(density*mass_conc)
             to_return[dev_id + "_nc"] = num_conc
             to_return[dev_id + "_mc"] = mass_conc
     try:
