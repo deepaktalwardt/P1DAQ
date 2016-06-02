@@ -16,7 +16,7 @@ BOX 			= 		"P1DAQ1"
 #dev_ids 		=		["0001", "0024", "000c", "0027", "0031"]
 dev_ids = ["0012", "0014", "0016", "0020", "000f"]
 PUBLIC_BROKER   =   	"broker.hivemq.com"
-IBM_BROKER      =   	"119.81.84.237"
+IBM_BROKER      =   	"161.202.22.93"
 BROKER          =   	IBM_BROKER
 topic_sub 		= 		"iot/SSRIOT/P1/"
 topic_pub		= 		"iot/SSRIOT/P1/"
@@ -46,8 +46,8 @@ client = paho.Client()
 client.on_publish = on_publish
 client.on_message = on_message
 client.on_subscribe = on_subscribe
-client.connect(BROKER, port=1883)
-client.loop_start()
+client.connect(BROKER, port=9003)
+client.loop_start() 
 
 def build_set_clock_command(tn, sn, cid, cmd, tz):
     # Initialize all JSONs
@@ -218,7 +218,24 @@ def test_unrec_cmd():
 	(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
 	time.sleep(1)
 
+def test_density_cmd():
+	densities = [0.5, 1, 1.5, 2, 5, 100]
+	for dev_id in dev_ids:
+		sn = dev_id
+		tn = dev_id
+		for d in densities:
+			command = build_command(tn, sn, 5, 'set_density', d)
+			(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
+			time.sleep(15)
+
+		wrong_densities = [-1, -100, 0, 1]
+		for d in wrong_densities:
+			command = build_command(tn, sn, 5, 'set_density', d)
+			(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
+			time.sleep(15)
+
 # test_set_st()
 # test_get_st()
 # test_tz()
-test_set_dev_name()
+# test_set_dev_name()
+test_density_cmd()

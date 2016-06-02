@@ -621,7 +621,7 @@ def set_density(tn, sn, cid, cmd, arg):
     global DENSITY
     dev_id = sn
     if cmd == 'set_density':
-        if is_number(arg):
+        if (is_number(arg)) and (arg > 0):
             DENSITY = arg
             es = 'success'
         else:
