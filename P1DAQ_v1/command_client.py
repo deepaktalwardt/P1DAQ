@@ -220,19 +220,19 @@ def test_unrec_cmd():
 
 def test_density_cmd():
 	densities = [0.5, 1, 1.5, 2, 5, 100]
-	for dev_id in dev_ids:
-		sn = dev_id
-		tn = dev_id
-		for d in densities:
-			command = build_command(tn, sn, 5, 'set_density', d)
-			(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
-			time.sleep(15)
+	dev_id = "000f"
+	sn = dev_id
+	tn = dev_id
+	for d in densities:
+		command = build_command(tn, sn, 5, 'set_density', d)
+		(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
+		time.sleep(15)
 
-		wrong_densities = [-1, -100, 0, 1]
-		for d in wrong_densities:
-			command = build_command(tn, sn, 5, 'set_density', d)
-			(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
-			time.sleep(15)
+	wrong_densities = [-1, -100, 0, 1]
+	for d in wrong_densities:
+		command = build_command(tn, sn, 5, 'set_density', d)
+		(rc, mid) = client.publish(topic_pub+dev_id, command, qos=1)
+		time.sleep(15)
 
 # test_set_st()
 # test_get_st()
