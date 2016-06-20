@@ -22,7 +22,7 @@ from socket import (
 ###############################################################
 sensing_time = 1.5
 #folderName = "/home/pi/TestingData/"
-folderName = "/media/pi/Clarity/ClarityData/"
+folderName = "/media/pi/ClarityDrive/ClarityData/"
 numFile = len([f for f in os.listdir(folderName)]) + 1
 #tnow = datetime.datetime.now().isoformat()
 #fixedTime = tnow[0:10] + "--" + tnow[11:13] + "-" + tnow[14:16] + "-" + tnow[17:19]
