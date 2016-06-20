@@ -6,6 +6,9 @@ import struct
 import csv
 import datetime
 import binascii
+import json
+import requests
+import _thread
 from ctypes import (CDLL, get_errno)
 from ctypes.util import find_library
 from socket import (
@@ -109,6 +112,27 @@ if err < 0:
         os.strerror(errnum)
     ))
 
+# Upload to Clarity Cloud
+def upload_to_cloud(self, sensor_name, data_to_upload):
+    baseurl = "https://api.clarity.io/v2/measurements"
+    time_now = datetime.datetime.utcnow().isoformat() + 'Z'
+
+    json_to_upload = {}
+    json_to_upload["recId"] = sensor_name[-4:] + "_" + time_now
+    json_to_upload["device"] = "ffffffffffffffffffff" + sensor_name[-4:]
+    json_to_upload["location"] = {"type":"Point","coordinates":[-122.2689315, 37.8712693]}
+    json_to_upload["time"] = time_now
+    json_to_upload["pm2_5"] = {"value":data_to_upload[1], "raw":data_to_upload[0], "estimatedAccuracy":10}
+    try:
+        f = requests.post(baseurl, json=json_to_upload)
+        # print('Uploaded')
+        # print(f.status_code)
+        # print(f.content)
+    except:
+        print('Upload failed, check internet connection')
+    return
+
+
 # Open the file to update
 
 counter = 1;
@@ -148,6 +172,7 @@ while True:
             except:
                 continue
         try:
+            _thread.start_new_thread(upload_to_cloud, (devID,[num_conc mass_conc]))
             with open(fileName, "a") as fileToUpdate:
                 updater = csv.DictWriter(fileToUpdate, fieldnames = devReadings.keys())
                 updater.writerow(toSave)
