@@ -159,7 +159,7 @@ while True:
                 #err_code = str(int("".join("{0:02x}".format(x) for x in data[37:36:-1]),16))
                 devReadings[devID + "_nc"] = num_conc
                 devReadings[devID + "_mc"] = mass_conc
-            _thread.start_new_thread(upload_to_cloud, (devID,[num_conc, mass_conc]))
+        _thread.start_new_thread(upload_to_cloud, (devID,[num_conc, mass_conc]))
     if noOfDevs >= 1:
         devReadings['time(sec)'] = int(time.time() - dataTime)
         #devReadings['time_stamp'] = time.strftime("%c")
