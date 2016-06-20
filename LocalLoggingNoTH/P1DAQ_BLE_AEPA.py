@@ -172,7 +172,7 @@ while True:
             except:
                 continue
         try:
-            _thread.start_new_thread(upload_to_cloud, (devID,[num_conc mass_conc]))
+            _thread.start_new_thread(upload_to_cloud, (devID,[num_conc, mass_conc]))
             with open(fileName, "a") as fileToUpdate:
                 updater = csv.DictWriter(fileToUpdate, fieldnames = devReadings.keys())
                 updater.writerow(toSave)
