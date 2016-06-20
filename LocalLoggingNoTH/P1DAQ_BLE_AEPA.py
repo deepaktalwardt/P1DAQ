@@ -113,7 +113,7 @@ if err < 0:
     ))
 
 # Upload to Clarity Cloud
-def upload_to_cloud(self, sensor_name, data_to_upload):
+def upload_to_cloud(sensor_name, data_to_upload):
     baseurl = "https://api.clarity.io/v2/measurements"
     time_now = datetime.datetime.utcnow().isoformat() + 'Z'
 
