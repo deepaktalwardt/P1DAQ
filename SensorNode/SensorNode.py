@@ -90,7 +90,7 @@ while True:
         if not sensors_found:
             print('No sensors found')
         else:
-            print('Sensors Found: ' + sensors_found)
+            print('Sensors Found: ' + str(sensors_found))
             ctr += 1
             populate_fieldnames()
             init_file()
