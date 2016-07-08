@@ -108,4 +108,5 @@ while True:
                 dev_readings[dev_id + "_mc"] = mass_conc
         dev_readings['time (sec)'] = int(time.time() - start_time)
         save_to_file(dev_readings)
+        print(dev_readings)
         _thread.start_new_thread(upload_to_cloud, (dev_readings, ))
